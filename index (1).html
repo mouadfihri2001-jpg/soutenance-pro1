@@ -1,0 +1,2740 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Soutenance Pro AI — Finis ton mémoire sans stress</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g900:#004D35;--g800:#005C3E;--g700:#006847;--g600:#007A52;
+  --g500:#00A86B;--g400:#2DC47E;--g300:#7EDBA8;--g200:#B8EDD3;--g100:#E4F7EE;
+  --parchment:#F5F0E8;--parch2:#EDE6D6;--parch3:#DDD5C0;
+  --ink:#0A0F0D;--ink2:#1C2E25;--ink3:#374C3F;--muted:#5E7A6A;--faint:#8FA89B;
+  --border:#E0EDE7;--white:#FFFFFF;
+  --amber:#D97706;--blue:#2563EB;--red:#DC2626;
+  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--r-2xl:28px;--r-full:999px;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.06);
+  --shadow-md:0 8px 28px rgba(0,0,0,.09);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.13);
+  --shadow-green:0 12px 40px rgba(0,168,107,.25);
+  --trans:.2s cubic-bezier(.4,0,.2,1);
+  --max:1180px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ── UTILS ── */
+.container{max-width:var(--max);margin:0 auto;padding:0 28px}
+.serif{font-family:'Fraunces',Georgia,serif}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;letter-spacing:.1px}
+.pill-green{background:var(--g100);color:var(--g700);border:1px solid var(--g200)}
+.pill-amber{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.pill-white{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:var(--r-md);font-size:15px;font-weight:700;transition:var(--trans);letter-spacing:.1px;cursor:pointer;padding:13px 28px;white-space:nowrap}
+.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.btn-primary{background:linear-gradient(135deg,var(--g700) 0%,var(--g500) 100%);color:white;box-shadow:var(--shadow-green)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(0,168,107,.35)}
+.btn-primary:active{transform:translateY(0)}
+.btn-outline{background:transparent;border:2px solid rgba(255,255,255,.3);color:white}
+.btn-outline:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
+.btn-dark{background:var(--ink);color:white}
+.btn-dark:hover{background:var(--ink2);transform:translateY(-1px)}
+.btn-ghost-green{background:white;border:2px solid var(--g200);color:var(--g700)}
+.btn-ghost-green:hover{background:var(--g50,var(--g100));border-color:var(--g300)}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--g500);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section-eyebrow::before{content:'';width:20px;height:2px;background:var(--g400);border-radius:1px}
+.section-title{font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--ink);letter-spacing:-1.2px;line-height:1.15}
+.section-sub{font-size:16px;color:var(--muted);line-height:1.75;margin-top:12px;max-width:560px}
+
+/* ─────────────────────────────
+   NAVBAR
+───────────────────────────── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:200;transition:var(--trans)}
+.navbar.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.navbar-inner{display:flex;align-items:center;height:64px;gap:20px}
+.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--g600),var(--g400));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,168,107,.3)}
+.nav-logo-icon svg{width:17px;height:17px;stroke:white;fill:none;stroke-width:2}
+.nav-logo-name{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+.nav-logo-name span{color:var(--g500)}
+.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
+.nav-link{padding:8px 14px;border-radius:var(--r-md);font-size:14px;font-weight:500;color:var(--ink3);transition:var(--trans);cursor:pointer}
+.nav-link:hover{background:var(--g100);color:var(--g700)}
+.nav-link.active{color:var(--g600);font-weight:600}
+.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.btn-nav-login{padding:8px 18px;border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--ink3);border:1.5px solid var(--border);background:white;cursor:pointer;transition:var(--trans)}
+.btn-nav-login:hover{background:var(--g100);border-color:var(--g300);color:var(--g700)}
+.btn-nav-cta{padding:9px 20px;border-radius:var(--r-md);font-size:14px;font-weight:700;background:var(--g900);color:white;cursor:pointer;transition:var(--trans)}
+.btn-nav-cta:hover{background:var(--g700);transform:translateY(-1px)}
+
+/* ─────────────────────────────
+   HERO
+───────────────────────────── */
+.hero{background:linear-gradient(160deg,var(--g900) 0%,#003528 55%,#001f15 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
+.hero-bg-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.orb{position:absolute;border-radius:50%;filter:blur(80px)}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,168,107,.18) 0%,transparent 70%);top:-200px;right:-100px}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,77,53,.4) 0%,transparent 70%);bottom:-100px;left:-50px}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(45,196,126,.08) 0%,transparent 70%);top:30%;left:30%}
+.hero-inner{display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;padding:80px 0 100px;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,168,107,.15);border:1px solid rgba(0,168,107,.35);border-radius:var(--r-full);padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--g300);margin-bottom:24px}
+.hero-badge-dot{width:7px;height:7px;background:var(--g400);border-radius:50%;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.hero-h{font-size:clamp(36px,5vw,62px);font-weight:400;color:white;line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
+.hero-h em{font-style:italic;color:var(--g300)}
+.hero-h strong{font-weight:800}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:32px;max-width:480px}
+.hero-sub strong{color:rgba(255,255,255,.85);font-weight:600}
+.hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+.hero-stats{display:flex;align-items:center;gap:28px}
+.hs-item{display:flex;flex-direction:column;gap:2px}
+.hs-val{font-size:22px;font-weight:800;color:white;letter-spacing:-.5px}
+.hs-lbl{font-size:11.5px;color:rgba(255,255,255,.4);font-weight:500}
+.hs-div{width:1px;height:32px;background:rgba(255,255,255,.12)}
+
+/* ── HERO CARD (SIGNATURE) ── */
+.hero-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-2xl);overflow:hidden;backdrop-filter:blur(8px);box-shadow:0 32px 80px rgba(0,0,0,.4)}
+.hc-top{background:rgba(255,255,255,.06);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
+.hc-dots{display:flex;gap:6px}
+.hc-dot{width:11px;height:11px;border-radius:50%}
+.hc-tab-row{display:flex;gap:2px;margin-left:8px}
+.hc-tab{padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.4)}
+.hc-tab.active{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)}
+.hc-meta{margin-left:auto;display:flex;align-items:center;gap:6px}
+.hc-ai-badge{background:rgba(0,168,107,.2);border:1px solid rgba(0,168,107,.35);border-radius:var(--r-full);padding:3px 9px;font-size:10.5px;font-weight:700;color:var(--g300);display:flex;align-items:center;gap:4px}
+.hc-ai-badge::before{content:'';width:5px;height:5px;background:var(--g400);border-radius:50%;animation:pulse 1.5s ease infinite}
+.hc-body{padding:22px 24px;min-height:320px;font-size:13px;line-height:1.9;color:rgba(255,255,255,.7)}
+.hc-body h2{font-size:14px;font-weight:800;color:rgba(255,255,255,.95);margin:12px 0 6px;font-family:'Inter',sans-serif}
+.hc-body h3{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin:10px 0 4px}
+.hc-body p{color:rgba(255,255,255,.6);margin-bottom:6px}
+.typed-cursor{display:inline-block;width:2px;height:1em;background:var(--g400);animation:blink .7s infinite;vertical-align:text-bottom;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hc-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between}
+.hc-prog{display:flex;align-items:center;gap:10px;font-size:11.5px;color:rgba(255,255,255,.4)}
+.hc-prog-bar{width:100px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
+.hc-prog-fill{height:4px;background:linear-gradient(90deg,var(--g600),var(--g400));border-radius:2px;width:0%;transition:width 0.3s ease}
+.hc-word-count{font-size:11px;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+
+/* ─────────────────────────────
+   PROOF BAR
+───────────────────────────── */
+.proof-bar{background:var(--parchment);border-top:1px solid var(--parch3);border-bottom:1px solid var(--parch3);padding:20px 0}
+.proof-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.proof-item{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--ink3)}
+.proof-item svg{width:18px;height:18px;stroke:var(--g500);fill:none;stroke-width:2;flex-shrink:0}
+.proof-div{width:1px;height:24px;background:var(--parch3)}
+.proof-logo-row{display:flex;align-items:center;gap:6px}
+.proof-logo-row span{font-size:12px;color:var(--muted);font-style:italic}
+.proof-uni{font-size:13px;font-weight:700;color:var(--ink3);background:white;border:1px solid var(--parch3);border-radius:var(--r-sm);padding:4px 10px}
+
+/* ─────────────────────────────
+   FEATURES
+───────────────────────────── */
+.section-features{background:var(--white);padding:100px 0}
+.features-header{text-align:center;margin-bottom:56px}
+.features-header .section-eyebrow{justify-content:center}
+.features-header .section-eyebrow::before{display:none}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
+.feat-card{background:var(--white);padding:32px;transition:var(--trans);cursor:default}
+.feat-card:hover{background:var(--g100)}
+.feat-icon{width:48px;height:48px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+.feat-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8}
+.feat-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;letter-spacing:-.3px}
+.feat-card p{font-size:14px;color:var(--muted);line-height:1.7}
+.feat-tag{display:inline-flex;margin-top:12px;font-size:11px;font-weight:700;color:var(--g600);background:var(--g100);border:1px solid var(--g200);border-radius:var(--r-full);padding:3px 9px}
+
+/* ─────────────────────────────
+   HOW IT WORKS
+───────────────────────────── */
+.section-how{background:var(--parchment);padding:100px 0}
+.how-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.how-steps{display:flex;flex-direction:column;gap:0}
+.how-step{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--parch3);cursor:pointer;transition:var(--trans)}
+.how-step:last-child{border-bottom:none}
+.how-step:hover .hs-num{background:var(--g900);color:white}
+.hs-num{width:36px;height:36px;border-radius:10px;background:var(--parch2);color:var(--muted);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--trans);margin-top:2px}
+.how-step.active-step .hs-num{background:var(--g900);color:white}
+.how-step.active-step .hstep-title{color:var(--g700)}
+.hstep-body h4{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:5px;letter-spacing:-.2px}
+.hstep-body p{font-size:14px;color:var(--muted);line-height:1.65}
+.how-visual{position:sticky;top:100px}
+.how-preview{background:var(--ink);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
+.hp-topbar{background:rgba(255,255,255,.06);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hp-dot{width:11px;height:11px;border-radius:50%}
+.hp-title{font-size:12px;color:rgba(255,255,255,.35);margin-left:6px}
+.hp-content{padding:20px 22px}
+.hp-step{display:none}
+.hp-step.active{display:block;animation:fadeSlide .3s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.how-step-tag{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
+.how-step-title{font-size:15px;font-weight:800;color:white;margin-bottom:12px}
+.code-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:14px;font-size:12px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.6);line-height:1.8}
+.code-block .g{color:var(--g300)}
+.code-block .w{color:rgba(255,255,255,.85)}
+.code-block .m{color:#F59E0B}
+
+/* ─────────────────────────────
+   DEMO PREVIEW
+───────────────────────────── */
+.section-demo{background:var(--white);padding:100px 0}
+.demo-header{text-align:center;margin-bottom:48px}
+.demo-window{background:var(--g900);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.07)}
+.dw-bar{background:rgba(255,255,255,.05);padding:14px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
+.dw-dot{width:12px;height:12px;border-radius:50%}
+.dw-url{background:rgba(255,255,255,.07);border-radius:6px;padding:5px 16px;font-size:12px;color:rgba(255,255,255,.35);margin-left:8px;font-family:'JetBrains Mono',monospace}
+.dw-content{display:grid;grid-template-columns:200px 1fr;min-height:420px}
+.dw-sidebar{background:rgba(0,0,0,.25);padding:16px 10px;border-right:1px solid rgba(255,255,255,.06)}
+.dw-sb-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:12px;color:rgba(255,255,255,.45);font-weight:500;margin-bottom:2px;cursor:pointer}
+.dw-sb-item.active{background:rgba(255,255,255,.1);color:white}
+.dw-sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.dw-main{padding:24px;overflow:hidden}
+.dw-tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,.05);border-radius:var(--r-full);padding:3px;width:fit-content}
+.dw-tab{padding:6px 14px;border-radius:var(--r-full);font-size:11.5px;font-weight:600;color:rgba(255,255,255,.4);cursor:pointer;transition:var(--trans)}
+.dw-tab.active{background:white;color:var(--ink)}
+.plan-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(255,255,255,.04);border-radius:var(--r-md);margin-bottom:6px;border-left:2px solid rgba(255,255,255,.1)}
+.plan-row.highlight{border-left-color:var(--g400);background:rgba(0,168,107,.08)}
+.plan-row-num{font-size:10px;font-weight:700;color:var(--g300);flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace}
+.plan-row-text{font-size:12px;color:rgba(255,255,255,.7)}
+.plan-row-text strong{color:rgba(255,255,255,.9);font-weight:700}
+.dw-action-bar{display:flex;gap:8px;margin-top:16px}
+.dw-btn{padding:7px 14px;border-radius:var(--r-sm);font-size:11.5px;font-weight:700;cursor:pointer;transition:var(--trans)}
+.dw-btn-p{background:var(--g500);color:white}
+.dw-btn-s{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
+
+/* ─────────────────────────────
+   TESTIMONIALS
+───────────────────────────── */
+.section-testimonials{background:var(--parchment);padding:100px 0}
+.testi-header{text-align:center;margin-bottom:52px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--white);border:1px solid var(--parch3);border-radius:var(--r-xl);padding:28px;transition:var(--trans)}
+.testi-card:hover{box-shadow:var(--shadow-md);border-color:var(--g200);transform:translateY(-3px)}
+.testi-stars{display:flex;gap:3px;margin-bottom:14px}
+.star{color:#F59E0B;font-size:15px}
+.testi-text{font-size:14.5px;color:var(--ink3);line-height:1.75;margin-bottom:18px;font-style:italic}
+.testi-text::before{content:'\201C';font-size:28px;color:var(--g300);font-family:'Fraunces',serif;line-height:.5;display:block;margin-bottom:8px}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:white;flex-shrink:0}
+.testi-info .name{font-size:13.5px;font-weight:700;color:var(--ink)}
+.testi-info .meta{font-size:12px;color:var(--faint)}
+.testi-tag{display:inline-flex;margin-top:6px;font-size:10.5px;font-weight:600;color:var(--g600);background:var(--g100);border:1px solid var(--g200);border-radius:var(--r-full);padding:2px 8px}
+
+/* ─────────────────────────────
+   PRICING
+───────────────────────────── */
+.section-pricing{background:var(--white);padding:100px 0}
+.pricing-header{text-align:center;margin-bottom:48px}
+.billing-toggle-wrap{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:20px}
+.billing-label{font-size:14px;font-weight:600;color:var(--ink3)}
+.toggle-switch{width:48px;height:28px;background:var(--g500);border-radius:14px;cursor:pointer;position:relative;transition:var(--trans);flex-shrink:0}
+.toggle-knob{width:22px;height:22px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;transition:var(--trans);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.toggle-switch.off{background:var(--border)}
+.toggle-switch.off .toggle-knob{right:auto;left:3px}
+.save-badge{background:var(--g100);color:var(--g700);border:1px solid var(--g200);border-radius:var(--r-full);font-size:11.5px;font-weight:700;padding:3px 10px}
+.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
+.price-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:28px 24px;transition:var(--trans);position:relative}
+.price-card:hover{border-color:var(--g300);box-shadow:var(--shadow-md);transform:translateY(-4px)}
+.price-card.featured{border-color:var(--g500);background:var(--g900);box-shadow:var(--shadow-green);transform:translateY(-8px)}
+.price-card.featured:hover{transform:translateY(-12px)}
+.pc-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--g600),var(--g400));color:white;font-size:11px;font-weight:800;padding:4px 14px;border-radius:var(--r-full);white-space:nowrap;letter-spacing:.2px}
+.pc-plan{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.price-card .pc-plan{color:var(--faint)}
+.price-card.featured .pc-plan{color:var(--g300)}
+.pc-price{font-size:42px;font-weight:900;letter-spacing:-2.5px;line-height:1;margin-bottom:4px}
+.price-card .pc-price{color:var(--ink)}
+.price-card.featured .pc-price{color:white}
+.pc-price sup{font-size:16px;letter-spacing:0;vertical-align:super;margin-right:2px}
+.pc-per{font-size:13px;margin-bottom:6px}
+.price-card .pc-per{color:var(--faint)}
+.price-card.featured .pc-per{color:rgba(255,255,255,.4)}
+.pc-desc{font-size:13px;line-height:1.6;padding-bottom:18px;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:18px}
+.price-card .pc-desc{color:var(--muted);border-bottom-color:var(--border)}
+.price-card.featured .pc-desc{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.1)}
+.pc-features{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.pc-feat{display:flex;align-items:flex-start;gap:8px;font-size:13px}
+.price-card .pc-feat{color:var(--ink3)}
+.price-card.featured .pc-feat{color:rgba(255,255,255,.75)}
+.pc-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.price-card .pc-check{background:var(--g100)}
+.price-card.featured .pc-check{background:rgba(0,168,107,.25)}
+.pc-check svg{width:9px;height:9px;stroke-width:3;fill:none}
+.price-card .pc-check svg{stroke:var(--g600)}
+.price-card.featured .pc-check svg{stroke:var(--g300)}
+.pc-x{width:17px;height:17px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.pc-x svg{width:9px;height:9px;stroke:var(--faint);stroke-width:2.5;fill:none}
+.pc-feat.muted .pc-feat-text{color:var(--faint)}
+.pc-btn{width:100%;padding:12px;border-radius:var(--r-md);font-size:14px;font-weight:700;transition:var(--trans);cursor:pointer;letter-spacing:.1px}
+.price-card .pc-btn.outline{background:white;border:1.5px solid var(--border);color:var(--ink3)}
+.price-card .pc-btn.outline:hover{background:var(--g100);border-color:var(--g300);color:var(--g700)}
+.price-card.featured .pc-btn.filled{background:white;color:var(--g900);border:none}
+.price-card.featured .pc-btn.filled:hover{background:var(--g100);transform:translateY(-1px)}
+
+/* ─────────────────────────────
+   FAQ
+───────────────────────────── */
+.section-faq{background:var(--parchment);padding:100px 0}
+.faq-layout{display:grid;grid-template-columns:1fr 600px;gap:80px;align-items:start}
+.faq-left h2{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--ink);letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
+.faq-left p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.faq-list{display:flex;flex-direction:column;gap:0}
+.faq-item{border-bottom:1px solid var(--parch3);overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-size:15px;font-weight:700;color:var(--ink);gap:16px;transition:var(--trans)}
+.faq-q:hover{color:var(--g700)}
+.faq-icon{width:22px;height:22px;border-radius:50%;background:var(--parch2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--trans);font-size:14px;color:var(--muted)}
+.faq-item.open .faq-icon{background:var(--g900);color:white;transform:rotate(45deg)}
+.faq-a{display:none;padding:0 0 18px;font-size:14px;color:var(--muted);line-height:1.75}
+.faq-item.open .faq-a{display:block;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─────────────────────────────
+   FINAL CTA
+───────────────────────────── */
+.section-cta{background:var(--white);padding:100px 0}
+.cta-card{background:linear-gradient(135deg,var(--g900) 0%,var(--g700) 60%,#003d2a 100%);border-radius:var(--r-2xl);padding:72px 60px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(0,168,107,.2),transparent 70%);pointer-events:none}
+.cta-card::after{content:'';position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.04),transparent 70%);pointer-events:none}
+.cta-card h2{font-size:clamp(28px,4vw,48px);font-weight:800;color:white;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;position:relative}
+.cta-card h2 em{font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--g300)}
+.cta-card p{font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;position:relative;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:28px;position:relative}
+.cta-note{font-size:13px;color:rgba(255,255,255,.35);position:relative}
+.cta-note span{color:rgba(255,255,255,.55)}
+
+/* ─────────────────────────────
+   FOOTER
+───────────────────────────── */
+.footer{background:var(--ink);padding:60px 0 36px}
+.footer-grid{display:grid;grid-template-columns:260px 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-brand p{font-size:13.5px;color:rgba(255,255,255,.35);line-height:1.75;margin-top:12px;margin-bottom:16px}
+.footer-socials{display:flex;gap:8px}
+.fsocial{width:34px;height:34px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--trans);color:rgba(255,255,255,.4)}
+.fsocial:hover{background:var(--g900);border-color:var(--g700);color:var(--g300)}
+.fsocial svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
+.footer-col h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.3);margin-bottom:14px}
+.footer-link{display:block;font-size:13.5px;color:rgba(255,255,255,.5);margin-bottom:9px;cursor:pointer;transition:var(--trans)}
+.footer-link:hover{color:rgba(255,255,255,.85)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-bottom span{font-size:13px;color:rgba(255,255,255,.25)}
+.footer-logo{display:flex;align-items:center;gap:8px}
+.footer-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--g600),var(--g400));border-radius:8px;display:flex;align-items:center;justify-content:center}
+.footer-logo-icon svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2}
+.footer-logo-name{font-size:14px;font-weight:800;color:rgba(255,255,255,.7)}
+
+/* ─────────────────────────────
+   RESPONSIVE
+───────────────────────────── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
+  .hero-h{letter-spacing:-1.5px}
+  .hero-sub{margin-left:auto;margin-right:auto}
+  .hero-ctas{justify-content:center}
+  .hero-stats{justify-content:center}
+  .hero-card{max-width:480px;margin:0 auto}
+  .features-grid{grid-template-columns:1fr 1fr}
+  .how-layout{grid-template-columns:1fr;gap:40px}
+  .how-visual{position:relative;top:0}
+  .testi-grid{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .price-card.featured{transform:none}
+  .faq-layout{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .container{padding:0 16px}
+  .features-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .proof-inner{gap:24px;flex-direction:column;align-items:flex-start}
+  .nav-links{display:none}
+  .hero-stats{flex-wrap:wrap;gap:18px}
+  .cta-card{padding:48px 24px}
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;align-items:flex-start}
+  .dw-content{grid-template-columns:1fr}
+  .dw-sidebar{display:none}
+}
+
+
+/* ═══════════════ APP OVERLAY ═══════════════ */
+#app-overlay{display:none;position:fixed;inset:0;z-index:9000;background:#F5F0E8;overflow:hidden;flex-direction:column}
+#app-overlay.visible{display:flex}
+.app-fade-in{animation:appFadeIn .4s ease forwards}
+@keyframes appFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ─── SCREEN SYSTEM ─── */
+.app-screen{display:none;width:100%;height:100%;overflow-y:auto}
+.app-screen.active{display:flex}
+
+/* ─── LOGIN SCREEN ─── */
+#screen-login{background:linear-gradient(135deg,#001a10 0%,#004D35 60%,#006847 100%);align-items:center;justify-content:center;position:relative;overflow:hidden}
+#screen-login::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,168,107,.2),transparent 70%);pointer-events:none}
+.login-card{background:rgba(255,255,255,.97);border-radius:20px;padding:44px;width:420px;box-shadow:0 24px 80px rgba(0,0,0,.35);animation:appFadeIn .5s ease}
+.login-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px}
+.login-logo img{width:48px;height:48px;object-fit:contain}
+.login-logo-text{font-size:20px;font-weight:800;color:#0A0F0D;letter-spacing:-.5px}
+.login-logo-text span{color:#00A86B}
+.login-h{font-size:22px;font-weight:800;color:#0A0F0D;text-align:center;margin-bottom:6px}
+.login-sub{font-size:13.5px;color:#5E7A6A;text-align:center;margin-bottom:24px}
+.form-field{margin-bottom:14px}
+.form-label{display:block;font-size:11.5px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.form-input{width:100%;padding:11px 14px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;transition:.15s;font-family:'Inter',sans-serif;background:white}
+.form-input:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
+.btn-login{width:100%;padding:13px;background:#004D35;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;font-family:'Inter',sans-serif;margin-top:4px}
+.btn-login:hover{background:#006847;transform:translateY(-1px)}
+.login-divider{display:flex;align-items:center;gap:12px;color:#8FA89B;font-size:12px;margin:18px 0}
+.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#E0EDE7}
+.btn-google{width:100%;padding:11px;border:1.5px solid #E0EDE7;border-radius:10px;font-size:13.5px;font-weight:500;color:#374C3F;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s;font-family:'Inter',sans-serif}
+.btn-google:hover{background:#F5F0E8}
+.login-footer{text-align:center;margin-top:18px;font-size:13px;color:#5E7A6A}
+.login-footer a{color:#00A86B;font-weight:600;cursor:pointer}
+
+/* ─── ONBOARDING SCREEN ─── */
+#screen-onboarding{background:#F5F0E8;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px 60px;overflow-y:auto}
+.onb-container{width:100%;max-width:680px;margin:0 auto}
+.onb-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:30px}
+.onb-logo img{width:42px;height:42px;object-fit:contain}
+.onb-logo-text{font-size:18px;font-weight:800;color:#0A0F0D}
+.onb-logo-text span{color:#00A86B}
+.onb-progress-bar{height:4px;background:#E0EDE7;border-radius:2px;margin-bottom:8px;overflow:hidden}
+.onb-progress-fill{height:4px;background:linear-gradient(90deg,#004D35,#00A86B);border-radius:2px;transition:.4s ease}
+.onb-step-label{font-size:12px;color:#8FA89B;text-align:center;margin-bottom:28px;font-weight:600}
+.onb-card{background:white;border-radius:18px;padding:32px;box-shadow:0 4px 20px rgba(0,77,53,.08);margin-bottom:24px;border:1px solid #E0EDE7}
+.onb-card-title{font-size:18px;font-weight:800;color:#0A0F0D;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.onb-card-sub{font-size:13.5px;color:#5E7A6A;margin-bottom:22px;line-height:1.6}
+.onb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.onb-grid.cols1{grid-template-columns:1fr}
+.onb-field{display:flex;flex-direction:column;gap:5px}
+.onb-field.full{grid-column:1/-1}
+.onb-label{font-size:11px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px}
+.onb-input,.onb-select,.onb-textarea{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;transition:.15s;font-family:'Inter',sans-serif;background:white}
+.onb-input:focus,.onb-select:focus,.onb-textarea:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
+.onb-textarea{resize:vertical;min-height:72px}
+.onb-nav{display:flex;align-items:center;justify-content:space-between}
+.btn-onb-back{padding:11px 24px;background:white;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;font-weight:600;color:#5E7A6A;cursor:pointer;font-family:'Inter',sans-serif;transition:.15s}
+.btn-onb-back:hover{background:#F5F0E8;border-color:#8FA89B}
+.btn-onb-next{padding:12px 28px;background:#004D35;color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:.15s}
+.btn-onb-next:hover{background:#006847;transform:translateY(-1px)}
+.onb-review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.onb-review-item{background:#F5F0E8;border:1px solid #E0EDE7;border-radius:10px;padding:11px 13px}
+.onb-review-key{font-size:10px;font-weight:700;color:#8FA89B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.onb-review-val{font-size:13px;font-weight:700;color:#0A0F0D}
+
+/* ─── APP MAIN SCREEN ─── */
+#screen-app{flex-direction:row;overflow:hidden;height:100%}
+.app-sidebar{width:230px;background:#0A0F0D;display:flex;flex-direction:column;flex-shrink:0;height:100%;overflow-y:auto}
+.app-sidebar::-webkit-scrollbar{width:3px}
+.app-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+.sb-header{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.sb-header-logo{display:flex;align-items:center;gap:9px}
+.sb-header-logo img{width:30px;height:30px;object-fit:contain}
+.sb-header-logo-text{font-size:13px;font-weight:800;color:white}
+.sb-project-chip{margin:10px 10px 0;background:rgba(0,168,107,.12);border:1px solid rgba(0,168,107,.22);border-radius:8px;padding:8px 10px}
+.sb-project-type{font-size:9.5px;font-weight:700;color:#7EDBA8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.sb-project-title{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.3}
+.sb-nav{flex:1;padding:10px 8px}
+.sb-section{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1px;padding:10px 10px 4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.45);font-size:13px;font-weight:500;transition:.15s;margin-bottom:1px;user-select:none}
+.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
+.sb-item.active{background:rgba(255,255,255,.1);color:white}
+.sb-item.active{box-shadow:inset 3px 0 0 #00A86B}
+.sb-item svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8}
+.sb-footer{padding:10px 8px;border-top:1px solid rgba(255,255,255,.07)}
+.sb-user{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s}
+.sb-user:hover{background:rgba(255,255,255,.06)}
+.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00A86B,#7EDBA8);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0}
+.sb-user-name{font-size:12.5px;font-weight:700;color:white}
+.sb-user-info{font-size:10.5px;color:rgba(255,255,255,.3)}
+
+/* ─── APP MAIN AREA ─── */
+.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100%}
+.app-topbar{height:58px;background:white;border-bottom:1px solid #E0EDE7;display:flex;align-items:center;padding:0 22px;gap:12px;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.app-topbar-title{font-size:15px;font-weight:800;color:#0A0F0D}
+.app-topbar-badge{margin-left:10px;font-size:11px;font-weight:700;background:#E4F7EE;color:#007A52;border:1px solid #B8EDD3;border-radius:999px;padding:3px 10px;display:flex;align-items:center;gap:5px}
+.app-topbar-badge::before{content:'';width:5px;height:5px;background:#00A86B;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.app-topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+.tb-btn{width:32px;height:32px;border-radius:8px;background:white;border:1.5px solid #E0EDE7;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#5E7A6A;transition:.15s}
+.tb-btn:hover{background:#F5F0E8;color:#374C3F}
+.tb-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.app-content{flex:1;overflow-y:auto;padding:22px}
+.app-content::-webkit-scrollbar{width:5px}
+.app-content::-webkit-scrollbar-thumb{background:#C8DDD5;border-radius:3px}
+
+/* ─── PAGE HEADER ─── */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.page-header h1{font-size:22px;font-weight:800;color:#0A0F0D;letter-spacing:-.4px}
+.page-header p{font-size:13.5px;color:#5E7A6A;margin-top:3px}
+.ph-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
+
+/* ─── CONTEXT BANNER ─── */
+.ctx-banner{background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;padding:11px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.ctx-item{display:flex;flex-direction:column;gap:1px}
+.ctx-key{font-size:9.5px;font-weight:700;color:#007A52;text-transform:uppercase;letter-spacing:.4px}
+.ctx-val{font-size:13px;font-weight:700;color:#1C2E25}
+.ctx-divider{width:1px;height:28px;background:#B8EDD3}
+
+/* ─── CARDS ─── */
+.card{background:white;border:1px solid #E0EDE7;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.card-header{padding:14px 18px;border-bottom:1px solid #E0EDE7;display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:14px;font-weight:800;color:#0A0F0D}
+.card-body{padding:18px}
+
+/* ─── BUTTONS ─── */
+.btn-app{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s;border:none;font-family:'Inter',sans-serif;white-space:nowrap}
+.btn-app svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0}
+.btn-primary-app{background:#004D35;color:white}
+.btn-primary-app:hover{background:#006847;transform:translateY(-1px)}
+.btn-secondary-app{background:white;border:1.5px solid #C8DDD5;color:#374C3F}
+.btn-secondary-app:hover{background:#F5F0E8}
+.btn-sm-app{padding:7px 14px;font-size:12.5px}
+
+/* ─── AI AREA ─── */
+.ai-prompt-area{background:#F5F0E8;border:1px solid #E0EDE7;border-radius:12px;padding:16px;margin-bottom:16px}
+.ai-prompt-label{font-size:11.5px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
+.ai-field{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.ai-input{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;transition:.15s}
+.ai-input:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
+.ai-textarea{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;resize:vertical;min-height:80px;transition:.15s}
+.ai-textarea:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
+.ai-select{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;cursor:pointer}
+
+/* ─── AI RESULT ─── */
+.ai-result-box{background:white;border:1px solid #E0EDE7;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-top:16px}
+.ai-result-header{background:#004D35;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.ai-result-header h3{font-size:14px;font-weight:800;color:white;margin:0}
+.ai-result-header p{font-size:11.5px;color:rgba(255,255,255,.5);margin:0}
+.ai-result-body{padding:20px;font-size:14px;line-height:1.8;color:#374C3F;max-height:480px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
+.ai-result-body::-webkit-scrollbar{width:4px}
+.ai-result-body::-webkit-scrollbar-thumb{background:#C8DDD5;border-radius:2px}
+.ai-result-body h1,.ai-result-body h2,.ai-result-body h3,.ai-result-body h4{color:#0A0F0D;font-weight:800;margin:16px 0 8px;letter-spacing:-.3px}
+.ai-result-body h2{font-size:17px}.ai-result-body h3{font-size:15px}.ai-result-body h4{font-size:14px}
+.ai-result-body strong{color:#0A0F0D;font-weight:700}
+.ai-result-body em{color:#007A52}
+.ai-result-body ul,.ai-result-body ol{padding-left:20px;margin:8px 0}
+.ai-result-body li{margin-bottom:4px}
+.ai-result-body p{margin-bottom:10px}
+
+/* ─── AI LOADING ─── */
+.ai-loading{display:flex;align-items:center;gap:10px;padding:20px;background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;font-size:13.5px;color:#007A52;font-weight:600}
+.ai-loading-dots{display:flex;gap:4px}
+.ai-dot{width:7px;height:7px;background:#00A86B;border-radius:50%;animation:aiDot 1.2s ease infinite}
+.ai-dot:nth-child(2){animation-delay:.2s}
+.ai-dot:nth-child(3){animation-delay:.4s}
+@keyframes aiDot{0%,60%,100%{transform:scale(1);opacity:.4}30%{transform:scale(1.5);opacity:1}}
+
+/* ─── EXPORT BAR ─── */
+.export-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;margin-top:14px;flex-wrap:wrap}
+.export-label{font-size:12px;font-weight:700;color:#007A52;white-space:nowrap}
+.export-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s;border:none;font-family:'Inter',sans-serif}
+.export-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0}
+.eb-save{background:#004D35;color:white}
+.eb-save:hover{background:#006847}
+.eb-word{background:white;color:#2563EB;border:1.5px solid #BFDBFE}
+.eb-word:hover{background:#EFF6FF}
+.eb-pdf{background:white;color:#DC2626;border:1.5px solid #FECACA}
+.eb-pdf:hover{background:#FEF2F2}
+
+/* ─── STAT CARDS ─── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.stat-card{background:white;border:1px solid #E0EDE7;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.stat-val{font-size:26px;font-weight:900;color:#0A0F0D;line-height:1;letter-spacing:-1px}
+.stat-lbl{font-size:10.5px;font-weight:700;color:#8FA89B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.stat-sub{font-size:12px;color:#5E7A6A;margin-top:4px}
+
+/* ─── MODULE TABS ─── */
+.module-tabs{display:flex;gap:2px;background:white;border:1px solid #E0EDE7;border-radius:999px;padding:3px;width:fit-content;margin-bottom:18px;flex-wrap:wrap}
+.m-tab{padding:7px 16px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:#5E7A6A;transition:.15s;font-family:'Inter',sans-serif}
+.m-tab:hover{color:#374C3F}
+.m-tab.active{background:#004D35;color:white}
+.m-tab-panel{display:none}
+.m-tab-panel.active{display:block;animation:appFadeIn .2s ease}
+
+/* ─── DASHBOARD ─── */
+.dashboard-grid{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
+.dash-next-step{background:#004D35;border-radius:14px;padding:20px;display:flex;gap:16px;align-items:center;margin-bottom:16px}
+.dns-num{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:white;flex-shrink:0}
+.dns-text{flex:1}
+.dns-label{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
+.dns-title{font-size:15px;font-weight:800;color:white;margin-bottom:4px}
+.dns-sub{font-size:13px;color:rgba(255,255,255,.6)}
+.dns-btn{padding:9px 18px;background:white;color:#004D35;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0;transition:.15s}
+.dns-btn:hover{background:#F0FAF5}
+
+/* ─── PROGRESS STEPS ─── */
+.progress-steps{display:flex;flex-direction:column;gap:4px}
+.ps-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;transition:.15s;cursor:pointer}
+.ps-item:hover{background:#F5F0E8}
+.ps-item.done{opacity:.7}
+.ps-item.active{background:#F0FAF5}
+.ps-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0;transition:.15s}
+.ps-icon.done-icon{background:#00A86B;color:white}
+.ps-icon.active-icon{background:#004D35;color:white;box-shadow:0 0 0 3px rgba(0,77,53,.15)}
+.ps-icon.todo-icon{background:#E0EDE7;color:#8FA89B}
+.ps-title{font-size:13px;font-weight:600;color:#374C3F}
+.ps-item.active .ps-title{color:#004D35;font-weight:700}
+.ps-connector{width:1px;height:12px;background:#E0EDE7;margin-left:22px}
+
+/* ─── APP PAGES ─── */
+.app-page{display:none}
+.app-page.active{display:block;animation:appFadeIn .2s ease}
+
+/* ─── TOAST ─── */
+.app-toast-wrap{position:fixed;bottom:22px;right:22px;z-index:99999;display:flex;flex-direction:column;gap:8px}
+.app-toast{background:#0A0F0D;color:white;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:9px;animation:appFadeIn .3s ease;max-width:320px;font-family:'Inter',sans-serif}
+.app-toast.ok{background:#004D35}
+.app-toast.err{background:#991B1B}
+
+/* ─── MODULE SELECT GRIDS ─── */
+.module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.module-card{background:white;border:1.5px solid #E0EDE7;border-radius:14px;padding:20px;cursor:pointer;transition:.15s}
+.module-card:hover{border-color:#00A86B;box-shadow:0 4px 16px rgba(0,77,53,.1);transform:translateY(-2px)}
+.module-card.active{border-color:#004D35;background:#F0FAF5}
+.module-card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px}
+.module-card-title{font-size:14px;font-weight:800;color:#0A0F0D;margin-bottom:4px}
+.module-card-sub{font-size:12.5px;color:#5E7A6A;line-height:1.5}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .dashboard-grid{grid-template-columns:1fr}
+  .app-sidebar{width:200px}
+  .onb-grid{grid-template-columns:1fr}
+  .onb-review-grid{grid-template-columns:1fr 1fr}
+  .ctx-banner{gap:10px}
+}
+@media(max-width:600px){
+  .app-sidebar{display:none}
+  .login-card{width:95%;padding:28px}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#" class="nav-logo">
+        <div class="nav-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="nav-logo-name">Soutenance<span> Pro</span> AI</div>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link active" href="#features">Fonctionnalités</a>
+        <a class="nav-link" href="#how">Comment ça marche</a>
+        <a class="nav-link" href="#testimonials">Témoignages</a>
+        <a class="nav-link" href="#pricing">Tarifs</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </div>
+      <div class="nav-right">
+        <button class="btn-nav-login" onclick="openApp()">Se connecter</button>
+        <button class="btn-nav-cta" onclick="openApp()">Essai gratuit →</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <!-- LEFT -->
+      <div>
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          Ton assistant académique · Pour tous les étudiants francophones
+        </div>
+        <h1 class="hero-h serif">
+          Finis ton <em>mémoire</em><br/>
+          <strong>sans stress,</strong><br/>
+          avec Soutenance Pro.
+        </h1>
+        <p class="hero-sub">
+          Soutenance Pro AI génère ton plan, rédige tes chapitres, crée ton PPT et te prépare aux questions du jury. <strong>Du sujet vide à la soutenance réussie</strong>, en quelques heures.
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" style="font-size:16px;padding:15px 32px" onclick="openApp()">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Commencer gratuitement
+          </button>
+          <button class="btn btn-outline" onclick="scrollTo('how')">
+            Voir comment ça marche
+          </button>
+        </div>
+        <div class="hero-stats">
+          <div class="hs-item"><div class="hs-val">+4 200</div><div class="hs-lbl">Étudiants actifs</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-val">38</div><div class="hs-lbl">Universités partenaires</div></div>
+          <div class="hs-div"></div>
+          <div class="hs-item"><div class="hs-val">94%</div><div class="hs-lbl">Score originalité moyen</div></div>
+        </div>
+      </div>
+      <!-- RIGHT: ANIMATED CARD -->
+      <div class="hero-card">
+        <div class="hc-top">
+          <div class="hc-dots">
+            <div class="hc-dot" style="background:#FF5F57"></div>
+            <div class="hc-dot" style="background:#FEBC2E"></div>
+            <div class="hc-dot" style="background:#28C840"></div>
+          </div>
+          <div class="hc-tab-row">
+            <div class="hc-tab">Plan</div>
+            <div class="hc-tab active">Rédaction</div>
+            <div class="hc-tab">PPT</div>
+          </div>
+          <div class="hc-meta">
+            <div class="hc-ai-badge">Assistant · actif</div>
+          </div>
+        </div>
+        <div class="hc-body" id="hc-body">
+          <div style="margin-bottom:8px;font-size:11px;color:rgba(255,255,255,.25);font-family:'JetBrains Mono',monospace">PFE · Chapitre 1 · Section 1.2</div>
+          <span id="hero-typed"></span><span class="typed-cursor" id="hero-cursor"></span>
+        </div>
+        <div class="hc-footer">
+          <div class="hc-prog">
+            <span>Rédaction</span>
+            <div class="hc-prog-bar"><div class="hc-prog-fill" id="hero-prog-fill"></div></div>
+            <span id="hero-prog-pct">0%</span>
+          </div>
+          <div class="hc-word-count" id="hero-word-count">0 mots</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PROOF BAR ══════════════ -->
+<div class="proof-bar">
+  <div class="container">
+    <div class="proof-inner">
+      <div class="proof-item"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>Anti-plagiat certifié</div>
+      <div class="proof-div"></div>
+      <div class="proof-item"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>APA 7e · IEEE · Chicago</div>
+      <div class="proof-div"></div>
+      <div class="proof-item"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>+4 200 étudiants</div>
+      <div class="proof-div"></div>
+      <div class="proof-logo-row">
+        <span>Utilisé dans</span>
+        <div class="proof-uni">Paris-Sorbonne</div>
+        <div class="proof-uni">UCA</div>
+        <div class="proof-uni">UQAM</div>
+        <div class="proof-uni">ULCO</div>
+        <div class="proof-uni">Lyon 3</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ FEATURES ══════════════ -->
+<section class="section-features" id="features">
+  <div class="container">
+    <div class="features-header">
+      <div class="section-eyebrow">Ce que tu peux faire</div>
+      <h2 class="section-title">Tout ce dont tu as besoin,<br/>dans un seul espace.</h2>
+      <p class="section-sub" style="margin:14px auto 0">Six modules qui couvrent chaque étape, du premier brouillon jusqu'à la dernière diapositive de ta soutenance.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#E4F7EE;color:var(--g600)"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></div>
+        <h3>Génération de plan</h3>
+        <p>Saisis ton sujet. Ton assistant structure un plan académique complet en 7 chapitres, avec sous-sections et problématiques adaptées à ton domaine.</p>
+        <span class="feat-tag">📋 PFE · Mémoire · Rapport</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#EFF6FF;color:#2563EB"><svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></div>
+        <h3>Rédaction de chapitres</h3>
+        <p>Génère du contenu académique en style français soutenu — références intégrées, transitions naturelles, niveau master respecté.</p>
+        <span class="feat-tag">✍️ Style académique certifié</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#FEF3C7;color:#D97706"><svg viewBox="0 0 24 24"><path d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg></div>
+        <h3>PPT de soutenance</h3>
+        <p>Génère un diaporama complet avec un design professionnel — couverture, sommaire, slides de contenu, conclusion — prêt à présenter.</p>
+        <span class="feat-tag">📊 Export .pptx</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#F5F3FF;color:#7C3AED"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <h3>Correction & Anti-plagiat</h3>
+        <p>Détecte les fautes, améliore le style et calcule ton score d'originalité. Rapport téléchargeable pour ton encadrant.</p>
+        <span class="feat-tag">🔍 Score originality</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#ECFDF5;color:#059669"><svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+        <h3>Références APA / IEEE</h3>
+        <p>Génère une bibliographie complète et normée. APA 7e, IEEE, Chicago, Harvard — formatée automatiquement à partir de tes sources.</p>
+        <span class="feat-tag">📚 APA · IEEE · Chicago · Harvard</span>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:#FFF7ED;color:#EA580C"><svg viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M9 11l2 2 4-4"/></svg></div>
+        <h3>Préparation soutenance</h3>
+        <p>Discours d'introduction, questions probables du jury avec réponses suggérées, minutage et conseils personnalisés selon ton sujet.</p>
+        <span class="feat-tag">🎤 Préparation jury personnalisée</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ HOW IT WORKS ══════════════ -->
+<section class="section-how" id="how">
+  <div class="container">
+    <div class="how-layout">
+      <div>
+        <div class="section-eyebrow">Comment ça marche</div>
+        <h2 class="section-title">Du sujet vide à la<br/>soutenance réussie.</h2>
+        <p class="section-sub">Cinq étapes. Toutes guidées par ton assistant. Aucune connaissance technique requise.</p>
+        <div class="how-steps" style="margin-top:36px">
+          <div class="how-step active-step" data-step="0" onclick="selectStep(0)">
+            <div class="hs-num">1</div>
+            <div class="hstep-body">
+              <h4>Crée ton projet</h4>
+              <p>Saisis ton type de document (PFE, mémoire, rapport), ton sujet et ton établissement. 30 secondes.</p>
+            </div>
+          </div>
+          <div class="how-step" data-step="1" onclick="selectStep(1)">
+            <div class="hs-num">2</div>
+            <div class="hstep-body">
+              <h4>Génère le plan</h4>
+              <p>Ton assistant analyse ton sujet et structure un plan académique complet. Tu peux le modifier librement.</p>
+            </div>
+          </div>
+          <div class="how-step" data-step="2" onclick="selectStep(2)">
+            <div class="hs-num">3</div>
+            <div class="hstep-body">
+              <h4>Rédige les chapitres</h4>
+              <p>Chapitre par chapitre, ton assistant rédige un contenu académique en français soutenu. Tu révises, tu valides.</p>
+            </div>
+          </div>
+          <div class="how-step" data-step="3" onclick="selectStep(3)">
+            <div class="hs-num">4</div>
+            <div class="hstep-body">
+              <h4>Crée ton PPT</h4>
+              <p>Un diaporama de soutenance complet, généré en un clic à partir de ton document. Télécharge en .pptx.</p>
+            </div>
+          </div>
+          <div class="how-step" data-step="4" onclick="selectStep(4)">
+            <div class="hs-num">5</div>
+            <div class="hstep-body">
+              <h4>Prépare ta soutenance</h4>
+              <p>Discours, questions du jury, minutage. Ton assistant te prépare pour le grand jour — et ça se voit.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="how-visual">
+        <div class="how-preview">
+          <div class="hp-topbar">
+            <div class="hp-dot" style="background:#FF5F57"></div>
+            <div class="hp-dot" style="background:#FEBC2E"></div>
+            <div class="hp-dot" style="background:#28C840"></div>
+            <span class="hp-title">soutenancepro.ma/workspace</span>
+          </div>
+          <div class="hp-content" id="how-preview-content">
+            <div class="hp-step active" id="hp-step-0">
+              <div class="how-step-tag">Étape 1 · Créer le projet</div>
+              <div class="how-step-title">Nouveau projet PFE</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:12px">
+                  <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Type de document</div>
+                  <div style="display:flex;gap:6px">
+                    <div style="padding:5px 12px;background:var(--g900);border:1px solid var(--g500);border-radius:6px;font-size:11px;font-weight:700;color:white">PFE</div>
+                    <div style="padding:5px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:11px;color:rgba(255,255,255,.4)">Mémoire</div>
+                    <div style="padding:5px 12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:6px;font-size:11px;color:rgba(255,255,255,.4)">Rapport</div>
+                  </div>
+                </div>
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:12px">
+                  <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Sujet</div>
+                  <div style="font-size:12px;color:rgba(255,255,255,.8)">Sécurité des systèmes IoT industriels<span style="display:inline-block;width:2px;height:13px;background:var(--g400);margin-left:2px;vertical-align:text-bottom;animation:blink .7s infinite"></span></div>
+                </div>
+                <div style="background:rgba(0,168,107,.12);border:1px solid rgba(0,168,107,.3);border-radius:var(--r-md);padding:10px 12px;font-size:11.5px;color:var(--g300)">⚡ Ton assistant va générer un plan structuré automatiquement</div>
+              </div>
+            </div>
+            <div class="hp-step" id="hp-step-1">
+              <div class="how-step-tag">Étape 2 · Plan généré</div>
+              <div class="how-step-title">Plan — PFE IoT Security</div>
+              <div style="display:flex;flex-direction:column;gap:5px">
+                <div class="plan-row highlight"><span class="plan-row-num">Intro</span><div class="plan-row-text"><strong>Introduction Générale</strong> — contexte, objectifs</div></div>
+                <div class="plan-row"><span class="plan-row-num">Ch.1</span><div class="plan-row-text"><strong>État de l'art</strong> — IoT, protocoles, menaces</div></div>
+                <div class="plan-row"><span class="plan-row-num">Ch.2</span><div class="plan-row-text"><strong>Analyse des besoins</strong> — modélisation STRIDE</div></div>
+                <div class="plan-row"><span class="plan-row-num">Ch.3</span><div class="plan-row-text"><strong>Conception</strong> — architecture Zero-Trust</div></div>
+                <div class="plan-row"><span class="plan-row-num">Ch.4</span><div class="plan-row-text"><strong>Implémentation</strong> — TLS 1.3, MQTT sécurisé</div></div>
+                <div class="plan-row"><span class="plan-row-num">Ch.5</span><div class="plan-row-text"><strong>Résultats</strong> — tests & validation</div></div>
+              </div>
+              <div class="dw-action-bar"><button class="dw-btn dw-btn-p">💾 Sauvegarder</button><button class="dw-btn dw-btn-s">✎ Modifier</button></div>
+            </div>
+            <div class="hp-step" id="hp-step-2">
+              <div class="how-step-tag">Étape 3 · Rédaction normée</div>
+              <div class="how-step-title">Chapitre 1 · Section 1.2</div>
+              <div class="code-block">
+                <span class="g">## 1.2 Menaces et vecteurs d'attaque</span><br/><br/>
+                <span class="w">L'expansion rapide de l'IoT dans les</span><br/>
+                <span class="w">environnements industriels a engendré une</span><br/>
+                <span class="w">surface d'attaque considérablement élargie...</span><br/><br/>
+                <span class="g">### 1.2.1 Taxonomie des menaces</span><br/><br/>
+                <span class="w">Selon Kolias et al. (2017), les botnets</span><br/>
+                <span class="m">Mirai</span> <span class="w">ont compromis + 600 000 dispositifs<span style="display:inline-block;width:2px;height:13px;background:var(--g400);margin-left:2px;vertical-align:text-bottom;animation:blink .7s infinite"></span></span>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:10px;font-size:11px;color:rgba(255,255,255,.3)"><span>✅ 487 mots</span><span>·</span><span>🔍 Originalité 97%</span><span>·</span><span>📖 Niveau Master ✓</span></div>
+            </div>
+            <div class="hp-step" id="hp-step-3">
+              <div class="how-step-tag">Étape 4 · PPT Soutenance</div>
+              <div class="how-step-title">8 slides générées</div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+                <div style="aspect-ratio:16/9;background:var(--g900);border-radius:4px;border:2px solid var(--g500);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:white;text-align:center;padding:4px">Couverture</div>
+                <div style="aspect-ratio:16/9;background:rgba(255,255,255,.06);border-radius:4px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(255,255,255,.5);text-align:center;padding:4px">Sommaire</div>
+                <div style="aspect-ratio:16/9;background:rgba(255,255,255,.06);border-radius:4px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(255,255,255,.5);text-align:center;padding:4px">Contexte</div>
+                <div style="aspect-ratio:16/9;background:rgba(255,255,255,.06);border-radius:4px;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:8px;color:rgba(255,255,255,.5);text-align:center;padding:4px">Solution</div>
+              </div>
+              <div class="dw-action-bar"><button class="dw-btn dw-btn-p">⬇ Export .pptx</button><button class="dw-btn dw-btn-s">⬇ PDF</button></div>
+            </div>
+            <div class="hp-step" id="hp-step-4">
+              <div class="how-step-tag">Étape 5 · Soutenance</div>
+              <div class="how-step-title">Préparation jury</div>
+              <div style="display:flex;flex-direction:column;gap:7px">
+                <div style="background:rgba(0,168,107,.1);border:1px solid rgba(0,168,107,.25);border-radius:var(--r-md);padding:10px 12px;font-size:11.5px;color:var(--g300)">🎤 <strong>Discours généré</strong> — introduction 3 min</div>
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:10px 12px;font-size:11.5px;color:rgba(255,255,255,.6)">❓ Pourquoi TLS 1.3 plutôt que DTLS ?<br/><span style="font-size:10.5px;color:var(--g300);margin-top:4px;display:block">↳ Réponse suggérée disponible</span></div>
+                <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:10px 12px;font-size:11.5px;color:rgba(255,255,255,.6)">⏱ Minutage : 20 min · 5 sections</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DEMO PREVIEW ══════════════ -->
+<section class="section-demo" id="demo">
+  <div class="container">
+    <div class="demo-header">
+      <div class="section-eyebrow" style="justify-content:center">
+        <span>La plateforme</span>
+      </div>
+      <h2 class="section-title" style="text-align:center">Un espace de travail pensé<br/>pour chaque étudiant francophone.</h2>
+      <p class="section-sub" style="text-align:center;margin:12px auto 0">Interface épurée, modules clairs, résultats immédiats. Pas besoin de guide.</p>
+    </div>
+    <div class="demo-window">
+      <div class="dw-bar">
+        <div class="dw-dot" style="background:#FF5F57"></div>
+        <div class="dw-dot" style="background:#FEBC2E"></div>
+        <div class="dw-dot" style="background:#28C840"></div>
+        <div class="dw-url">app.soutenancepro.ma/workspace</div>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <div style="padding:3px 10px;background:rgba(0,168,107,.15);border:1px solid rgba(0,168,107,.25);border-radius:4px;font-size:10.5px;font-weight:700;color:var(--g300);display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;background:var(--g400);border-radius:50%;display:inline-block;animation:pulse 1.5s infinite"></span>Assistant actif</div>
+        </div>
+      </div>
+      <div class="dw-content">
+        <div class="dw-sidebar">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:14px">
+            <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--g500),var(--g300));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white">SP</div>
+            <div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.8)">Soutenance Pro</div>
+          </div>
+          <div class="dw-sb-item active"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
+          <div class="dw-sb-item"><svg viewBox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>Mes Projets</div>
+          <div class="dw-sb-item"><svg viewBox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>Espace travail</div>
+          <div class="dw-sb-item"><svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>Documents</div>
+          <div style="height:1px;background:rgba(255,255,255,.06);margin:12px 0"></div>
+          <div class="dw-sb-item"><svg viewBox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1"/><circle cx="12" cy="12" r="10"/></svg>Abonnement</div>
+        </div>
+        <div class="dw-main">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+            <div><div style="font-size:16px;font-weight:800;color:white">PFE — Sécurité IoT</div><div style="font-size:11.5px;color:rgba(255,255,255,.35);margin-top:2px">Ingénierie Informatique · 2025</div></div>
+            <div style="display:flex;gap:6px">
+              <div class="dw-btn dw-btn-s" style="font-size:11px;padding:5px 10px">⬇ Word</div>
+              <div class="dw-btn dw-btn-p" style="font-size:11px;padding:5px 10px">⬇ PDF</div>
+            </div>
+          </div>
+          <div class="dw-tabs">
+            <div class="dw-tab active">📋 Plan</div>
+            <div class="dw-tab">✍️ Rédaction</div>
+            <div class="dw-tab">📊 PPT</div>
+            <div class="dw-tab">✅ Correction</div>
+          </div>
+          <div>
+            <div class="plan-row highlight"><span class="plan-row-num">Intro</span><div class="plan-row-text"><strong>Introduction Générale</strong></div></div>
+            <div class="plan-row"><span class="plan-row-num">Ch.1</span><div class="plan-row-text"><strong>État de l'art</strong> — L'écosystème IoT, protocoles, attaques</div></div>
+            <div class="plan-row"><span class="plan-row-num">Ch.2</span><div class="plan-row-text"><strong>Analyse des besoins</strong> — Modèle STRIDE, exigences</div></div>
+            <div class="plan-row"><span class="plan-row-num">Ch.3</span><div class="plan-row-text"><strong>Conception</strong> — Architecture Zero-Trust, TLS 1.3</div></div>
+            <div class="plan-row"><span class="plan-row-num">Ch.4</span><div class="plan-row-text"><strong>Implémentation</strong> — Développement, tests</div></div>
+            <div class="plan-row"><span class="plan-row-num">Ch.5</span><div class="plan-row-text"><strong>Résultats</strong> — Validation, benchmarks</div></div>
+            <div class="plan-row"><span class="plan-row-num">Conc.</span><div class="plan-row-text"><strong>Conclusion</strong> — Contributions, perspectives</div></div>
+          </div>
+          <div style="margin-top:14px;padding:10px 12px;background:rgba(0,168,107,.08);border:1px solid rgba(0,168,107,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:11.5px;color:var(--g300)">✓ Plan sauvegardé · 7 chapitres · 27 sous-sections</div>
+            <div style="font-size:11px;color:var(--g400);font-weight:700">Score qualité : 96/100</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:28px">
+      <button class="btn btn-primary" style="font-size:15px" onclick="openApp()">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Essayer gratuitement — 7 jours
+      </button>
+      <p style="font-size:13px;color:var(--faint);margin-top:10px">Aucune carte bancaire requise · Accès immédiat</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TESTIMONIALS ══════════════ -->
+<section class="section-testimonials" id="testimonials">
+  <div class="container">
+    <div class="testi-header">
+      <div class="section-eyebrow" style="justify-content:center">Ils ont réussi leur soutenance</div>
+      <h2 class="section-title" style="text-align:center">Ce qu'en pensent les étudiants.</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">J'avais 3 semaines pour finir mon PFE IoT. Grâce à Soutenance Pro AI, j'ai généré le plan en 5 minutes, rédigé 3 chapitres en 2 jours. Mention Très Bien.</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,var(--g600),var(--g300))">AB</div>
+          <div>
+            <div class="testi-info"><span class="name">Ahmed Benali</span><span class="meta"> · École d'ingénieurs</span></div>
+            <span class="testi-tag">PFE Ingénierie · 2025</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">Le module PPT est incroyable — j'ai généré 12 slides de soutenance professionnelles en 2 minutes. Mon jury a demandé de quel template il venait. Il venait de Soutenance Pro.</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,#D97706,#F59E0B)">SE</div>
+          <div>
+            <div class="testi-info"><span class="name">Sara El Hilali</span><span class="meta"> · Université Cadi Ayyad</span></div>
+            <span class="testi-tag">Mémoire Master · 2025</span>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="testi-text">La préparation aux questions du jury a changé ma soutenance. L'assistant a prévu exactement 5 des 7 questions posées. Je savais exactement quoi répondre. Incroyable.</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,#2563EB,#60A5FA)">YA</div>
+          <div>
+            <div class="testi-info"><span class="name">Youssef Amrani</span><span class="meta"> · Faculté des Sciences</span></div>
+            <span class="testi-tag">PFE Big Data · 2025</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:white;border:1px solid var(--parch3);border-radius:var(--r-xl);padding:16px 28px;font-size:14px;color:var(--ink3)">
+        <div style="display:flex;gap:-6px">
+          <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--g500),var(--g300));border:2px solid white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white">+</div>
+        </div>
+        <strong>+4 200 étudiants</strong> nous font confiance dans <strong>38 universités francophones</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PRICING ══════════════ -->
+<section class="section-pricing" id="pricing">
+  <div class="container">
+    <div class="pricing-header">
+      <div class="section-eyebrow" style="justify-content:center">Tarifs</div>
+      <h2 class="section-title" style="text-align:center">Investis dans ta réussite.</h2>
+      <p class="section-sub" style="text-align:center;margin:12px auto 0">Plans flexibles sans engagement. Annule à tout moment.</p>
+      <div class="billing-toggle-wrap">
+        <span class="billing-label">Mensuel</span>
+        <div class="toggle-switch" id="billing-toggle" onclick="toggleBilling()"><div class="toggle-knob"></div></div>
+        <span class="billing-label">Annuel</span>
+        <span class="save-badge" id="save-badge">🎉 -30%</span>
+      </div>
+    </div>
+    <div class="pricing-grid" style="grid-template-columns:repeat(3,1fr);max-width:960px;margin:0 auto">
+
+      <!-- FREE -->
+      <div class="price-card">
+        <div class="pc-plan">Gratuit</div>
+        <div class="pc-price">0<sup>MAD</sup></div>
+        <div class="pc-per">pour toujours</div>
+        <div class="pc-desc">Pour découvrir la plateforme et explorer toutes les fonctionnalités avant de te lancer.</div>
+        <div class="pc-features">
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">1 projet</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Génération de plan (1x)</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Accès limité à la rédaction</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Export PDF (filigrane)</span></div>
+          <div class="pc-feat muted"><div class="pc-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><span class="pc-feat-text">Rédaction de chapitres</span></div>
+          <div class="pc-feat muted"><div class="pc-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><span class="pc-feat-text">PPT automatique</span></div>
+          <div class="pc-feat muted"><div class="pc-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><span class="pc-feat-text">Anti-plagiat</span></div>
+          <div class="pc-feat muted"><div class="pc-x"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></div><span class="pc-feat-text">Préparation soutenance</span></div>
+        </div>
+        <button class="pc-btn outline" onclick="showToast('Compte gratuit créé — bienvenue 👋')">Créer un compte</button>
+      </div>
+
+      <!-- OFFRE (FEATURED) -->
+      <div class="price-card featured">
+        <div class="pc-ribbon">🔥 Le plus choisi</div>
+        <div class="pc-plan">Offre</div>
+        <div class="pc-price"><sup>MAD</sup><span id="price-offre">199</span></div>
+        <div class="pc-per" id="per-offre">par mois</div>
+        <div class="pc-desc">Tout ce qu'il faut pour finir ton PFE ou mémoire sans stress, du plan à l'export.</div>
+        <div class="pc-features">
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">5 projets simultanés</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Rédaction académique normée</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Plan + Rédaction APA · IEEE · Chicago</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">PPT de soutenance</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Anti-plagiat & correction</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Références APA / IEEE</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Export Word / PDF / PPT</span></div>
+          <div class="pc-feat muted" style="opacity:.55"><div class="pc-x" style="background:rgba(255,255,255,.1)"><svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="rgba(255,255,255,.3)"/></svg></div><span class="pc-feat-text" style="color:rgba(255,255,255,.35)">Préparation jury avancée</span></div>
+        </div>
+        <button class="pc-btn filled" onclick="showToast('Paiement simulé — Bienvenue sur l\'Offre ! 🎓')">Choisir l'Offre</button>
+      </div>
+
+      <!-- MAX -->
+      <div class="price-card">
+        <div class="pc-plan">Max</div>
+        <div class="pc-price"><sup>MAD</sup><span id="price-max">399</span></div>
+        <div class="pc-per" id="per-max">par mois</div>
+        <div class="pc-desc">La version complète, sans aucune limite. Rédaction intégrale, soutenance clé en main.</div>
+        <div class="pc-features">
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Projets illimités</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Mots illimités</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Rédaction intégrale normée (APA, Chicago, IEEE)</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Tout le plan Offre inclus</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Préparation jury avancée</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Discours + questions du jury</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Support prioritaire 24h/7j</span></div>
+          <div class="pc-feat"><div class="pc-check"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div><span class="pc-feat-text">Relecture humaine incluse</span></div>
+        </div>
+        <button class="pc-btn outline" onclick="showToast('Bienvenue sur Max — accès immédiat ! 🚀')">Choisir Max</button>
+      </div>
+
+    </div>
+
+    <!-- Comparison note -->
+    <div style="max-width:960px;margin:28px auto 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+      <p style="font-size:13.5px;color:var(--faint)">🔒 Paiement sécurisé · CB, Virement, Paiement 3x · Remboursement 7 jours garanti</p>
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--g500)" stroke-width="2"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+        Sans engagement · Annule quand tu veux
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FAQ ══════════════ -->
+<section class="section-faq" id="faq">
+  <div class="container">
+    <div class="faq-layout">
+      <div class="faq-left">
+        <div class="section-eyebrow">FAQ</div>
+        <h2>Tu as des<br/>questions ?</h2>
+        <p>On a les réponses. Si ce n'est pas là, écris-nous sur WhatsApp.</p>
+        <button class="btn btn-dark" style="font-size:14px;padding:12px 24px" onclick="showToast('WhatsApp ouvert en démo 📱')">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Contacter le support
+        </button>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Soutenance Pro respecte-t-il les normes académiques ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Oui. Tous les contenus générés respectent les conventions académiques francophones : style soutenu, structure IMRAD pour les thèses scientifiques, normes de citation APA 7e ou IEEE, et terminologie disciplinaire correcte. Le niveau de langue est calibré sur Master / Ingénieur.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Comment fonctionne l'anti-plagiat ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Soutenance Pro AI utilise un moteur de détection de similarité qui compare ton texte avec des millions de sources académiques et web. Tu reçois un score d'originalité et un rapport téléchargeable que tu peux soumettre à ton encadrant. Le contenu généré par l'IA affiche en moyenne 94% d'originalité.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Puis-je modifier le contenu généré ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Absolument. Tout le contenu est éditable directement dans l'interface, comme dans un traitement de texte. L'assistant génère, tu valides et ajustes. Tu restes toujours auteur de ton travail.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Quels formats d'export sont disponibles ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Tu peux exporter ton mémoire en .docx (Word), .pdf, ton PPT en .pptx et ta bibliographie en .pdf ou .bib (BibTeX). Tous les formats sont compatibles avec les exigences de dépôt universitaire.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Mes données et mon sujet sont-ils confidentiels ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Oui. Ton sujet, ton contenu et tes documents appartiennent uniquement à toi. Nous ne partageons jamais tes données avec d'autres utilisateurs ou des tiers. Les données sont hébergées en Europe (RGPD conforme).</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">L'essai gratuit nécessite-t-il une carte bancaire ?<span class="faq-icon">+</span></div>
+          <div class="faq-a">Non. L'essai gratuit de 7 jours est accessible avec un simple email universitaire. Aucune carte bancaire demandée, aucun débit automatique. Tu décides de passer à un plan payant seulement si tu es convaincu.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FINAL CTA ══════════════ -->
+<section class="section-cta">
+  <div class="container">
+    <div class="cta-card">
+      <h2>Commence ton <em>mémoire</em><br/>aujourd'hui.</h2>
+      <p>Rejoins +4 200 étudiants qui ont remplacé le stress du mémoire par la confiance de Soutenance Pro.</p>
+      <div class="cta-btns">
+        <button class="btn" style="background:white;color:var(--g900);font-size:16px;padding:15px 32px;box-shadow:0 4px 20px rgba(0,0,0,.2)" onclick="openApp()">
+          <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Essai gratuit — 7 jours
+        </button>
+        <button class="btn btn-outline" style="font-size:15px;padding:14px 28px" onclick="scrollTo('pricing')">Voir les tarifs</button>
+      </div>
+      <p class="cta-note">Aucune carte bancaire · <span>Accès immédiat</span> · Annule quand tu veux</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <div class="footer-logo-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <span class="footer-logo-name">Soutenance Pro AI</span>
+        </div>
+        <p>La plateforme académique intelligente pour les étudiants francophones. Du plan à la soutenance, on t'accompagne.</p>
+        <div class="footer-socials">
+          <div class="fsocial"><svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg></div>
+          <div class="fsocial"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+          <div class="fsocial"><svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></div>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Produit</h4>
+        <a class="footer-link" onclick="scrollTo('features')">Fonctionnalités</a>
+        <a class="footer-link" onclick="scrollTo('pricing')">Tarifs</a>
+        <a class="footer-link" onclick="scrollTo('how')">Comment ça marche</a>
+        <a class="footer-link" onclick="openApp()">Connexion</a>
+        <a class="footer-link" onclick="openApp()">S'inscrire</a>
+      </div>
+      <div class="footer-col">
+        <h4>Ressources</h4>
+        <a class="footer-link">Guide rédaction PFE</a>
+        <a class="footer-link">Normes APA 7e</a>
+        <a class="footer-link">Templates mémoire</a>
+        <a class="footer-link">Blog académique</a>
+        <a class="footer-link">Centre d'aide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Légal & Contact</h4>
+        <a class="footer-link">Mentions légales</a>
+        <a class="footer-link">Politique de confidentialité</a>
+        <a class="footer-link">CGU</a>
+        <a class="footer-link">contact@soutenancepro.ma</a>
+        <a class="footer-link">WhatsApp support</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Soutenance Pro AI · Tous droits réservés</span>
+      <span>🌍 France · Belgique · Maroc · Québec · Tunisie</span>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast-container" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px"></div>
+
+
+<!-- ════════════════════════════════════════
+     APP OVERLAY — replaces landing on CTA click
+════════════════════════════════════════ -->
+<div id="app-overlay">
+
+  <!-- ── TOAST ── -->
+  <div class="app-toast-wrap" id="app-toasts"></div>
+
+  <!-- ════ SCREEN: LOGIN ════ -->
+  <div id="screen-login" class="app-screen active">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="https://i.imgur.com/placeholder.png" id="login-logo-img" alt="Soutenance Pro" style="display:none"/>
+        <div style="width:48px;height:48px;background:#004D35;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="login-logo-text">Soutenance<span> Pro</span> AI</div>
+      </div>
+      <div class="login-h">Bienvenue 👋</div>
+      <div class="login-sub">Connecte-toi pour accéder à ton espace académique</div>
+      <div class="form-field">
+        <label class="form-label">Email universitaire</label>
+        <input class="form-input" type="email" id="login-email" placeholder="toi@universite.fr" value="ahmed@ensias.ma"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Mot de passe</label>
+        <input class="form-input" type="password" id="login-pass" placeholder="••••••••" value="demo1234"/>
+      </div>
+      <button class="btn-login" onclick="doLogin()">Se connecter →</button>
+      <div class="login-divider">ou continuer avec</div>
+      <button class="btn-google" onclick="doLogin()">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continuer avec Google
+      </button>
+      <div class="login-footer">Pas encore de compte ? <a onclick="doLogin()">Essai gratuit 7 jours</a></div>
+    </div>
+  </div>
+
+  <!-- ════ SCREEN: ONBOARDING ════ -->
+  <div id="screen-onboarding" class="app-screen">
+    <div class="onb-container">
+      <div class="onb-logo">
+        <div style="width:42px;height:42px;background:#004D35;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <div class="onb-logo-text">Soutenance<span> Pro</span> AI</div>
+      </div>
+      <div class="onb-progress-bar"><div class="onb-progress-fill" id="onb-fill" style="width:20%"></div></div>
+      <div class="onb-step-label" id="onb-step-label">Étape 1 sur 5 — Ton identité</div>
+
+      <!-- PANEL 1: Identité -->
+      <div class="onb-card" id="onb-p1">
+        <div class="onb-card-title">👤 Tes informations personnelles</div>
+        <div class="onb-card-sub">Ton assistant utilise ces données dans chaque module — plan, chapitres, PPT, soutenance.</div>
+        <div class="onb-grid">
+          <div class="onb-field full"><label class="onb-label">Nom complet *</label><input class="onb-input" id="f-name" placeholder="Ahmed Benali" value="Ahmed Benali"/></div>
+          <div class="onb-field"><label class="onb-label">Université / École *</label><input class="onb-input" id="f-university" placeholder="ENSIAS, FST..." value="ENSIAS Rabat"/></div>
+          <div class="onb-field"><label class="onb-label">Filière / Spécialité *</label><input class="onb-input" id="f-field" placeholder="Informatique..." value="Ingénierie Informatique"/></div>
+          <div class="onb-field"><label class="onb-label">Niveau académique</label>
+            <select class="onb-select" id="f-level">
+              <option>Licence 3</option><option>Master 1</option><option selected>Master 2</option><option>Ingénieur (5e an.)</option><option>Doctorat</option>
+            </select>
+          </div>
+          <div class="onb-field"><label class="onb-label">Langue de rédaction</label>
+            <select class="onb-select" id="f-language">
+              <option selected>Français</option><option>Anglais</option><option>Arabe</option><option>Bilingue FR/EN</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: Projet -->
+      <div class="onb-card" id="onb-p2" style="display:none">
+        <div class="onb-card-title">📋 Ton projet académique</div>
+        <div class="onb-card-sub">Ces informations permettent à ton assistant de générer un plan et des chapitres directement adaptés à ton sujet.</div>
+        <div class="onb-grid">
+          <div class="onb-field"><label class="onb-label">Type de projet *</label>
+            <select class="onb-select" id="f-type">
+              <option selected>PFE — Projet de Fin d'Études</option><option>Mémoire de Master</option><option>Rapport de Stage</option><option>Thèse de Doctorat</option><option>Mémoire de Licence</option>
+            </select>
+          </div>
+          <div class="onb-field"><label class="onb-label">Encadrant / Directeur</label><input class="onb-input" id="f-supervisor" placeholder="Pr. Mohammed..." value="Pr. Hassan Ouali"/></div>
+          <div class="onb-field full"><label class="onb-label">Sujet / Titre du projet *</label><input class="onb-input" id="f-topic" placeholder="ex : Sécurité des systèmes IoT..." value="Sécurité des systèmes IoT dans les environnements industriels"/></div>
+          <div class="onb-field full"><label class="onb-label">Problématique principale</label><textarea class="onb-textarea" id="f-question" placeholder="Quelle est la question centrale de ta recherche ?">Comment renforcer la sécurité des protocoles IoT industriels face aux cyberattaques émergentes ?</textarea></div>
+          <div class="onb-field"><label class="onb-label">Méthodologie</label>
+            <select class="onb-select" id="f-methodology">
+              <option>Quantitative</option><option>Qualitative</option><option selected>Mixte (Quanti + Quali)</option><option>Expérimentale</option><option>Étude de cas</option>
+            </select>
+          </div>
+          <div class="onb-field"><label class="onb-label">Date limite (soutenance)</label><input class="onb-input" type="date" id="f-deadline" value="2025-06-30"/></div>
+        </div>
+      </div>
+
+      <!-- PANEL 3: Règles académiques -->
+      <div class="onb-card" id="onb-p3" style="display:none">
+        <div class="onb-card-title">📐 Règles académiques</div>
+        <div class="onb-card-sub">Ton assistant applique ces normes dans chaque document généré — formatage, citations, structure.</div>
+        <div class="onb-grid">
+          <div class="onb-field"><label class="onb-label">Style de citation *</label>
+            <select class="onb-select" id="f-citation">
+              <option selected>APA 7e édition</option><option>IEEE</option><option>Chicago</option><option>Harvard</option><option>Vancouver</option>
+            </select>
+          </div>
+          <div class="onb-field"><label class="onb-label">Pages requises</label><input class="onb-input" id="f-pages" placeholder="60–80 pages" value="60–80 pages"/></div>
+          <div class="onb-field"><label class="onb-label">Interligne</label>
+            <select class="onb-select" id="f-spacing">
+              <option>Simple (1.0)</option><option selected>1.5</option><option>Double</option>
+            </select>
+          </div>
+          <div class="onb-field"><label class="onb-label">Police</label>
+            <select class="onb-select" id="f-font">
+              <option selected>Times New Roman 12pt</option><option>Arial 12pt</option><option>Calibri 11pt</option>
+            </select>
+          </div>
+          <div class="onb-field full"><label class="onb-label">Règles spécifiques de ton université</label><textarea class="onb-textarea" id="f-formatting" placeholder="ex : page de garde obligatoire, résumé en 3 langues...">Résumé requis en français, anglais et arabe. Page de garde selon modèle ENSIAS.</textarea></div>
+          <div class="onb-field full"><label class="onb-label">Instructions de l'encadrant</label><textarea class="onb-textarea" id="f-supervisor-instructions" placeholder="Instructions particulières de ton encadrant...">Privilégier sources post-2020. Minimum 30 références. Tableaux comparatifs obligatoires pour les résultats.</textarea></div>
+        </div>
+      </div>
+
+      <!-- PANEL 4: Confirmation -->
+      <div class="onb-card" id="onb-p4" style="display:none">
+        <div class="onb-card-title">✅ Confirme ton profil</div>
+        <div class="onb-card-sub">Vérifie que tout est correct. Tu pourras modifier ces informations depuis les paramètres.</div>
+        <div class="onb-review-grid" id="onb-review-grid">
+          <!-- Filled by JS -->
+        </div>
+        <div style="margin-top:16px;background:#F0FAF5;border:1px solid #B8EDD3;border-radius:10px;padding:12px 14px;font-size:13px;color:#007A52;display:flex;align-items:flex-start;gap:8px">
+          <span>⚡</span>
+          <span>Ton assistant chargera ce profil automatiquement dans chaque module — plan, chapitres, questionnaire, PPT et soutenance.</span>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+        <button class="btn-onb-back" id="onb-back-btn" onclick="onbBack()" style="display:none">← Retour</button>
+        <div></div>
+        <button class="btn-onb-next" id="onb-next-btn" onclick="onbNext()">
+          Suivant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SCREEN: APP ════ -->
+  <div id="screen-app" class="app-screen">
+    <!-- SIDEBAR -->
+    <aside class="app-sidebar">
+      <div class="sb-header">
+        <div class="sb-header-logo">
+          <div style="width:30px;height:30px;background:#004D35;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          </div>
+          <div class="sb-header-logo-text">Soutenance Pro AI</div>
+        </div>
+      </div>
+      <div class="sb-project-chip" id="sb-chip">
+        <div class="sb-project-type" id="sb-type">PFE · Master 2</div>
+        <div class="sb-project-title" id="sb-title">Sécurité des systèmes IoT industriels</div>
+      </div>
+      <nav class="sb-nav">
+        <div class="sb-section">Vue d'ensemble</div>
+        <div class="sb-item active" data-page="dashboard" onclick="goPage('dashboard',this)">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Dashboard
+        </div>
+        <div class="sb-section">Modules</div>
+        <div class="sb-item" data-page="plan" onclick="goPage('plan',this)">
+          <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
+          Génération de plan
+        </div>
+        <div class="sb-item" data-page="redaction" onclick="goPage('redaction',this)">
+          <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+          Rédaction chapitres
+        </div>
+        <div class="sb-item" data-page="references" onclick="goPage('references',this)">
+          <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5"/></svg>
+          Références APA/IEEE
+        </div>
+        <div class="sb-item" data-page="questionnaire" onclick="goPage('questionnaire',this)">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+          Questionnaire
+        </div>
+        <div class="sb-item" data-page="interview" onclick="goPage('interview',this)">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Guide d'entretien
+        </div>
+        <div class="sb-item" data-page="dataanalysis" onclick="goPage('dataanalysis',this)">
+          <svg viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10"/></svg>
+          Analyse de données
+        </div>
+        <div class="sb-item" data-page="correction" onclick="goPage('correction',this)">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Correction / Anti-plagiat
+        </div>
+        <div class="sb-item" data-page="ppt" onclick="goPage('ppt',this)">
+          <svg viewBox="0 0 24 24"><path d="M8 13v-1m4 1v-3m4 3V8M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+          PPT Soutenance
+        </div>
+        <div class="sb-item" data-page="defense" onclick="goPage('defense',this)">
+          <svg viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4"/></svg>
+          Defense Coach
+        </div>
+      </nav>
+      <div class="sb-footer">
+        <div class="sb-user">
+          <div class="sb-avatar" id="sb-avatar">AB</div>
+          <div><div class="sb-user-name" id="sb-user-name">Ahmed Benali</div><div class="sb-user-info" id="sb-user-info">Master 2 · ENSIAS</div></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="app-main">
+      <header class="app-topbar">
+        <div class="app-topbar-title" id="topbar-title">Dashboard</div>
+        <div class="app-topbar-badge" id="topbar-badge" style="display:none">Assistant actif</div>
+        <div class="app-topbar-right">
+          <div class="tb-btn"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+          <div class="tb-btn"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+          <div class="tb-btn" onclick="showProfilePage()"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/></svg></div>
+        </div>
+      </header>
+      <div class="app-content" id="app-content">
+        <!-- Pages injected here by JS -->
+      </div>
+    </main>
+  </div>
+
+</div><!-- /app-overlay -->
+
+
+<script>
+// ── NAVBAR SCROLL ──
+window.addEventListener('scroll',()=>{
+  const nb=document.getElementById('navbar');
+  nb.classList.toggle('scrolled',window.scrollY>40);
+});
+
+// ── SCROLL TO ──
+function scrollTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ── OPEN APP DEMO ──
+function openApp(){ document.getElementById('app-overlay').classList.add('visible'); document.body.style.overflow='hidden'; showScreen('login'); }
+
+// ── TOAST ──
+function showToast(msg,type='success'){
+  const wrap=document.getElementById('toast-container');
+  const t=document.createElement('div');
+  t.style.cssText='background:var(--ink);color:white;padding:12px 18px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;max-width:340px;font-family:Inter,sans-serif';
+  if(type==='success')t.style.background='var(--g800)';
+  t.innerHTML=`<span>✓</span><span>${msg}</span>`;
+  const style=document.createElement('style');
+  style.textContent='@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes toastOut{to{opacity:0;transform:translateY(8px)}}';
+  document.head.appendChild(style);
+  wrap.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut .3s ease forwards';setTimeout(()=>t.remove(),300);},3500);
+}
+
+// ── HOW IT WORKS STEPS ──
+function selectStep(idx){
+  document.querySelectorAll('.how-step').forEach((s,i)=>{s.classList.toggle('active-step',i===idx);});
+  document.querySelectorAll('.hp-step').forEach((p,i)=>{p.classList.toggle('active',i===idx);});
+}
+
+// ── FAQ ──
+function toggleFaq(btn){
+  const item=btn.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f=>f.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+// ── BILLING TOGGLE ──
+let annualBilling=true;
+const PRICES={offre:{monthly:199,annual:139},max:{monthly:399,annual:279}};
+function toggleBilling(){
+  annualBilling=!annualBilling;
+  const t=document.getElementById('billing-toggle');
+  t.classList.toggle('off',!annualBilling);
+  const badge=document.getElementById('save-badge');
+  badge.style.opacity=annualBilling?'1':'0';
+  document.getElementById('price-offre').textContent=annualBilling?PRICES.offre.annual:PRICES.offre.monthly;
+  document.getElementById('price-max').textContent=annualBilling?PRICES.max.annual:PRICES.max.monthly;
+  const suf=annualBilling?' / mois · facturé annuellement':' par mois';
+  document.getElementById('per-offre').textContent=suf;
+  document.getElementById('per-max').textContent=suf;
+}
+
+// ── HERO TYPEWRITER ──
+const HERO_TEXT=`<h2>Chapitre 1 — Cadre Théorique</h2>
+
+<h3>1.2 Menaces et vecteurs d'attaque</h3>
+
+<p>L'expansion rapide de l'IoT dans les environnements industriels a engendré une surface d'attaque considérablement élargie, exposant les infrastructures critiques à des menaces cybernétiques d'une complexité croissante.</p>
+
+<p>Selon Kolias et al. (2017), les botnets <em>Mirai</em> ont compromis plus de 600 000 dispositifs IoT, démontrant la vulnérabilité systémique de ces architectures distribuées.</p>
+
+<h3>1.2.1 Taxonomie des menaces</h3>
+
+<p>La littérature distingue quatre catégories principales : les attaques réseau (MITM, DDoS), les attaques physiques sur les dispositifs, les vulnérabilités firmware, et les injections de données malveillantes...</p>`;
+
+let heroTypedIdx=0;let heroAnimFrame=null;let heroWordCount=0;
+function startHeroTypewriter(){
+  const el=document.getElementById('hero-typed');
+  const fill=document.getElementById('hero-prog-fill');
+  const pct=document.getElementById('hero-prog-pct');
+  const wc=document.getElementById('hero-word-count');
+  if(!el)return;
+  const plain=HERO_TEXT.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+  const wordList=plain.split(' ').filter(Boolean);
+  const total=HERO_TEXT.length;
+  function type(){
+    if(heroTypedIdx>=total){
+      heroTypedIdx=0;
+      setTimeout(()=>{el.innerHTML='';heroWordCount=0;wc.textContent='0 mots';fill.style.width='0%';pct.textContent='0%';type();},2500);
+      return;
+    }
+    const chunk=Math.floor(Math.random()*6)+3;
+    heroTypedIdx=Math.min(heroTypedIdx+chunk,total);
+    el.innerHTML=HERO_TEXT.substring(0,heroTypedIdx);
+    const p=Math.round((heroTypedIdx/total)*100);
+    fill.style.width=p+'%';pct.textContent=p+'%';
+    const words=HERO_TEXT.substring(0,heroTypedIdx).replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length;
+    wc.textContent=words+' mots';
+    const delay=Math.random()*30+15;
+    heroAnimFrame=setTimeout(type,delay);
+  }
+  type();
+}
+
+// ── AUTO-STEP HOW ──
+let stepTimer=null;
+function startAutoSteps(){
+  let s=0;const total=5;
+  stepTimer=setInterval(()=>{s=(s+1)%total;selectStep(s);},3200);
+}
+
+// ── INIT ──
+window.addEventListener('load',()=>{
+  setTimeout(startHeroTypewriter,800);
+  setTimeout(startAutoSteps,1200);
+  // Open first FAQ
+  document.querySelector('.faq-item .faq-q')?.click();
+});
+
+// ── INTERSECTION OBSERVER for fade-in ──
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:.1});
+document.querySelectorAll('.feat-card,.testi-card,.price-card,.how-step').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(20px)';
+  el.style.transition='opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+// ════ APP LOGIC ════
+
+// ════════════════════════════════════════
+//  SOUTENANCE PRO AI — APP LOGIC
+// ════════════════════════════════════════
+
+// ── STUDENT PROFILE (set during onboarding, used in every API call) ──
+let SP = {
+  name: '', university: '', field: '', level: '', language: 'Français',
+  type: '', topic: '', question: '', methodology: '', deadline: '',
+  supervisor: '', citation: 'APA 7e édition', pages: '60–80 pages',
+  spacing: '1.5', font: 'Times New Roman 12pt',
+  formatting: '', supervisorInstructions: '',
+  generatedPlan: '' // stored after plan is generated, used by other modules
+};
+
+// ── CONTEXT STRING — injected into every API prompt ──
+function getContext() {
+  return `
+=== PROFIL ÉTUDIANT ===
+Nom : ${SP.name}
+Université : ${SP.university}
+Filière : ${SP.field}
+Niveau : ${SP.level}
+Langue de rédaction : ${SP.language}
+
+=== PROJET ===
+Type : ${SP.type}
+Sujet : ${SP.topic}
+Problématique : ${SP.question}
+Méthodologie : ${SP.methodology}
+Encadrant : ${SP.supervisor}
+Date limite : ${SP.deadline}
+
+=== RÈGLES ACADÉMIQUES ===
+Style de citation : ${SP.citation}
+Pages requises : ${SP.pages}
+Interligne : ${SP.spacing}
+Police : ${SP.font}
+Règles université : ${SP.formatting}
+Instructions encadrant : ${SP.supervisorInstructions}
+${SP.generatedPlan ? '\n=== PLAN VALIDÉ ===\n' + SP.generatedPlan : ''}
+`.trim();
+}
+
+// ── API CALL ──
+async function callAI(systemPrompt, userMessage, onStream) {
+  showTopbarBadge(true);
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4096,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMessage }]
+      })
+    });
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message || 'Erreur API');
+    const text = data.content?.[0]?.text || '';
+    if (onStream) onStream(text);
+    return text;
+  } catch (err) {
+    appToast('Erreur : ' + err.message, 'err');
+    throw err;
+  } finally {
+    showTopbarBadge(false);
+  }
+}
+
+// ── TOAST ──
+function appToast(msg, type = 'ok') {
+  const wrap = document.getElementById('app-toasts');
+  const t = document.createElement('div');
+  t.className = 'app-toast ' + type;
+  t.innerHTML = `<span>${type === 'ok' ? '✓' : type === 'err' ? '✗' : 'ℹ'}</span><span>${msg}</span>`;
+  wrap.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = '.3s'; setTimeout(() => t.remove(), 300); }, 3500);
+}
+
+// ── TOPBAR BADGE ──
+function showTopbarBadge(show) {
+  const b = document.getElementById('topbar-badge');
+  if (b) b.style.display = show ? 'flex' : 'none';
+}
+
+// ── LANDING → APP ──
+function openApp() {
+  const overlay = document.getElementById('app-overlay');
+  overlay.classList.add('visible');
+  overlay.classList.add('app-fade-in');
+  document.body.style.overflow = 'hidden';
+  showScreen('login');
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById('screen-' + name);
+  if (s) s.classList.add('active');
+}
+
+// ── LOGIN ──
+function doLogin() {
+  showScreen('onboarding');
+  onbStep = 1;
+  updateOnbStep();
+}
+
+// ── ONBOARDING ──
+let onbStep = 1;
+const ONB_TOTAL = 4;
+
+function updateOnbStep() {
+  for (let i = 1; i <= ONB_TOTAL; i++) {
+    const p = document.getElementById('onb-p' + i);
+    if (p) p.style.display = (i === onbStep) ? 'block' : 'none';
+  }
+  const pct = (onbStep / ONB_TOTAL) * 100;
+  document.getElementById('onb-fill').style.width = pct + '%';
+  const labels = ['Ton identité', 'Ton projet', 'Règles académiques', 'Confirmation'];
+  document.getElementById('onb-step-label').textContent = `Étape ${onbStep} sur ${ONB_TOTAL} — ${labels[onbStep-1]}`;
+  document.getElementById('onb-back-btn').style.display = onbStep > 1 ? 'block' : 'none';
+  const nextBtn = document.getElementById('onb-next-btn');
+  nextBtn.innerHTML = onbStep === ONB_TOTAL
+    ? '🚀 Lancer mon espace <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'
+    : 'Suivant <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+}
+
+function onbNext() {
+  if (onbStep === ONB_TOTAL - 1) {
+    // Before showing review, fill the review grid
+    SP.name = document.getElementById('f-name')?.value || '';
+    SP.university = document.getElementById('f-university')?.value || '';
+    SP.field = document.getElementById('f-field')?.value || '';
+    SP.level = document.getElementById('f-level')?.value || '';
+    SP.language = document.getElementById('f-language')?.value || '';
+    SP.type = document.getElementById('f-type')?.value || '';
+    SP.topic = document.getElementById('f-topic')?.value || '';
+    SP.question = document.getElementById('f-question')?.value || '';
+    SP.methodology = document.getElementById('f-methodology')?.value || '';
+    SP.deadline = document.getElementById('f-deadline')?.value || '';
+    SP.supervisor = document.getElementById('f-supervisor')?.value || '';
+    SP.citation = document.getElementById('f-citation')?.value || '';
+    SP.pages = document.getElementById('f-pages')?.value || '';
+    SP.spacing = document.getElementById('f-spacing')?.value || '';
+    SP.font = document.getElementById('f-font')?.value || '';
+    SP.formatting = document.getElementById('f-formatting')?.value || '';
+    SP.supervisorInstructions = document.getElementById('f-supervisor-instructions')?.value || '';
+    fillReview();
+    onbStep++;
+    updateOnbStep();
+  } else if (onbStep === ONB_TOTAL) {
+    launchApp();
+  } else {
+    onbStep++;
+    updateOnbStep();
+  }
+}
+
+function onbBack() {
+  if (onbStep > 1) { onbStep--; updateOnbStep(); }
+}
+
+function fillReview() {
+  const items = [
+    ['Nom', SP.name], ['Université', SP.university], ['Filière', SP.field],
+    ['Niveau', SP.level], ['Type projet', SP.type.split('—')[0].trim()],
+    ['Encadrant', SP.supervisor], ['Citation', SP.citation], ['Langue', SP.language],
+    ['Pages', SP.pages]
+  ];
+  const grid = document.getElementById('onb-review-grid');
+  if (grid) {
+    grid.innerHTML = items.map(([k, v]) =>
+      `<div class="onb-review-item"><div class="onb-review-key">${k}</div><div class="onb-review-val">${v || '—'}</div></div>`
+    ).join('') +
+    `<div class="onb-review-item" style="grid-column:1/-1"><div class="onb-review-key">Sujet</div><div class="onb-review-val">${SP.topic}</div></div>`;
+  }
+}
+
+function launchApp() {
+  showScreen('app');
+  // Update sidebar
+  document.getElementById('sb-avatar').textContent = SP.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  document.getElementById('sb-user-name').textContent = SP.name;
+  document.getElementById('sb-user-info').textContent = SP.level + ' · ' + SP.university;
+  document.getElementById('sb-type').textContent = SP.type.split('—')[0].trim() + ' · ' + SP.level;
+  document.getElementById('sb-title').textContent = SP.topic;
+  goPage('dashboard');
+  appToast('Bienvenue, ' + SP.name.split(' ')[0] + ' ! 🎓');
+}
+
+// ── NAVIGATION ──
+const PAGE_TITLES = {
+  dashboard: 'Dashboard', plan: 'Génération de plan', redaction: 'Rédaction de chapitres',
+  references: 'Références APA/IEEE', questionnaire: 'Questionnaire Builder',
+  interview: "Guide d'entretien", dataanalysis: 'Analyse de données',
+  correction: 'Correction / Anti-plagiat', ppt: 'PPT Soutenance', defense: 'Defense Coach'
+};
+
+function goPage(name, el) {
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else { const ni = document.querySelector(`[data-page="${name}"]`); if (ni) ni.classList.add('active'); }
+  document.getElementById('topbar-title').textContent = PAGE_TITLES[name] || name;
+  renderPage(name);
+}
+
+function showProfilePage() { goPage('dashboard'); }
+
+// ── CTX BANNER HTML ──
+function ctxBannerHTML() {
+  return `<div class="ctx-banner">
+    <div class="ctx-item"><div class="ctx-key">Étudiant</div><div class="ctx-val">${SP.name}</div></div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item"><div class="ctx-key">Type</div><div class="ctx-val">${SP.type.split('—')[0].trim()}</div></div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item"><div class="ctx-key">Citation</div><div class="ctx-val">${SP.citation}</div></div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item"><div class="ctx-key">Encadrant</div><div class="ctx-val">${SP.supervisor || '—'}</div></div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item"><div class="ctx-key">Langue</div><div class="ctx-val">${SP.language}</div></div>
+  </div>`;
+}
+
+// ── EXPORT BAR HTML ──
+function exportBarHTML(isPPT = false) {
+  return `<div class="export-bar">
+    <span class="export-label">Exporter →</span>
+    <button class="export-btn eb-save" onclick="appToast('Sauvegardé dans le projet ✓')">
+      <svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+      Sauvegarder
+    </button>
+    ${isPPT
+      ? `<button class="export-btn eb-word" style="border-color:#D97706;color:#D97706" onclick="appToast('Export PPT ⬇')">
+          <svg viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Export PPT
+        </button>`
+      : `<button class="export-btn eb-word" onclick="appToast('Export Word ⬇')">
+          <svg viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          Word
+        </button>`
+    }
+    <button class="export-btn eb-pdf" onclick="appToast('Export PDF ⬇')">
+      <svg viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+      PDF
+    </button>
+  </div>`;
+}
+
+// ── AI LOADING / RESULT ──
+function aiLoadingHTML(msg) {
+  return `<div class="ai-loading"><div class="ai-loading-dots"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>${msg}</div>`;
+}
+
+function aiResultHTML(title, subtitle, content) {
+  return `<div class="ai-result-box">
+    <div class="ai-result-header">
+      <div><h3>${title}</h3>${subtitle ? `<p>${subtitle}</p>` : ''}</div>
+    </div>
+    <div class="ai-result-body">${formatAIText(content)}</div>
+  </div>`;
+}
+
+function formatAIText(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^#{3} (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^#{2} (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h1>$1</h1>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+}
+
+// ════════════════════
+//  MODULE SYSTEM PROMPTS
+// ════════════════════
+
+const PROMPTS = {
+
+plan: `Tu es le module « Plan Generator » de la plateforme académique Soutenance Pro.
+Ta mission est de générer un plan académique complet, logique, équilibré et directement adapté au projet de l'étudiant.
+Le plan doit être original, cohérent avec la problématique, compatible avec la méthodologie, et proportionné au nombre de pages requis.
+
+RÈGLES ABSOLUES :
+- Ne jamais inventer des données, enquêtes ou entreprises non mentionnées
+- Adapter le plan au type exact de projet et à la discipline
+- Produire des titres précis, naturels et non génériques
+- Présenter : A) Diagnostic synthétique, B) Plan détaillé hiérarchisé, C) Logique du plan, D) Répartition indicative des pages
+
+Voici le profil et les informations du projet :`,
+
+redaction: `Tu es le module « Chapter Writer » de la plateforme académique Soutenance Pro.
+Ta mission est de rédiger du contenu académique original, naturel et correctement sourcé.
+
+RÈGLES ABSOLUES :
+- Rédiger en style académique soutenu adapté au niveau indiqué
+- Croiser les références au lieu de résumer les auteurs un par un
+- Citer toute idée empruntée avec le format ${SP.citation}
+- Ne jamais inventer de références ou de données
+- Utiliser des marqueurs [Référence requise] si aucune source n'est disponible
+- Produire des paragraphes originaux, non interchangeables
+
+Voici le profil et le contexte du projet :`,
+
+references: `Tu es le module « References / Bibliography » de la plateforme académique Soutenance Pro.
+Ta mission est de générer, formater et valider des références bibliographiques.
+
+RÈGLES ABSOLUES :
+- Utiliser exclusivement le style de citation spécifié dans le profil
+- Ne jamais inventer un auteur, une date, un DOI ou une URL
+- Pour chaque source inconnue, indiquer [À vérifier]
+- Produire la liste dans l'ordre alphabétique
+- Vérifier la cohérence de chaque entrée (auteur, année, titre, source)
+
+Voici le profil et le projet :`,
+
+questionnaire: `Tu es le module « Questionnaire Builder » de la plateforme académique Soutenance Pro.
+Ta mission est de concevoir un questionnaire de recherche complet, cohérent et directement lié au projet.
+
+RÈGLES ABSOLUES :
+- Construire les questions à partir des objectifs, variables et hypothèses réels du projet
+- Choisir les types de questions adaptés à l'analyse prévue (Likert, choix multiple, ouvert)
+- Produire : structure Google Forms + codebook + matrice objectifs-variables-items
+- Ne jamais inventer des résultats, des participants ou des validations
+- Adapter la langue au public cible
+
+Voici le profil et le contexte :`,
+
+interview: `Tu es le module « Interview Guide » de la plateforme académique Soutenance Pro.
+Ta mission est de construire un guide d'entretien qualitatif complet et directement utilisable.
+
+RÈGLES ABSOLUES :
+- Créer un guide adapté au type demandé (semi-directif, directif)
+- Relier chaque axe aux objectifs et questions de recherche
+- Inclure : introduction orale, consentement, axes thématiques, relances, clôture
+- Ne jamais inventer des verbatims ou des résultats
+- Formulations naturelles et compréhensibles pour les participants
+
+Voici le profil et le contexte :`,
+
+dataanalysis: `Tu es le module « Data Analysis » de la plateforme académique Soutenance Pro.
+Ta mission est d'analyser des données et de produire une analyse académique rigoureuse.
+
+RÈGLES ABSOLUES :
+- Analyser uniquement les données réelles fournies
+- Choisir les analyses adaptées au type de données et aux objectifs
+- Ne jamais inventer des résultats, des statistiques ou des verbatims
+- Distinguer clairement : description / test / interprétation / limite
+- Présenter les résultats de manière claire et sobre
+
+Voici le profil et le contexte :`,
+
+correction: `Tu es le module « Correction / Anti-plagiat » de la plateforme académique Soutenance Pro.
+Ta mission est d'examiner, corriger et améliorer le texte académique fourni.
+
+RÈGLES ABSOLUES :
+- Conserver le sens, les données et les arguments originaux
+- Reformuler les passages trop proches d'une source par compréhension, pas par synonymes
+- Citer toute idée empruntée — ne jamais supprimer de référence correcte
+- Ne jamais promettre un taux de plagiat précis
+- Produire : corrections linguistiques + audit anti-plagiat + audit références
+- Ne modifier aucun résultat ou donnée
+
+Voici le profil et le texte à corriger :`,
+
+ppt: `Tu es le module « PPT Builder » de la plateforme académique Soutenance Pro.
+Ta mission est de créer le plan détaillé d'une présentation PowerPoint académique professionnelle.
+
+RÈGLES ABSOLUES :
+- Adapter la structure à la méthodologie réelle du projet
+- Produire slide par slide : titre, contenu visible (points courts), visuel recommandé, notes orales, temps conseillé
+- Ne jamais copier des paragraphes entiers du mémoire dans les slides
+- Ne jamais inventer des résultats, chiffres ou sources
+- Chaque slide = 1 message clair, 3-5 éléments, phrases courtes
+- Fournir aussi : répartition du temps total
+
+Voici le profil et le projet :`,
+
+defense: `Tu es le module « Defense Coach » de la plateforme académique Soutenance Pro.
+Ta mission est de préparer l'étudiant à défendre son travail avec clarté, honnêteté et maîtrise.
+
+RÈGLES ABSOLUES :
+- Construire le discours à partir du projet réel, pas de contenu générique
+- Calibrer le discours selon la durée choisie
+- Produire : discours complet + questions probables du jury + réponses modèles + conseils
+- Ne jamais inventer de données, références ou résultats dans les réponses
+- Questions du jury adaptées à la méthodologie, aux résultats et aux limites réelles
+- Préparer aussi des questions difficiles / critiques pour entraîner l'étudiant
+
+Voici le profil et le projet :`
+
+};
+
+// ════════════════════
+//  PAGE RENDERERS
+// ════════════════════
+
+function renderPage(name) {
+  const c = document.getElementById('app-content');
+  switch(name) {
+    case 'dashboard':   c.innerHTML = renderDashboard(); break;
+    case 'plan':        c.innerHTML = renderPlan(); break;
+    case 'redaction':   c.innerHTML = renderRedaction(); break;
+    case 'references':  c.innerHTML = renderReferences(); break;
+    case 'questionnaire': c.innerHTML = renderQuestionnaire(); break;
+    case 'interview':   c.innerHTML = renderInterview(); break;
+    case 'dataanalysis': c.innerHTML = renderDataAnalysis(); break;
+    case 'correction':  c.innerHTML = renderCorrection(); break;
+    case 'ppt':         c.innerHTML = renderPPT(); break;
+    case 'defense':     c.innerHTML = renderDefense(); break;
+    default: c.innerHTML = `<div style="padding:40px;text-align:center;color:#8FA89B">Module en cours de développement</div>`;
+  }
+}
+
+// ── DASHBOARD ──
+function renderDashboard() {
+  return `
+    <div class="page-header">
+      <div><h1>Bonjour, ${SP.name.split(' ')[0]} 👋</h1><p>Ton espace académique — ${SP.type.split('—')[0].trim()} · ${SP.university}</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="dash-next-step">
+      <div class="dns-num">1</div>
+      <div class="dns-text">
+        <div class="dns-label">Prochaine étape recommandée</div>
+        <div class="dns-title">Générer ton plan académique</div>
+        <div class="dns-sub">Ton assistant va structurer ton PFE complet à partir de ton sujet et ta problématique.</div>
+      </div>
+      <button class="dns-btn" onclick="goPage('plan',null);document.querySelector('[data-page=plan]').classList.add('active')">
+        Commencer →
+      </button>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-lbl">Projet</div><div class="stat-val">1</div><div class="stat-sub">${SP.type.split('—')[0].trim()}</div></div>
+      <div class="stat-card"><div class="stat-lbl">Plan</div><div class="stat-val">${SP.generatedPlan ? '✓' : '—'}</div><div class="stat-sub">${SP.generatedPlan ? 'Généré' : 'En attente'}</div></div>
+      <div class="stat-card"><div class="stat-lbl">Citation</div><div class="stat-val" style="font-size:16px">${SP.citation.split(' ')[0]}</div><div class="stat-sub">${SP.citation}</div></div>
+      <div class="stat-card"><div class="stat-lbl">Deadline</div><div class="stat-val" style="font-size:16px;color:#D97706">${SP.deadline || '—'}</div><div class="stat-sub">Soutenance</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3>Parcours de travail</h3></div>
+      <div class="card-body">
+        <div class="progress-steps">
+          ${[
+            ['plan','Génération du plan','todo'],
+            ['redaction','Rédaction des chapitres','todo'],
+            ['references','Références bibliographiques','todo'],
+            ['questionnaire','Questionnaire / Entretiens','todo'],
+            ['dataanalysis','Analyse des données','todo'],
+            ['correction','Correction & Anti-plagiat','todo'],
+            ['ppt','PPT de soutenance','todo'],
+            ['defense','Préparation soutenance','todo']
+          ].map(([page, title, state], i) => `
+            <div class="ps-item ${state === 'active' ? 'active' : ''}" onclick="goPage('${page}')">
+              <div class="ps-icon ${state === 'done' ? 'done-icon' : state === 'active' ? 'active-icon' : 'todo-icon'}">${state === 'done' ? '✓' : i+1}</div>
+              <div class="ps-title">${title}</div>
+            </div>
+            ${i < 7 ? '<div class="ps-connector"></div>' : ''}
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── PLAN ──
+function renderPlan() {
+  return `
+    <div class="page-header">
+      <div><h1>Génération de plan</h1><p>Adapté à ton sujet, ta discipline et ta méthodologie</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Paramètres du plan</div>
+      <div class="ai-field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:5px">Informations complémentaires</label>
+            <textarea class="ai-textarea" id="plan-extra" placeholder="Objectifs spécifiques, hypothèses, éléments particuliers à inclure...">${SP.question}</textarea>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:5px">Nombre de chapitres</label>
+            <select class="ai-select" id="plan-chapters">
+              <option>5 chapitres</option><option selected>7 chapitres</option><option>9 chapitres</option>
+            </select>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.3px;display:block;margin-bottom:5px;margin-top:10px">Structure</label>
+            <select class="ai-select" id="plan-structure">
+              <option selected>Théorique + Empirique</option><option>IMRAD</option><option>Étude de cas</option><option>Projet technique</option><option>Rapport de stage</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runPlan()">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Générer mon plan
+      </button>
+    </div>
+    <div id="plan-result"></div>`;
+}
+
+async function runPlan() {
+  const extra = document.getElementById('plan-extra')?.value || '';
+  const chapters = document.getElementById('plan-chapters')?.value || '7 chapitres';
+  const structure = document.getElementById('plan-structure')?.value || '';
+  document.getElementById('plan-result').innerHTML = aiLoadingHTML('Génération du plan en cours — analyse du sujet et de la méthodologie…');
+  const userMsg = `${getContext()}\n\nParamètres supplémentaires:\n- Nombre de chapitres : ${chapters}\n- Type de structure : ${structure}\n- Éléments complémentaires : ${extra}\n\nGénère un plan académique complet selon les instructions du module Plan Generator.`;
+  try {
+    const result = await callAI(PROMPTS.plan, userMsg);
+    SP.generatedPlan = result; // Store for other modules
+    document.getElementById('plan-result').innerHTML =
+      aiResultHTML('Plan généré', `${SP.type.split('—')[0].trim()} · ${SP.citation} · ${SP.university}`, result) +
+      exportBarHTML();
+    appToast('Plan généré avec succès ✓');
+  } catch(e) {
+    document.getElementById('plan-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── REDACTION ──
+function renderRedaction() {
+  return `
+    <div class="page-header">
+      <div><h1>Rédaction de chapitres</h1><p>Style académique soutenu · ${SP.citation} · Niveau ${SP.level}</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Paramètres de rédaction</div>
+      <div class="ai-field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Chapitre à rédiger</label>
+            <input class="ai-input" id="red-chapter" placeholder="ex : Chapitre 1 — État de l'art" value="${SP.generatedPlan ? 'Chapitre 1' : ''}"/>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Section spécifique</label>
+            <input class="ai-input" id="red-section" placeholder="ex : 1.2 Menaces IoT industrielles"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Références disponibles</label>
+            <textarea class="ai-textarea" id="red-refs" placeholder="Colle ici les références disponibles (auteur, année, titre)..." style="height:84px"></textarea>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Consignes spécifiques</label>
+          <textarea class="ai-textarea" id="red-instructions" placeholder="Angles à développer, concepts à inclure, longueur souhaitée..."></textarea>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runRedaction()">
+        <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/></svg>
+        Rédiger cette section
+      </button>
+    </div>
+    <div id="red-result"></div>`;
+}
+
+async function runRedaction() {
+  const chapter = document.getElementById('red-chapter')?.value || '';
+  const section = document.getElementById('red-section')?.value || '';
+  const refs = document.getElementById('red-refs')?.value || '';
+  const instructions = document.getElementById('red-instructions')?.value || '';
+  document.getElementById('red-result').innerHTML = aiLoadingHTML('Rédaction en cours — style académique français soutenu…');
+  const userMsg = `${getContext()}\n\nDemande de rédaction:\n- Chapitre : ${chapter}\n- Section : ${section}\n- Références disponibles : ${refs || 'Non fournies — utiliser des marqueurs [Référence requise]'}\n- Instructions : ${instructions}\n\nRédige cette section selon les règles du module Chapter Writer.`;
+  try {
+    const result = await callAI(PROMPTS.redaction, userMsg);
+    document.getElementById('red-result').innerHTML =
+      aiResultHTML(`Rédaction — ${section || chapter}`, `${SP.citation} · Niveau ${SP.level} · Style académique`, result) +
+      exportBarHTML();
+    appToast('Section rédigée ✓');
+  } catch(e) {
+    document.getElementById('red-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── REFERENCES ──
+function renderReferences() {
+  return `
+    <div class="page-header">
+      <div><h1>Références bibliographiques</h1><p>Style : ${SP.citation}</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Sources à formater</div>
+      <div class="ai-field">
+        <textarea class="ai-textarea" id="refs-input" style="min-height:120px" placeholder="Colle ici tes sources brutes :
+- Auteur, titre, année, revue, DOI...
+- URL de sites consultés
+- Noms d'auteurs + sujets à rechercher
+- Tout format accepté — je formaterai en ${SP.citation}">Kolias, C., Kambourakis, G., Stavrou, A., & Voas, J. (2017). DDoS in the IoT.
+Atzori, L., Iera, A., Morabito, G. (2010). The internet of things: A survey.
+Roman, R., Zhou, J., Lopez, J. (2013). On the features and challenges of security in distributed IoT.</textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div style="flex:1">
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Thème / Domaine de recherche</label>
+            <input class="ai-input" id="refs-theme" placeholder="ex : Sécurité IoT industrielle, protocoles MQTT" value="${SP.topic}"/>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Nombre de références</label>
+            <select class="ai-select" id="refs-count">
+              <option>10 références</option><option>15 références</option><option selected>20 références</option><option>30 références</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runReferences()">
+        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13"/></svg>
+        Formater la bibliographie
+      </button>
+    </div>
+    <div id="refs-result"></div>`;
+}
+
+async function runReferences() {
+  const sources = document.getElementById('refs-input')?.value || '';
+  const theme = document.getElementById('refs-theme')?.value || '';
+  const count = document.getElementById('refs-count')?.value || '';
+  document.getElementById('refs-result').innerHTML = aiLoadingHTML(`Formatage en ${SP.citation}…`);
+  const userMsg = `${getContext()}\n\nSources à formater : ${sources}\nThème pour suggestions : ${theme}\nNombre cible : ${count}\n\nFormate ces références en ${SP.citation}. Pour chaque source incomplète, indique [À vérifier]. Génère aussi des suggestions de références académiques supplémentaires sur le thème.`;
+  try {
+    const result = await callAI(PROMPTS.references, userMsg);
+    document.getElementById('refs-result').innerHTML =
+      aiResultHTML('Bibliographie formatée', `${SP.citation} · ${SP.topic}`, result) +
+      exportBarHTML();
+    appToast('Bibliographie générée ✓');
+  } catch(e) {
+    document.getElementById('refs-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── QUESTIONNAIRE ──
+function renderQuestionnaire() {
+  return `
+    <div class="page-header">
+      <div><h1>Questionnaire Builder</h1><p>Adapté à ta méthodologie : ${SP.methodology}</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Paramètres du questionnaire</div>
+      <div class="ai-field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Type de questionnaire</label>
+            <select class="ai-select" id="q-type">
+              <option selected>Likert 1–5 + questions ouvertes</option><option>Entièrement Likert</option><option>Questions ouvertes uniquement</option><option>Mixte adapté</option>
+            </select>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Nombre de questions</label>
+            <select class="ai-select" id="q-count">
+              <option>10 questions</option><option>15 questions</option><option selected>20 questions</option><option>25 questions</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Population cible</label>
+            <input class="ai-input" id="q-population" placeholder="ex : Ingénieurs IT, responsables sécurité..." value="Ingénieurs et techniciens travaillant avec des systèmes IoT"/>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Variables à mesurer</label>
+            <input class="ai-input" id="q-variables" placeholder="ex : satisfaction, perception du risque, adoption..."/>
+          </div>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runQuestionnaire()">
+        <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        Générer le questionnaire
+      </button>
+    </div>
+    <div id="q-result"></div>`;
+}
+
+async function runQuestionnaire() {
+  const type = document.getElementById('q-type')?.value || '';
+  const count = document.getElementById('q-count')?.value || '';
+  const population = document.getElementById('q-population')?.value || '';
+  const variables = document.getElementById('q-variables')?.value || '';
+  document.getElementById('q-result').innerHTML = aiLoadingHTML('Génération du questionnaire en cours…');
+  const userMsg = `${getContext()}\n\nParamètres:\n- Type : ${type}\n- Questions : ${count}\n- Population : ${population}\n- Variables : ${variables}\n\nGénère un questionnaire complet avec structure Google Forms, codebook et matrice méthodologique.`;
+  try {
+    const result = await callAI(PROMPTS.questionnaire, userMsg);
+    document.getElementById('q-result').innerHTML =
+      aiResultHTML('Questionnaire généré', `${count} · ${population}`, result) +
+      exportBarHTML();
+    appToast('Questionnaire généré ✓');
+  } catch(e) {
+    document.getElementById('q-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── INTERVIEW ──
+function renderInterview() {
+  return `
+    <div class="page-header">
+      <div><h1>Guide d'entretien</h1><p>Qualitatif · Adapté à ton terrain</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Paramètres du guide</div>
+      <div class="ai-field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Type d'entretien</label>
+            <select class="ai-select" id="int-type">
+              <option selected>Semi-directif</option><option>Directif</option><option>Non-directif</option><option>Focus group</option>
+            </select>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Durée cible</label>
+            <select class="ai-select" id="int-duration">
+              <option>20–30 minutes</option><option selected>45–60 minutes</option><option>60–90 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Profil des interviewés</label>
+            <input class="ai-input" id="int-profile" placeholder="ex : Responsables sécurité IT..." value="Responsables sécurité et ingénieurs IoT en environnement industriel"/>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Axes à explorer</label>
+            <input class="ai-input" id="int-axes" placeholder="ex : pratiques, risques, recommandations..."/>
+          </div>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runInterview()">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Générer le guide
+      </button>
+    </div>
+    <div id="int-result"></div>`;
+}
+
+async function runInterview() {
+  const type = document.getElementById('int-type')?.value || '';
+  const duration = document.getElementById('int-duration')?.value || '';
+  const profile = document.getElementById('int-profile')?.value || '';
+  const axes = document.getElementById('int-axes')?.value || '';
+  document.getElementById('int-result').innerHTML = aiLoadingHTML("Génération du guide d'entretien…");
+  const userMsg = `${getContext()}\n\nParamètres:\n- Type : ${type}\n- Durée : ${duration}\n- Profil : ${profile}\n- Axes : ${axes}\n\nGénère un guide complet avec introduction orale, axes thématiques, relances, consentement et fiche participant.`;
+  try {
+    const result = await callAI(PROMPTS.interview, userMsg);
+    document.getElementById('int-result').innerHTML =
+      aiResultHTML("Guide d'entretien " + type, `${duration} · ${profile}`, result) +
+      exportBarHTML();
+    appToast("Guide d'entretien généré ✓");
+  } catch(e) {
+    document.getElementById('int-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── DATA ANALYSIS ──
+function renderDataAnalysis() {
+  return `
+    <div class="page-header">
+      <div><h1>Analyse de données</h1><p>Quantitative · Qualitative · Mixte</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="module-tabs">
+      <div class="m-tab active" onclick="switchTab(this,'da-quant','da-tabs')">📊 Quantitative</div>
+      <div class="m-tab" onclick="switchTab(this,'da-qual','da-tabs')">💬 Qualitative</div>
+    </div>
+    <div id="da-tabs">
+      <div class="m-tab-panel active" id="da-quant">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Analyse quantitative</div>
+          <div class="ai-field">
+            <textarea class="ai-textarea" id="da-quant-data" style="min-height:100px" placeholder="Décris tes données ou colle un résumé de ton fichier Excel/CSV :
+- Nombre de répondants
+- Variables principales
+- Résultats bruts (moyennes, fréquences...)
+- Hypothèses à tester">150 répondants, questionnaire Likert 1-5
+Variable indépendante : Qualité de service IoT
+Variable dépendante : Satisfaction opérationnelle
+H1 : La qualité de service IoT influence positivement la satisfaction</textarea>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Logiciel utilisé</label>
+                <select class="ai-select" id="da-software">
+                  <option selected>SPSS</option><option>Jamovi</option><option>Stata</option><option>Excel</option><option>R</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Type d'analyse</label>
+                <select class="ai-select" id="da-analysis-type">
+                  <option selected>Descriptive + Tests d'hypothèses</option><option>Analyse factorielle</option><option>Régression</option><option>Corrélations</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runQuantAnalysis()">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Analyser les données
+          </button>
+        </div>
+        <div id="da-quant-result"></div>
+      </div>
+      <div class="m-tab-panel" id="da-qual">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Analyse qualitative</div>
+          <div class="ai-field">
+            <textarea class="ai-textarea" id="da-qual-data" style="min-height:120px" placeholder="Colle ici tes transcriptions d'entretiens ou résumés..."></textarea>
+            <div>
+              <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Méthode d'analyse</label>
+              <select class="ai-select" id="da-qual-method">
+                <option selected>Analyse thématique</option><option>Analyse de contenu</option><option>Analyse catégorielle</option><option>Analyse comparative</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runQualAnalysis()">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Analyser les données qualitatives
+          </button>
+        </div>
+        <div id="da-qual-result"></div>
+      </div>
+    </div>`;
+}
+
+async function runQuantAnalysis() {
+  const data = document.getElementById('da-quant-data')?.value || '';
+  const software = document.getElementById('da-software')?.value || '';
+  const type = document.getElementById('da-analysis-type')?.value || '';
+  document.getElementById('da-quant-result').innerHTML = aiLoadingHTML('Analyse statistique en cours…');
+  const userMsg = `${getContext()}\n\nDonnées : ${data}\nLogiciel : ${software}\nType d'analyse : ${type}\n\nRéalise une analyse quantitative complète avec statistiques descriptives, tests d'hypothèses et interprétation académique. Fournis aussi les commandes ${software} à utiliser.`;
+  try {
+    const result = await callAI(PROMPTS.dataanalysis, userMsg);
+    document.getElementById('da-quant-result').innerHTML =
+      aiResultHTML('Analyse quantitative', `${software} · ${SP.methodology}`, result) +
+      exportBarHTML();
+    appToast('Analyse complète ✓');
+  } catch(e) {
+    document.getElementById('da-quant-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+async function runQualAnalysis() {
+  const data = document.getElementById('da-qual-data')?.value || '';
+  const method = document.getElementById('da-qual-method')?.value || '';
+  document.getElementById('da-qual-result').innerHTML = aiLoadingHTML('Codage thématique en cours…');
+  const userMsg = `${getContext()}\n\nTranscriptions : ${data}\nMéthode : ${method}\n\nRéalise une analyse qualitative avec codage thématique, identification des thèmes principaux, sélection de verbatims représentatifs et interprétation.`;
+  try {
+    const result = await callAI(PROMPTS.dataanalysis, userMsg);
+    document.getElementById('da-qual-result').innerHTML =
+      aiResultHTML('Analyse qualitative', `${method} · ${SP.methodology}`, result) +
+      exportBarHTML();
+    appToast('Analyse qualitative complète ✓');
+  } catch(e) {
+    document.getElementById('da-qual-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── CORRECTION ──
+function renderCorrection() {
+  return `
+    <div class="page-header">
+      <div><h1>Correction / Anti-plagiat</h1><p>Correction académique + contrôle d'originalité</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="module-tabs">
+      <div class="m-tab active" onclick="switchTab(this,'cor-ling','cor-tabs')">✏️ Correction linguistique</div>
+      <div class="m-tab" onclick="switchTab(this,'cor-plag','cor-tabs')">🔍 Anti-plagiat</div>
+      <div class="m-tab" onclick="switchTab(this,'cor-enc','cor-tabs')">📋 Remarques encadrant</div>
+    </div>
+    <div id="cor-tabs">
+      <div class="m-tab-panel active" id="cor-ling">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Texte à corriger</div>
+          <div class="ai-field">
+            <textarea class="ai-textarea" id="cor-text" style="min-height:140px" placeholder="Colle ici ton texte à corriger..."></textarea>
+            <select class="ai-select" id="cor-mode">
+              <option selected>Correction académique complète</option><option>Correction linguistique simple</option><option>Amélioration du style</option>
+            </select>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runCorrection('ling')">
+            <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/></svg>
+            Corriger le texte
+          </button>
+        </div>
+        <div id="cor-ling-result"></div>
+      </div>
+      <div class="m-tab-panel" id="cor-plag">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Contrôle de similarité interne</div>
+          <div class="ai-field">
+            <textarea class="ai-textarea" id="cor-plag-text" style="min-height:140px" placeholder="Colle ici le texte à analyser pour les risques de similarité..."></textarea>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runCorrection('plag')">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            Analyser les risques de similarité
+          </button>
+        </div>
+        <div id="cor-plag-result"></div>
+      </div>
+      <div class="m-tab-panel" id="cor-enc">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Remarques de l'encadrant</div>
+          <div class="ai-field">
+            <textarea class="ai-textarea" id="cor-remarks" style="min-height:100px" placeholder="Colle ici les remarques de ton encadrant..."></textarea>
+            <textarea class="ai-textarea" id="cor-original" style="min-height:100px" placeholder="Colle ici le texte original concerné..."></textarea>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runCorrection('enc')">
+            <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Appliquer les remarques
+          </button>
+        </div>
+        <div id="cor-enc-result"></div>
+      </div>
+    </div>`;
+}
+
+async function runCorrection(mode) {
+  const textMap = { ling: 'cor-text', plag: 'cor-plag-text', enc: 'cor-original' };
+  const text = document.getElementById(textMap[mode])?.value || '';
+  const remarks = mode === 'enc' ? (document.getElementById('cor-remarks')?.value || '') : '';
+  const corrMode = document.getElementById('cor-mode')?.value || '';
+  const resultId = `cor-${mode}-result`;
+  document.getElementById(resultId).innerHTML = aiLoadingHTML(
+    mode === 'ling' ? 'Correction en cours…' : mode === 'plag' ? 'Analyse de similarité…' : 'Application des remarques…'
+  );
+  const userMsg = `${getContext()}\n\nMode : ${mode === 'ling' ? corrMode : mode === 'plag' ? 'Contrôle anti-plagiat préventif' : 'Correction selon remarques encadrant'}\n${mode === 'enc' ? `Remarques : ${remarks}\n` : ''}Texte : ${text}\n\nApplique le module correspondant selon les règles du module Correction/Anti-plagiat.`;
+  try {
+    const result = await callAI(PROMPTS.correction, userMsg);
+    document.getElementById(resultId).innerHTML =
+      aiResultHTML(
+        mode === 'ling' ? 'Texte corrigé' : mode === 'plag' ? 'Rapport de similarité interne' : 'Corrections appliquées',
+        'Rapport détaillé · ' + SP.citation,
+        result
+      ) + exportBarHTML();
+    appToast(mode === 'plag' ? 'Analyse terminée ✓' : 'Corrections appliquées ✓');
+  } catch(e) {
+    document.getElementById(resultId).innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── PPT ──
+function renderPPT() {
+  return `
+    <div class="page-header">
+      <div><h1>PPT Soutenance</h1><p>Présentation académique professionnelle</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="ai-prompt-area">
+      <div class="ai-prompt-label">Paramètres de la présentation</div>
+      <div class="ai-field">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Nombre de slides</label>
+            <select class="ai-select" id="ppt-slides">
+              <option>10–12 slides (court)</option><option selected>15–18 slides (standard)</option><option>20–25 slides (complet)</option><option>30+ slides (détaillé)</option>
+            </select>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Durée de soutenance</label>
+            <select class="ai-select" id="ppt-duration">
+              <option>10 minutes</option><option>15 minutes</option><option selected>20 minutes</option><option>25 minutes</option><option>30 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Style de design</label>
+            <select class="ai-select" id="ppt-style">
+              <option selected>Académique minimaliste</option><option>Professionnel moderne</option><option>Scientifique analytique</option><option>Technique digital</option>
+            </select>
+            <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px;margin-top:10px">Résultats principaux</label>
+            <textarea class="ai-textarea" id="ppt-results" style="height:60px" placeholder="Résultats clés à mettre en avant..."></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn-app btn-primary-app" onclick="runPPT()">
+        <svg viewBox="0 0 24 24"><path d="M8 13v-1m4 1v-3m4 3V8M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+        Générer le plan de présentation
+      </button>
+    </div>
+    <div id="ppt-result"></div>`;
+}
+
+async function runPPT() {
+  const slides = document.getElementById('ppt-slides')?.value || '';
+  const duration = document.getElementById('ppt-duration')?.value || '';
+  const style = document.getElementById('ppt-style')?.value || '';
+  const results = document.getElementById('ppt-results')?.value || '';
+  document.getElementById('ppt-result').innerHTML = aiLoadingHTML('Génération du plan de présentation…');
+  const userMsg = `${getContext()}\n\nParamètres PPT:\n- Slides : ${slides}\n- Durée : ${duration}\n- Style : ${style}\n- Résultats à mettre en avant : ${results}\n\nGénère le plan détaillé slide par slide avec : titre, contenu visible (points courts), visuel recommandé, notes orales et temps conseillé. Inclus aussi la répartition du temps total.`;
+  try {
+    const result = await callAI(PROMPTS.ppt, userMsg);
+    document.getElementById('ppt-result').innerHTML =
+      aiResultHTML('Plan de présentation', `${slides} · ${duration} · ${style}`, result) +
+      exportBarHTML(true);
+    appToast('Plan PPT généré ✓');
+  } catch(e) {
+    document.getElementById('ppt-result').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── DEFENSE COACH ──
+function renderDefense() {
+  return `
+    <div class="page-header">
+      <div><h1>Defense Coach</h1><p>Discours · Questions jury · Simulation</p></div>
+    </div>
+    ${ctxBannerHTML()}
+    <div class="module-tabs">
+      <div class="m-tab active" onclick="switchTab(this,'def-disc','def-tabs')">🎤 Discours</div>
+      <div class="m-tab" onclick="switchTab(this,'def-jury','def-tabs')">❓ Questions jury</div>
+      <div class="m-tab" onclick="switchTab(this,'def-sim','def-tabs')">🎯 Simulation</div>
+    </div>
+    <div id="def-tabs">
+      <div class="m-tab-panel active" id="def-disc">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Paramètres du discours</div>
+          <div class="ai-field">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Durée de soutenance</label>
+                <select class="ai-select" id="def-duration">
+                  <option>10 minutes</option><option>15 minutes</option><option selected>20 minutes</option><option>25 minutes</option><option>30 minutes</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Style oral</label>
+                <select class="ai-select" id="def-style">
+                  <option selected>Académique formel</option><option>Naturel et professionnel</option><option>Simple et clair</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Résultats principaux à présenter</label>
+              <textarea class="ai-textarea" id="def-results" placeholder="Quels sont tes résultats clés ?"></textarea>
+            </div>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runDefense('disc')">
+            <svg viewBox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4"/></svg>
+            Générer mon discours
+          </button>
+        </div>
+        <div id="def-disc-result"></div>
+      </div>
+      <div class="m-tab-panel" id="def-jury">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Questions du jury</div>
+          <div class="ai-field">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Niveau de difficulté</label>
+                <select class="ai-select" id="def-difficulty">
+                  <option>Facile (entraînement)</option><option selected>Standard (réaliste)</option><option>Difficile (critique)</option><option>Mixte (complet)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Nombre de questions</label>
+                <select class="ai-select" id="def-qcount">
+                  <option>10 questions</option><option selected>15 questions</option><option>20 questions</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button class="btn-app btn-primary-app" onclick="runDefense('jury')">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+            Générer les questions + réponses
+          </button>
+        </div>
+        <div id="def-jury-result"></div>
+      </div>
+      <div class="m-tab-panel" id="def-sim">
+        <div class="ai-prompt-area">
+          <div class="ai-prompt-label">Simulation de soutenance</div>
+          <div class="ai-field">
+            <div style="background:#F0FAF5;border:1px solid #B8EDD3;border-radius:10px;padding:14px;font-size:13.5px;color:#374C3F;line-height:1.7">
+              <strong>Mode simulation :</strong> L'assistant va jouer le rôle du jury et te poser des questions. Réponds dans la zone de texte, et tu recevras une évaluation + réponse modèle.
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:700;color:#374C3F;display:block;margin-bottom:5px">Démarre la simulation</label>
+              <button class="btn-app btn-primary-app" onclick="startSimulation()">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Commencer la simulation
+              </button>
+            </div>
+          </div>
+          <div id="def-sim-area"></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function runDefense(mode) {
+  const duration = document.getElementById('def-duration')?.value || '';
+  const style = document.getElementById('def-style')?.value || '';
+  const results = document.getElementById('def-results')?.value || '';
+  const difficulty = document.getElementById('def-difficulty')?.value || '';
+  const qcount = document.getElementById('def-qcount')?.value || '';
+  const resultId = mode === 'disc' ? 'def-disc-result' : 'def-jury-result';
+  document.getElementById(resultId).innerHTML = aiLoadingHTML(
+    mode === 'disc' ? 'Génération du discours…' : 'Génération des questions du jury…'
+  );
+  const userMsg = mode === 'disc'
+    ? `${getContext()}\n\nDurée : ${duration}\nStyle : ${style}\nRésultats : ${results}\n\nGénère un discours complet slide par slide avec notes mémoire, répartition du temps et conseils de présentation.`
+    : `${getContext()}\n\nDifficulté : ${difficulty}\nNombre : ${qcount}\n\nGénère les questions probables du jury avec réponses modèles courtes et développées. Inclus des questions sur la méthodologie, les résultats, les limites et les recommandations.`;
+  try {
+    const result = await callAI(PROMPTS.defense, userMsg);
+    document.getElementById(resultId).innerHTML =
+      aiResultHTML(
+        mode === 'disc' ? 'Discours de soutenance' : 'Questions jury + Réponses modèles',
+        mode === 'disc' ? `${duration} · ${style}` : `${qcount} · Niveau ${difficulty}`,
+        result
+      ) + exportBarHTML();
+    appToast(mode === 'disc' ? 'Discours généré ✓' : 'Questions générées ✓');
+  } catch(e) {
+    document.getElementById(resultId).innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+async function startSimulation() {
+  const area = document.getElementById('def-sim-area');
+  area.innerHTML = aiLoadingHTML('Le jury prépare sa première question…');
+  const userMsg = `${getContext()}\n\nDémarre une simulation de soutenance. Pose une première question de jury (niveau standard) basée sur le projet réel. Après la question, attends la réponse de l'étudiant.`;
+  try {
+    const result = await callAI(PROMPTS.defense, userMsg);
+    area.innerHTML = `
+      ${aiResultHTML('Jury — Question 1', 'Simulation interactive', result)}
+      <div class="ai-prompt-area" style="margin-top:14px">
+        <label style="font-size:13px;font-weight:700;color:#374C3F;display:block;margin-bottom:8px">Ta réponse :</label>
+        <textarea class="ai-textarea" id="sim-answer" style="min-height:100px" placeholder="Réponds à la question du jury..."></textarea>
+        <button class="btn-app btn-primary-app" style="margin-top:10px" onclick="evaluateAnswer('${result.replace(/'/g,"\\'")}')">
+          <svg viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Soumettre ma réponse
+        </button>
+      </div>
+      <div id="sim-eval"></div>`;
+  } catch(e) {
+    area.innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+async function evaluateAnswer(question) {
+  const answer = document.getElementById('sim-answer')?.value || '';
+  document.getElementById('sim-eval').innerHTML = aiLoadingHTML("Le jury évalue ta réponse…");
+  const userMsg = `${getContext()}\n\nQuestion du jury : ${question}\n\nRéponse de l'étudiant : ${answer}\n\nÉvalue la réponse sur 20 selon les critères : compréhension, exactitude, justification, clarté, gestion des limites. Donne le score, les points forts, ce qui manque, et une réponse modèle améliorée. Puis pose une nouvelle question.`;
+  try {
+    const result = await callAI(PROMPTS.defense, userMsg);
+    document.getElementById('sim-eval').innerHTML =
+      aiResultHTML("Évaluation du jury", "Score + Réponse modèle + Prochaine question", result) +
+      exportBarHTML();
+  } catch(e) {
+    document.getElementById('sim-eval').innerHTML = `<div style="color:red;padding:16px">Erreur : ${e.message}</div>`;
+  }
+}
+
+// ── TAB SWITCHER ──
+function switchTab(el, targetId, groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  group.querySelectorAll('.m-tab-panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById(targetId);
+  if (target) target.classList.add('active');
+  const tabs = el.closest('.module-tabs');
+  if (tabs) { tabs.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active')); el.classList.add('active'); }
+}
+
+// ── OVERRIDE LANDING openApp ──
+// (already defined above — the landing's openApp will be replaced)
+
+</script>
+</body>
+</html>
