@@ -44,8 +44,8 @@ function renderAuth() {
 }
 async function loadProjects() {
   const [projects, account] = await Promise.all([
-    state.db.from('projects').select('*').order('updated_at',{ascending:false}),
-    state.db.from('accounts').select('*').single()
+    state.db.from('student_projects').select('*').order('updated_at',{ascending:false}),
+    state.db.from('student_accounts').select('*').single()
   ]);
   if (projects.error || account.error) throw new Error('Impossible de charger ton espace. Réessaie dans un instant.');
   state.projects = projects.data; state.account = account.data;
@@ -75,7 +75,7 @@ function renderProjectForm(isNew=false) {
 async function openProject(id) {
   const p = state.projects.find(p=>p.id===id);
   if (!p) throw new Error('Projet introuvable.');
-  const docs = await state.db.from('documents').select('*').eq('project_id',id).order('updated_at',{ascending:false});
+  const docs = await state.db.from('student_documents').select('*').eq('project_id',id).order('updated_at',{ascending:false});
   if (docs.error) throw new Error('Impossible de charger les documents.');
   state.project=p; state.docs=docs.data; state.route='plan'; state.doc=null; renderModule();
 }
@@ -133,7 +133,7 @@ async function saveDoc() {
   const snapshot={...state.doc};
   setStatus('Enregistrement…');
   saving=(async()=>{
-    const {data,error}=await state.db.from('documents').update({content:snapshot.content}).eq('id',snapshot.id).select().single();
+    const {data,error}=await state.db.from('student_documents').update({content:snapshot.content}).eq('id',snapshot.id).select().single();
     if(error){setStatus('Non enregistré — réessaie');throw new Error('Enregistrement impossible. Ton texte reste dans l’éditeur.');}
     const i=state.docs.findIndex(d=>d.id===snapshot.id); if(i>=0)state.docs[i]={...data,content:state.doc?.id===snapshot.id?state.doc.content:data.content};
     if(state.doc?.id===snapshot.id&&state.doc.content===snapshot.content){state.dirty=false;state.doc.updated_at=data.updated_at;setStatus('Enregistré');}
@@ -143,7 +143,7 @@ async function saveDoc() {
 }
 async function saveSources() {
   if(!state.sourceDirty)return;
-  const {error}=await state.db.from('projects').update({sources:state.project.sources}).eq('id',state.project.id);
+  const {error}=await state.db.from('student_projects').update({sources:state.project.sources}).eq('id',state.project.id);
   if(error)throw new Error('Les extraits n’ont pas pu être enregistrés.');
   state.sourceDirty=false;
 }
@@ -178,7 +178,7 @@ root.addEventListener('submit',async event=>{
       const title=values.title.trim();delete values.title;
       if(title.length<3)throw new Error('Précise un sujet d’au moins trois caractères.');
       const profile={...values,planValidated:false};
-      const query=isNew?state.db.from('projects').insert({user_id:state.user.id,title,profile}):state.db.from('projects').update({title,profile}).eq('id',state.project.id);
+      const query=isNew?state.db.from('student_projects').insert({user_id:state.user.id,title,profile}):state.db.from('student_projects').update({title,profile}).eq('id',state.project.id);
       const {data,error}=await query.select().single();
       if(error)throw new Error(error.message.includes('Limite')?error.message:'Impossible d’enregistrer le projet.');
       await loadProjects();await openProject(data.id);notify('Projet enregistré.');
@@ -217,7 +217,7 @@ root.addEventListener('click',async event=>{
     }
     if(action==='validate-plan'){
       await flush();const profile={...state.project.profile,planValidated:true,validatedPlanId:state.doc.id};
-      const {error}=await state.db.from('projects').update({profile}).eq('id',state.project.id);if(error)throw error;
+      const {error}=await state.db.from('student_projects').update({profile}).eq('id',state.project.id);if(error)throw error;
       state.project.profile=profile;notify('Plan validé. Tu peux préparer tes sources.');renderModule();
     }
     if(action==='add-source'){

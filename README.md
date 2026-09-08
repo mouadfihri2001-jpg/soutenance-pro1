@@ -17,7 +17,7 @@ Cette branche améliore le projet Vercel existant. Elle n’a pas été déploy�
 
 ### 1. Préparer Supabase
 
-Utiliser un nouveau projet Supabase dédié ou un projet existant dont le schéma a été vérifié. Exécuter une seule fois `supabase/migrations/001_platform.sql` via les migrations Supabase ou le SQL Editor. Ce fichier crée les tables, politiques RLS, comptes gratuits et limites. Il ne supprime aucune table existante et échoue si les noms sont déjà utilisés.
+Utiliser un nouveau projet Supabase dédié ou un projet existant dont le schéma a été vérifié. Sur un nouveau projet, exécuter dans l’ordre `supabase/migrations/001_platform.sql`, puis `supabase/migrations/002_restrict_student_helpers.sql` via les migrations Supabase ou le SQL Editor. La seconde migration retire les droits RPC hérités des rôles publics sur les fonctions de déclenchement. Ce fichier crée les tables `student_accounts`, `student_projects`, `student_documents` et `student_ai_jobs`, les politiques RLS, comptes gratuits et limites. Les fonctions et déclencheurs utilisent aussi le préfixe `student_`. Ce préfixe évite les conflits avec les 15 tables de gestion déjà présentes dans le projet Supabase, notamment `public.projects`. Il ne supprime aucune table existante et échoue si les noms sont déjà utilisés.
 
 Dans **Authentication > URL Configuration**, utiliser le domaine du site comme Site URL. Ajouter exactement les URLs de production et de preview utilisées dans Redirect URLs. Garder la confirmation email active et vérifier l’envoi/réception des messages d’authentification avant ouverture au public.
 
@@ -39,7 +39,7 @@ Le projet utilise `npm ci`, `npm run build` et le répertoire de sortie `dist`. 
 
 ### 3. Vérifier sur une preview
 
-Les tests locaux passent, mais aucun compte Supabase réel ni aucune preview Vercel de cette branche n’ont encore été testés.
+Les tests locaux passent et Vercel a publié une preview de la branche. Le projet Supabase `soutenancpro-ai` a été réactivé le 8 septembre 2026. Les migrations `student_workspace_foundations` et `restrict_student_helpers` ont été appliquées sur le projet actif `bkcncjwuhvwophcfgwdd` ; ne pas les rejouer sur ce projet. Les 15 tables de gestion existantes ont été préservées. Les quatre tables étudiant ont RLS activé ; les privilèges SQL ont été vérifiés dans Supabase. Les variables Vercel, les URLs Auth et le parcours complet avec un compte réel restent à configurer et tester.
 
 Avant de promouvoir cette version : vérifier l’inscription et le lien reçu, la connexion, la création d’un projet, la génération d’un plan et sa validation, la recherche puis la lecture d’une source, l’enregistrement de son extrait, une rédaction, l’édition, le rechargement du navigateur et les trois exports. Créer un deuxième compte de test et confirmer qu’il ne voit pas le premier projet. Contrôler aussi le parcours sur mobile. Cette vérification ne doit pas utiliser des dossiers clients réels.
 
@@ -55,7 +55,7 @@ Les tarifs affichés restent 0 / 199 / 399 MAD. Les offres payantes sont indiqu�
 
 Maximum trois réservations de génération par utilisateur et par minute. Les limites sont des réglages de départ à ajuster après mesure des coûts réels. Les formules d’accès sont appliquées dans les fonctions SQL ; garder l’affichage des tarifs et ces limites synchronisés.
 
-Seul l’administrateur peut attribuer un plan dans la table `accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Ajouter la méthode de paiement choisie et sa validation serveur avant de rendre les offres achetables.
+Seul l’administrateur peut attribuer un plan dans la table `student_accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Ajouter la méthode de paiement choisie et sa validation serveur avant de rendre les offres achetables.
 
 ### 5. Raccorder le domaine Hostinger
 
@@ -71,9 +71,13 @@ npm test
 npm run build
 ```
 
-Les tests exécutent le schéma SQL sur PostgreSQL via PGlite et vérifient les lectures/écritures entre propriétaires, les privilèges, les quotas, l’expiration d’offre, l’accès à l’API et la création de fichiers Office. PGlite ne remplace pas un test de charge ou un contrôle dans Supabase hébergé. Les exports ont été contrôlés comme archives OOXML/XML ; leur mise en page dans chaque application Office et la fenêtre d’impression PDF restent à vérifier avec la preview.
+Les tests exécutent le schéma SQL sur PostgreSQL via PGlite et vérifient les lectures/écritures entre propriétaires, les privilèges, les quotas, l’expiration d’offre, l’accès à l’API et la création de fichiers Office. Les tests vérifient aussi la coexistence avec une table `public.projects` préexistante et les privilèges par défaut propres à Supabase. PGlite ne remplace pas un test de charge ou un contrôle dans Supabase hébergé. Les exports ont été contrôlés comme archives OOXML/XML ; leur mise en page dans chaque application Office et la fenêtre d’impression PDF restent à vérifier avec la preview.
 
 Architecture : `index.html` / `src/` pour l’interface, `shared/modules.js` pour les modules et prompts, `api/` et `server/` pour Vercel, `supabase/migrations/` pour PostgreSQL. Aucun secret n’est inclus. Le dossier `dist` est généré et ne contient que les fichiers publics.
+
+## Points relevés dans la configuration existante
+
+Le Security Advisor ne signale plus les objets `student_`. Il signale encore les anciennes fonctions `get_user_role` et `user_project_ids` pour leur [search_path non fixé](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable) et leurs [droits d’exécution publics](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable). Leur usage par les politiques de l’ancien espace doit être examiné avant modification. La [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) est également désactivée. Ces réglages existants restent à traiter avant une ouverture au public.
 
 ## Références techniques
 
