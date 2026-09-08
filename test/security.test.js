@@ -15,6 +15,29 @@ test('public configuration never exposes server secrets',()=>{
  process.env.ANTHROPIC_API_KEY='secret-ai-test';process.env.SUPABASE_SERVICE_ROLE_KEY='secret-service-test';
  const r=response();config({method:'GET'},r);assert.doesNotMatch(JSON.stringify(r.body),/secret-/);
 });
+test('account configuration works without generation secrets and generation stays closed',async()=>{
+ const keys=['SUPABASE_URL','SUPABASE_ANON_KEY','SUPABASE_SERVICE_ROLE_KEY','ANTHROPIC_API_KEY'];
+ const saved=Object.fromEntries(keys.map(key=>[key,process.env[key]]));
+ try{
+  for(const key of keys)delete process.env[key];
+  process.env.SUPABASE_URL='https://example.supabase.co';
+  process.env.SUPABASE_ANON_KEY='sb_publishable_test';
+  let r=response();config({method:'GET'},r);
+  assert.equal(r.body.authReady,true);assert.equal(r.body.ready,false);
+  assert.deepEqual(r.body.missing,['SUPABASE_SERVICE_ROLE_KEY','ANTHROPIC_API_KEY']);
+  const generation=response();await handler({method:'POST',headers:{authorization:'Bearer invalid-test-token'},body:{}},generation);
+  assert.equal(generation.code,503,'missing service credentials must stop the server before provider access');
+  process.env.SUPABASE_SERVICE_ROLE_KEY='private-service-test';
+  r=response();config({method:'GET'},r);assert.equal(r.body.authReady,true);assert.deepEqual(r.body.missing,['ANTHROPIC_API_KEY']);
+  process.env.ANTHROPIC_API_KEY='private-provider-test';
+  r=response();config({method:'GET'},r);assert.equal(r.body.ready,true);assert.deepEqual(r.body.missing,[]);
+  assert.doesNotMatch(JSON.stringify(r.body),/private-/);
+  process.env.SUPABASE_ANON_KEY='   ';
+  r=response();config({method:'GET'},r);assert.equal(r.body.authReady,false);assert.equal(r.body.ready,false);assert.deepEqual(r.body.missing,['SUPABASE_ANON_KEY']);
+ }finally{
+  for(const key of keys){if(saved[key]===undefined)delete process.env[key];else process.env[key]=saved[key];}
+ }
+});
 test('source-based writing requires both the plan and consulted excerpts',()=>{
  const project={title:'Mémoire',profile:{},sources:[]};
  assert.throws(()=>makePrompt('redaction',{chapter:'Chapitre 1'},project),/plan/);

@@ -33,7 +33,7 @@ Ajouter dans **Project Settings > Environment Variables**, séparément pour Pre
 | `SUPABASE_ANON_KEY` | Clé publique / anon Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé service role, strictement serveur |
 
-La clé service role et la clé Anthropic ne doivent jamais être copiées dans le code client, GitHub ou une conversation. `/api/config` ne publie que l’URL et la clé publique Supabase. Tant que la configuration manque, les appels sont fermés : aucun accès anonyme à l’IA.
+La clé service role et la clé Anthropic ne doivent jamais être copiées dans le code client, GitHub ou une conversation. `/api/config` publie l’URL et la clé publique Supabase, `authReady` pour la présence des deux paramètres nécessaires aux comptes, `ready` pour la présence des quatre paramètres et `missing` pour les noms des paramètres absents (jamais leurs valeurs privées). Ces indicateurs vérifient la présence des paramètres, pas la validité des clés. L’inscription, la connexion et la récupération du mot de passe ne dépendent pas des clés de génération. Si celles-ci manquent, la génération reste indisponible et les contrôles serveur d’authentification et de quota restent appliqués. Après ajout d’un paramètre Vercel, redéployer la preview puis recharger la page.
 
 Le projet utilise `npm ci`, `npm run build` et le répertoire de sortie `dist`. Les fonctions restent dans `api/`. `vercel.json` contient les réglages de build. Redéployer après modification des variables.
 

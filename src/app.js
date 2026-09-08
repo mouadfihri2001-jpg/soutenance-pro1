@@ -5,7 +5,7 @@ import { MODULES, sourceReady, validateInputs } from '../shared/modules.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
-const state = { db: null, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login' };
+const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login' };
 let saveTimer, saving, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 const markdown = value => DOMPurify.sanitize(marked.parse(value || ''), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
@@ -32,15 +32,21 @@ function activePlan() {
   return a.plan === 'offre' ? 'Offre' : 'Max';
 }
 function renderAuth() {
+  if (!state.db) {
+    root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
+      <h1>Connexion indisponible</h1><p>Ton espace n’a pas pu être chargé. Réessaie dans un instant.</p>
+      ${button('Réessayer','reload-auth','','sp-button primary')}${button('Revenir au site','close','','sp-link')}</div></div>`;
+    return;
+  }
   const mode = state.authMode;
   root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
     <h1>${mode === 'signup' ? 'Créer mon compte' : mode === 'reset' ? 'Réinitialiser le mot de passe' : mode === 'recovery' ? 'Nouveau mot de passe' : 'Retrouver mon projet'}</h1>
-    <p>${mode === 'signup' ? 'Un espace pour ton mémoire, tes sources et ta soutenance.' : 'Connecte-toi à ton espace personnel.'}</p>
+    <p>${mode === 'signup' ? 'Un espace pour ton mémoire, tes sources et ta soutenance.' : mode === 'reset' ? 'Indique ton email pour recevoir un lien de réinitialisation.' : mode === 'recovery' ? 'Choisis un nouveau mot de passe pour ton compte.' : 'Connecte-toi à ton espace personnel.'}</p>
     <form id="auth-form">${mode !== 'recovery' ? '<label>Email<input name="email" type="email" autocomplete="email" required></label>' : ''}
     ${mode !== 'reset' ? `<label>Mot de passe<input name="password" type="password" autocomplete="${mode === 'login' ? 'current-password' : 'new-password'}" minlength="8" required></label>` : ''}
     <button class="sp-button primary" type="submit">${mode === 'signup' ? 'Créer mon compte gratuit' : mode === 'reset' ? 'Recevoir le lien' : mode === 'recovery' ? 'Enregistrer' : 'Se connecter'}</button></form>
-    <div class="sp-auth-links">${button(mode === 'signup' ? 'Déjà un compte ? Se connecter' : 'Créer un compte gratuit', 'auth-mode', mode === 'signup' ? 'login' : 'signup', 'sp-link')}
-    ${button('Mot de passe oublié', 'auth-mode', 'reset', 'sp-link')}${button('Revenir au site', 'close', '', 'sp-link')}</div></div></div>`;
+    <div class="sp-auth-links">${button(mode === 'signup' ? 'Déjà un compte ? Se connecter' : mode === 'reset' ? 'Revenir à la connexion' : 'Créer un compte gratuit', 'auth-mode', mode === 'signup' || mode === 'reset' ? 'login' : 'signup', 'sp-link')}
+    ${mode !== 'reset' ? button('Mot de passe oublié', 'auth-mode', 'reset', 'sp-link') : ''}${button('Revenir au site', 'close', '', 'sp-link')}</div></div></div>`;
 }
 async function loadProjects() {
   const [projects, account] = await Promise.all([
@@ -89,9 +95,10 @@ function renderModule() {
   const ready=p.profile.planValidated && p.sources.some(sourceReady);
   shell(`<div class="sp-progress"><span class="${p.profile.planValidated?'done':''}">1. Plan validé</span><span class="${p.sources.some(sourceReady)?'done':''}">2. Sources consultées</span><span>3. Rédaction et révision</span></div>
     <p class="sp-lead">${e(m.hint)}</p>
+    ${!state.aiReady ? '<div class="sp-warning" role="status">La génération est temporairement indisponible. Tu peux préparer ton projet et consulter ou modifier tes documents enregistrés.</div>' : ''}
     ${state.route==='redaction'&&!ready?`<div class="sp-warning">Valide d’abord ton plan, puis ajoute une source et un extrait consulté d’au moins 50 caractères.${button('Ouvrir les sources','route','sources','sp-link')}</div>`:''}
     <form id="generation-form" class="sp-card"><div class="sp-form-grid">${m.fields.map(f=>field(...f)).join('')}</div>
-    <button type="submit" class="sp-button primary" ${state.busy || (state.route==='redaction'&&!ready)?'disabled':''}>${state.busy?'Génération en cours…':'Générer et enregistrer'}</button>
+    <button type="submit" class="sp-button primary" ${!state.aiReady || state.busy || (state.route==='redaction'&&!ready)?'disabled':''}>${state.busy?'Génération en cours…':'Générer et enregistrer'}</button>
     <p class="sp-muted">Chaque résultat est enregistré dans ton projet. Ton quota s’applique aux générations réussies.</p></form>
     <div id="history-panel">${history()}</div><div id="document-panel">${state.doc?documentPanel():''}</div>`,m.label);
 }
@@ -184,6 +191,7 @@ root.addEventListener('submit',async event=>{
       await loadProjects();await openProject(data.id);notify('Projet enregistré.');
     }
     if(form.id==='generation-form'){
+      if(!state.aiReady)throw new Error('La génération est temporairement indisponible.');
       if(state.busy)throw new Error('Une génération est déjà en cours.');
       await flush();const module=state.route,projectId=state.project.id;
       const inputs=validateInputs(module,Object.fromEntries(new FormData(form)));
@@ -200,12 +208,13 @@ root.addEventListener('submit',async event=>{
       if(state.project?.id!==projectId||state.route!=='sources')return;
       state.results=data.sources;renderSources();if(!data.sources.length)notify('Aucune publication trouvée. Essaie des mots-clés plus précis.');
     }
-  }catch(error){notify(error.message,true);}finally{submit.disabled=false;}
+  }catch(error){notify(error.message,true);}finally{submit.disabled=form.id==='generation-form'&&!state.aiReady;}
 });
 root.addEventListener('click',async event=>{
   const el=event.target.closest('[data-action]');if(!el)return;
   const action=el.dataset.action,value=el.dataset.value;
   try{
+    if(action==='reload-auth'){location.reload();return;}
     if(action==='auth-mode'){state.authMode=value;renderAuth();}
     if(action==='close'){await flush();root.hidden=true;document.body.classList.remove('sp-open');}
     if(action==='route')await route(value);
@@ -256,7 +265,8 @@ window.openApp=async()=>{
 };
 ready=(async()=>{
   const response=await fetch('/api/config');if(!response.ok)throw new Error('L’espace est temporairement indisponible.');
-  const config=await response.json();if(!config.ready)throw new Error('L’espace est temporairement indisponible. Réessaie plus tard.');
+  const config=await response.json();if(!config.authReady)throw new Error('L’espace est temporairement indisponible. Réessaie plus tard.');
+  state.aiReady=config.ready;
   state.db=createClient(config.supabaseUrl,config.supabaseAnonKey);
   state.db.auth.onAuthStateChange((event,session)=>{
     state.user=session?.user||null;
