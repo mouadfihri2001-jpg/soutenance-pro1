@@ -75,6 +75,16 @@ Les tests exécutent le schéma SQL sur PostgreSQL via PGlite et vérifient les 
 
 Architecture : `index.html` / `src/` pour l’interface, `shared/modules.js` pour les modules et prompts, `api/` et `server/` pour Vercel, `supabase/migrations/` pour PostgreSQL. Aucun secret n’est inclus. Le dossier `dist` est généré et ne contient que les fichiers publics.
 
+## Référencement naturel
+
+Le build ajoute une description de la page, les balises de partage, une URL canonique, les données structurées `WebSite`, `robots.txt` et `sitemap.xml`. Le sitemap de production référence uniquement l’accueil public existant ; aucun projet étudiant ou écran de compte n’y figure. Les liens de navigation du pied de page sont de vrais liens HTML.
+
+Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews et builds locaux ont une balise `noindex,follow` et un sitemap vide. Leur `robots.txt` permet la lecture de cette balise ; `noindex` ne remplace pas le contrôle d’accès. Les routes `/api/` envoient aussi `X-Robots-Tag: noindex`.
+
+`SITE_URL` est facultatif et vaut par défaut `https://soutenance-pro1.vercel.app`. Après raccordement du domaine Hostinger, renseigner son origine HTTPS dans la variable Production `SITE_URL` puis redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni vérification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
+
+Références : [Guide SEO Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing), [nom du site](https://developers.google.com/search/docs/appearance/site-names).
+
 ## Points relevés dans la configuration existante
 
 Le Security Advisor ne signale plus les objets `student_`. Il signale encore les anciennes fonctions `get_user_role` et `user_project_ids` pour leur [search_path non fixé](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable) et leurs [droits d’exécution publics](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable). Leur usage par les politiques de l’ancien espace doit être examiné avant modification. La [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) est également désactivée. Ces réglages existants restent à traiter avant une ouverture au public.
