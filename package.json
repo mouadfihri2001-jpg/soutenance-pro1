@@ -1,0 +1,24 @@
+{
+  "name": "soutenance-pro-ai",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.116.0",
+    "docx": "9.7.1",
+    "dompurify": "3.4.15",
+    "marked": "18.0.12",
+    "pptxgenjs": "4.0.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "esbuild": "0.28.2"
+  }
+}
