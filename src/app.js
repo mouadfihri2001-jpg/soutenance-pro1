@@ -2,10 +2,11 @@ import { createClient } from '@supabase/supabase-js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { MODULES, sourceReady, validateInputs } from '../shared/modules.js';
+import { requestAuth } from './auth.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
-const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login' };
+const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '' };
 let saveTimer, saving, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 const markdown = value => DOMPurify.sanitize(marked.parse(value || ''), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
@@ -15,6 +16,7 @@ function notify(message, error = false) {
   const el = document.getElementById('sp-notice');
   el.textContent = message; el.className = error ? 'sp-notice error' : 'sp-notice'; el.hidden = false;
 }
+function clearNotice() { const el = document.getElementById('sp-notice'); el.hidden = true; el.textContent = ''; }
 function setStatus(message) { const el = document.getElementById('save-status'); if (el) el.textContent = message; }
 function shell(content, title = 'Mes projets') {
   const project = state.project;
@@ -32,6 +34,7 @@ function activePlan() {
   return a.plan === 'offre' ? 'Offre' : 'Max';
 }
 function renderAuth() {
+  clearNotice();
   if (!state.db) {
     root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
       <h1>Connexion indisponible</h1><p>Ton espace n’a pas pu être chargé. Réessaie dans un instant.</p>
@@ -42,8 +45,8 @@ function renderAuth() {
   root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
     <h1>${mode === 'signup' ? 'Créer mon compte' : mode === 'reset' ? 'Réinitialiser le mot de passe' : mode === 'recovery' ? 'Nouveau mot de passe' : 'Retrouver mon projet'}</h1>
     <p>${mode === 'signup' ? 'Un espace pour ton mémoire, tes sources et ta soutenance.' : mode === 'reset' ? 'Indique ton email pour recevoir un lien de réinitialisation.' : mode === 'recovery' ? 'Choisis un nouveau mot de passe pour ton compte.' : 'Connecte-toi à ton espace personnel.'}</p>
-    <form id="auth-form">${mode !== 'recovery' ? '<label>Email<input name="email" type="email" autocomplete="email" required></label>' : ''}
-    ${mode !== 'reset' ? `<label>Mot de passe<input name="password" type="password" autocomplete="${mode === 'login' ? 'current-password' : 'new-password'}" minlength="8" required></label>` : ''}
+    <form id="auth-form" data-mode="${mode}">${mode !== 'recovery' ? `<label>Email<input name="email" type="email" autocomplete="email" value="${e(state.authEmail)}" required></label>` : ''}
+    ${mode !== 'reset' ? `<label>Mot de passe<input name="password" type="password" autocomplete="${mode === 'login' ? 'current-password' : 'new-password'}" ${mode === 'login' ? '' : 'minlength="8"'} required>${mode === 'login' ? '' : '<small>Au moins 8 caractères.</small>'}</label>` : ''}
     <button class="sp-button primary" type="submit">${mode === 'signup' ? 'Créer mon compte gratuit' : mode === 'reset' ? 'Recevoir le lien' : mode === 'recovery' ? 'Enregistrer' : 'Se connecter'}</button></form>
     <div class="sp-auth-links">${button(mode === 'signup' ? 'Déjà un compte ? Se connecter' : mode === 'reset' ? 'Revenir à la connexion' : 'Créer un compte gratuit', 'auth-mode', mode === 'signup' || mode === 'reset' ? 'login' : 'signup', 'sp-link')}
     ${mode !== 'reset' ? button('Mot de passe oublié', 'auth-mode', 'reset', 'sp-link') : ''}${button('Revenir au site', 'close', '', 'sp-link')}</div></div></div>`;
@@ -163,17 +166,21 @@ async function route(value) {
 }
 async function submitAuth(form) {
   if(!state.db)throw new Error('L’espace est temporairement indisponible. Réessaie plus tard.');
-  const values=Object.fromEntries(new FormData(form)), mode=state.authMode;
-  let result;
-  if(mode==='signup')result=await state.db.auth.signUp({...values,options:{emailRedirectTo:location.origin}});
-  else if(mode==='reset')result=await state.db.auth.resetPasswordForEmail(values.email,{redirectTo:location.origin});
-  else if(mode==='recovery')result=await state.db.auth.updateUser({password:values.password});
-  else result=await state.db.auth.signInWithPassword(values);
-  if(result.error)throw new Error(mode==='login'?'Email ou mot de passe incorrect, ou email non confirmé.':result.error.message);
-  if(mode==='reset'){notify('Si un compte existe, un lien a été envoyé à cette adresse.');return;}
-  if(mode==='signup'&&!result.data.session){notify('Consulte ta boîte mail pour confirmer ton inscription.');return;}
-  if(mode==='recovery'){state.authMode='login';notify('Mot de passe mis à jour.');}
-  state.user=result.data.user;await loadProjects();state.route='projects';renderProjects();
+  if(state.authPending)return;
+  const values=Object.fromEntries(new FormData(form)), mode=form.dataset.mode;
+  state.authEmail=String(values.email||state.authEmail).trim();
+  state.authPending=true;clearNotice();root.setAttribute('aria-busy','true');
+  try{
+    const result=await requestAuth(state.db.auth,mode,values,location.origin);
+    if(!form.isConnected||root.hidden)return;
+    if(mode==='reset'){notify('Si un compte existe, un lien a été envoyé à cette adresse.');return;}
+    if(mode==='signup'&&!result.data.session){
+      state.authMode='login';renderAuth();
+      notify('Consulte ta boîte mail pour confirmer ton inscription. Si tu as déjà un compte, connecte-toi.');return;
+    }
+    if(mode==='recovery'){state.authMode='login';notify('Mot de passe mis à jour.');}
+    state.user=result.data.user;await loadProjects();state.route='projects';renderProjects();
+  }finally{state.authPending=false;root.removeAttribute('aria-busy');}
 }
 root.addEventListener('submit',async event=>{
   event.preventDefault();const form=event.target,submit=form.querySelector('[type="submit"]');
@@ -208,15 +215,22 @@ root.addEventListener('submit',async event=>{
       if(state.project?.id!==projectId||state.route!=='sources')return;
       state.results=data.sources;renderSources();if(!data.sources.length)notify('Aucune publication trouvée. Essaie des mots-clés plus précis.');
     }
-  }catch(error){notify(error.message,true);}finally{submit.disabled=form.id==='generation-form'&&!state.aiReady;}
+  }catch(error){
+    if(error.authDetails)console.warn('Authentication request failed',error.authDetails);
+    if(form.id!=='auth-form'||(form.isConnected&&!root.hidden))notify(error.message,true);
+  }finally{submit.disabled=form.id==='generation-form'&&!state.aiReady;}
 });
 root.addEventListener('click',async event=>{
   const el=event.target.closest('[data-action]');if(!el)return;
   const action=el.dataset.action,value=el.dataset.value;
   try{
     if(action==='reload-auth'){location.reload();return;}
-    if(action==='auth-mode'){state.authMode=value;renderAuth();}
-    if(action==='close'){await flush();root.hidden=true;document.body.classList.remove('sp-open');}
+    if(action==='auth-mode'){
+      if(state.authPending)return;
+      state.authEmail=root.querySelector('[name="email"]')?.value.trim()||state.authEmail;
+      state.authMode=value;renderAuth();
+    }
+    if(action==='close'){await flush();root.hidden=true;clearNotice();document.body.classList.remove('sp-open');}
     if(action==='route')await route(value);
     if(action==='open-project'){await flush();await openProject(value);}
     if(action==='new-project'||action==='edit-project'){await flush();renderProjectForm(action==='new-project');}
@@ -259,9 +273,15 @@ root.addEventListener('change',async event=>{
 window.addEventListener('beforeunload',event=>{if(state.dirty||state.sourceDirty){event.preventDefault();event.returnValue='';}});
 document.getElementById('sp-notice').addEventListener('click',event=>{event.currentTarget.hidden=true;});
 let ready;
-window.openApp=async()=>{
+window.openApp=async(mode='login')=>{
+  if(state.authPending)return;
+  clearNotice();
   root.hidden=false;document.body.classList.add('sp-open');root.innerHTML='<div class="sp-loading" role="status">Chargement de ton espace…</div>';
-  try{await ready;if(state.user&&state.authMode!=='recovery'){await loadProjects();renderProjects();}else renderAuth();}catch(error){renderAuth();notify(error.message,true);}
+  try{
+    await ready;
+    if(state.authMode!=='recovery')state.authMode=mode==='signup'?'signup':'login';
+    if(state.user&&state.authMode!=='recovery'){await loadProjects();renderProjects();}else renderAuth();
+  }catch(error){renderAuth();notify(error.message,true);}
 };
 ready=(async()=>{
   const response=await fetch('/api/config');if(!response.ok)throw new Error('L’espace est temporairement indisponible.');

@@ -642,8 +642,8 @@ a{text-decoration:none;color:inherit}
 <a class="nav-link" href="#faq">FAQ</a>
 </div>
 <div class="nav-right">
-<button class="btn-nav-login" onclick="openApp()">Se connecter</button>
-<button class="btn-nav-cta" onclick="openApp()">Essai gratuit →</button>
+<button class="btn-nav-login" onclick="openApp('login')">Se connecter</button>
+<button class="btn-nav-cta" onclick="openApp('signup')">Essai gratuit →</button>
 </div>
 </div>
 </div>
@@ -672,7 +672,7 @@ a{text-decoration:none;color:inherit}
           Soutenance Pro AI génère ton plan, rédige tes chapitres, crée ton PPT et te prépare aux questions du jury. <strong>Du sujet vide à la soutenance réussie</strong>, étape par étape.
         </p>
 <div class="hero-ctas">
-<button class="btn btn-primary" onclick="openApp()" style="font-size:16px;padding:15px 32px">
+<button class="btn btn-primary" onclick="openApp('signup')" style="font-size:16px;padding:15px 32px">
 <svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Commencer gratuitement
           </button>
@@ -895,7 +895,7 @@ a{text-decoration:none;color:inherit}
 </div>
 </div>
 <div style="text-align:center;margin-top:28px">
-<button class="btn btn-primary" onclick="openApp()" style="font-size:15px">
+<button class="btn btn-primary" onclick="openApp('signup')" style="font-size:15px">
 <svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
         Créer mon compte gratuit
       </button>
@@ -906,7 +906,7 @@ a{text-decoration:none;color:inherit}
 <!-- ══════════════ TESTIMONIALS ══════════════ -->
 
 <!-- ══════════════ PRICING ══════════════ -->
-<section class="section-pricing" id="pricing"><div class="container"><div class="pricing-header"><div class="section-eyebrow">Tarifs</div><h2 class="section-title">Une offre adaptée à ton projet.</h2><p class="section-sub" style="margin:14px auto">Commence par l’accès gratuit. Les offres payantes sont en préparation ; aucun paiement n’est effectué sur cette page.</p></div><div class="pricing-grid"><article class="price-card"><h3 class="plan-name">Gratuit</h3><div class="plan-price">0 <span style="font-size:18px">MAD</span></div><p>Sans carte bancaire</p><p style="margin:20px 0;line-height:2">1 projet(s)<br/>3 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp()">Créer mon compte</button></article><article class="price-card"><h3 class="plan-name">Offre</h3><div class="plan-price">199 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">5 projet(s)<br/>60 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp()">Découvrir la plateforme</button></article><article class="price-card"><h3 class="plan-name">Max</h3><div class="plan-price">399 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">20 projet(s)<br/>150 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp()">Découvrir la plateforme</button></article></div></div></section>
+<section class="section-pricing" id="pricing"><div class="container"><div class="pricing-header"><div class="section-eyebrow">Tarifs</div><h2 class="section-title">Une offre adaptée à ton projet.</h2><p class="section-sub" style="margin:14px auto">Commence par l’accès gratuit. Les offres payantes sont en préparation ; aucun paiement n’est effectué sur cette page.</p></div><div class="pricing-grid"><article class="price-card"><h3 class="plan-name">Gratuit</h3><div class="plan-price">0 <span style="font-size:18px">MAD</span></div><p>Sans carte bancaire</p><p style="margin:20px 0;line-height:2">1 projet(s)<br/>3 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Créer mon compte</button></article><article class="price-card"><h3 class="plan-name">Offre</h3><div class="plan-price">199 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">5 projet(s)<br/>60 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Découvrir la plateforme</button></article><article class="price-card"><h3 class="plan-name">Max</h3><div class="plan-price">399 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">20 projet(s)<br/>150 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Découvrir la plateforme</button></article></div></div></section>
 <!-- ══════════════ FAQ ══════════════ -->
 <section class="section-faq" id="faq"><div class="container"><h2 class="section-title">Questions fréquentes</h2><div style="margin-top:30px"><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Comment utiliser les sources avant la rédaction ?<span>+</span></button><div class="faq-a"><p>Recherche des publications, sélectionne les sources pertinentes puis ajoute des extraits consultés ou des notes attribuées. La rédaction utilise ces éléments après validation du plan. Un DOI retrouvé confirme une notice, pas la validité de chaque affirmation.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Le module correction fournit-il un score de plagiat ?<span>+</span></button><div class="faq-a"><p>Non. Il aide à améliorer le texte et les citations. Il ne compare pas ton document à une base exhaustive et ne délivre pas de certificat de plagiat.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quels formats puis-je exporter ?<span>+</span></button><div class="faq-a"><p>Chaque document peut être téléchargé en Word. Le bouton Imprimer / PDF ouvre l’impression pour enregistrer un PDF. Les présentations peuvent être téléchargées en PowerPoint modifiable.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Où sont enregistrés mes projets ?<span>+</span></button><div class="faq-a"><p>Tes projets et documents sont enregistrés dans ton compte. Le texte nécessaire à une génération est transmis au prestataire IA. Relis les contenus et vérifie les sources avant tout dépôt universitaire.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Puis-je modifier le résultat ?<span>+</span></button><div class="faq-a"><p>Oui. Le texte est modifiable dans ton espace et les changements sont enregistrés automatiquement. Tu peux créer plusieurs versions en lançant une nouvelle génération.</p></div></div></div></div></section>
 <!-- ══════════════ FINAL CTA ══════════════ -->
@@ -916,7 +916,7 @@ a{text-decoration:none;color:inherit}
 <h2>Commence ton <em>mémoire</em><br/>aujourd'hui.</h2>
 <p>Rejoins Un espace personnel qui ont remplacé le stress du mémoire par la confiance de Soutenance Pro.</p>
 <div class="cta-btns">
-<button class="btn" onclick="openApp()" style="background:white;color:var(--g900);font-size:16px;padding:15px 32px;box-shadow:0 4px 20px rgba(0,0,0,.2)">
+<button class="btn" onclick="openApp('signup')" style="background:white;color:var(--g900);font-size:16px;padding:15px 32px;box-shadow:0 4px 20px rgba(0,0,0,.2)">
 <svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           Créer mon compte gratuit
         </button>
@@ -943,8 +943,8 @@ a{text-decoration:none;color:inherit}
 <a class="footer-link" href="#features">Fonctionnalités</a>
 <a class="footer-link" href="#pricing">Tarifs</a>
 <a class="footer-link" href="#how">Comment ça marche</a>
-<a class="footer-link" onclick="openApp()">Connexion</a>
-<a class="footer-link" onclick="openApp()">S'inscrire</a>
+<a class="footer-link" href="#workspace" onclick="openApp('login');return false">Connexion</a>
+<a class="footer-link" href="#workspace" onclick="openApp('signup');return false">S'inscrire</a>
 </div>
 
 
