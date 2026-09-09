@@ -59,7 +59,15 @@ Seul l’administrateur peut attribuer un plan dans la table `student_accounts` 
 
 ### 5. Raccorder le domaine Hostinger
 
-Ajouter le domaine exact dans **Vercel > Project > Settings > Domains**. Reporter chez le gestionnaire DNS les enregistrements précis affichés par Vercel, puis attendre la validation. Préserver les enregistrements email existants. Ajouter ensuite ce domaine dans les URLs d’authentification Supabase.
+Le propriétaire a confirmé le domaine **soutenancepro.com**, acheté chez Hostinger. L'origine publique retenue est **https://soutenancepro.com**.
+
+1. Dans **Vercel > soutenance-pro1 > Settings > Domains**, ajouter `soutenancepro.com` et `www.soutenancepro.com`. Associer le premier à la production et configurer une redirection permanente de `www.soutenancepro.com` vers `soutenancepro.com`.
+2. Reporter chez le gestionnaire DNS autoritatif les enregistrements exacts affichés par Vercel : généralement A pour `@` et CNAME pour `www`. Utiliser les valeurs propres au projet, sans recopier une adresse générique. Chez Hostinger, ouvrir **Domains > DNS** et sélectionner le domaine. Préserver les enregistrements email existants.
+3. Attendre la validation des deux domaines et du certificat HTTPS dans Vercel. Si `SITE_URL` existe déjà dans l'environnement Production, lui donner la valeur `https://soutenancepro.com` ; sinon le build utilise cette origine par défaut.
+4. Dans **Supabase > Authentication > URL Configuration**, définir Site URL à `https://soutenancepro.com` et ajouter cette origine aux Redirect URLs, en conservant les URLs de preview encore utilisées. Vérifier les liens de confirmation et de récupération depuis ce domaine.
+5. Après vérification du parcours utilisateur et publication de la nouvelle version en production, contrôler `https://soutenancepro.com/robots.txt` et `https://soutenancepro.com/sitemap.xml`, puis vérifier la propriété dans Google Search Console et soumettre le sitemap.
+
+Le code est préparé pour ce domaine. L'association dans Vercel, les changements DNS, le certificat, les URLs Auth et la propriété Search Console ne sont pas encore confirmés. Les modifications DNS n'ont pas été effectuées depuis cette branche.
 
 Les coordonnées de l’exploitant, la politique de confidentialité et les conditions commerciales restent à fournir pour rédiger et publier les pages adaptées à l’activité réelle. Aucune identité légale ou certification n’est inventée dans cette branche.
 
@@ -81,7 +89,7 @@ Le build ajoute une description de la page, les balises de partage, une URL cano
 
 Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews et builds locaux ont une balise `noindex,follow` et un sitemap vide. Leur `robots.txt` permet la lecture de cette balise ; `noindex` ne remplace pas le contrôle d’accès. Les routes `/api/` envoient aussi `X-Robots-Tag: noindex`.
 
-`SITE_URL` est facultatif et vaut par défaut `https://soutenance-pro1.vercel.app`. Après raccordement du domaine Hostinger, renseigner son origine HTTPS dans la variable Production `SITE_URL` puis redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni vérification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
+`SITE_URL` est facultatif et vaut par défaut `https://soutenancepro.com`. Si une ancienne valeur existe dans Vercel, la remplacer par cette origine HTTPS dans l'environnement Production avant de redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni modification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
 
 Références : [Guide SEO Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing), [nom du site](https://developers.google.com/search/docs/appearance/site-names).
 

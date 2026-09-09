@@ -1,7 +1,7 @@
 import { build } from 'esbuild';
 import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
 const production = process.env.VERCEL_ENV === 'production';
-const site = new URL(process.env.SITE_URL?.trim() || 'https://soutenance-pro1.vercel.app');
+const site = new URL(process.env.SITE_URL?.trim() || 'https://soutenancepro.com');
 if (site.protocol !== 'https:' || site.username || site.password || site.pathname !== '/' || site.search || site.hash) {
   throw new Error('SITE_URL must be the public HTTPS origin, without credentials, path, query or fragment.');
 }
