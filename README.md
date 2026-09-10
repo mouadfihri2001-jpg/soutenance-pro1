@@ -48,8 +48,6 @@ Correction du parcours d'inscription : les appels à l'action gratuits ouvrent e
 
 Avant de promouvoir cette version : vérifier l’inscription et le lien reçu, la connexion, la création d’un projet, la génération d’un plan et sa validation, la recherche puis la lecture d’une source, l’enregistrement de son extrait, une rédaction, l’édition, le rechargement du navigateur et les trois exports. Créer un deuxième compte de test et confirmer qu’il ne voit pas le premier projet. Contrôler aussi le parcours sur mobile. Cette vérification ne doit pas utiliser des dossiers clients réels.
 
-Contrôle du 10 septembre 2026 : Supabase est `ACTIVE_HEALTHY`, les quatre tables étudiant ont RLS et le droit de lecture du rôle authentifié. Le compte du propriétaire existe et son email est confirmé. Il ne possède encore ni projet ni document étudiant ; la génération et les exports avec un compte réel restent donc à vérifier. Le contrôle ne consulte aucun contenu académique ni dossier médical.
-
 ### 4. Activer les offres
 
 Les tarifs affichés restent 0 / 199 / 399 MAD. Les offres payantes sont indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites initiales sont :
