@@ -29,6 +29,8 @@ Le contenu décrit les fonctions présentes : recherche Crossref, travail à par
 5. Vérifier que les neuf URLs répondent en HTTP 200, qu'une URL inexistante répond en 404, que les pages publiques ont `index,follow` et le bon canonical, et que le sitemap est accessible. Vérifier mobile, liens et formulaire.
 6. Ajouter `www.soutenancepro.com` au projet Vercel si ce n'est pas fait, suivre ses valeurs DNS et vérifier sa redirection permanente vers le domaine principal.
 
+Le build Production vérifie désormais la présence des quatre variables et le type des clés avant de produire les fichiers. Si ce contrôle échoue, corriger les noms signalés dans l'environnement Production puis redéployer le commit de `main`. Les logs du contrôle n'affichent aucune valeur privée. Ce contrôle ne prouve ni la délivrabilité des emails ni la validité des clés auprès des fournisseurs.
+
 ## Le premier mois
 
 | Période | Action | Mesure utile |

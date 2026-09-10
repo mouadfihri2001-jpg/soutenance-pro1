@@ -11,8 +11,22 @@ const expected = ['/', '/guides', '/pfe-ispits', '/these-medecine',
   '/guides/recherche-bibliographique-sante'];
 const file = path => root + 'dist/' + (path === '/' ? 'index.html' : path.slice(1) + '.html');
 const read = path => readFileSync(root + 'dist/' + path, 'utf8');
-const build = environment => execFileSync(process.execPath, ['scripts/build.mjs'], {
-  cwd:root, env:{...process.env,VERCEL_ENV:environment,SITE_URL:'https://soutenancepro.com'}, stdio:'pipe'
+// Nonfunctional fixtures for offline builds. These are not service credentials.
+const fixtures={SUPABASE_URL:'https://example.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_offline-test',SUPABASE_SERVICE_ROLE_KEY:'sb_secret_offline-test',ANTHROPIC_API_KEY:'offline-provider-test'};
+const build = (environment, overrides={}) => execFileSync(process.execPath, ['scripts/build.mjs'], {
+  cwd:root, env:{...process.env,...fixtures,VERCEL_ENV:environment,SITE_URL:'https://soutenancepro.com',...overrides}, stdio:'pipe'
+});
+
+test('production builds stop on missing configuration or a misplaced secret without logging its value',()=>{
+  for(const overrides of [{SUPABASE_ANON_KEY:''},{SUPABASE_ANON_KEY:'sb_secret_misplaced-fixture'}]){
+    let failure;
+    try{build('production',overrides);}catch(error){failure=error;}
+    assert.ok(failure,'an incomplete Production build must not succeed');
+    const output=String(failure.stderr);
+    assert.match(output,/Production configuration incomplete/);
+    assert.match(output,/SUPABASE_ANON_KEY/);
+    assert.doesNotMatch(output,/sb_secret_misplaced-fixture|sb_secret_offline-test|offline-provider-test/);
+  }
 });
 
 test('preview builds stay out of search; production exposes only the nine public pages with working links', () => {

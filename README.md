@@ -1,6 +1,6 @@
 # Soutenance Pro AI — mise à niveau 0.2
 
-Cette branche améliore le projet Vercel existant. Elle n’a pas été déployée en production. Le site conserve son identité verte et sa page d’accueil ; son espace de travail utilise maintenant une authentification et un stockage Supabase.
+Cette version améliore le projet Vercel existant. Le site conserve son identité verte ; son espace de travail utilise une authentification et un stockage Supabase. La version publique dépend du dernier build Production réussi, pas uniquement de la présence du code sur `main`.
 
 ## Fonctions implémentées
 
@@ -34,7 +34,9 @@ Ajouter dans **Project Settings > Environment Variables**, séparément pour Pre
 | `SUPABASE_ANON_KEY` | Clé publique / anon Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé service role, strictement serveur |
 
-La clé service role et la clé Anthropic ne doivent jamais être copiées dans le code client, GitHub ou une conversation. `/api/config` publie l’URL et la clé publique Supabase, `authReady` pour la présence des deux paramètres nécessaires aux comptes, `ready` pour la présence des quatre paramètres et `missing` pour les noms des paramètres absents (jamais leurs valeurs privées). Ces indicateurs vérifient la présence des paramètres, pas la validité des clés. L’inscription, la connexion et la récupération du mot de passe ne dépendent pas des clés de génération. Si celles-ci manquent, la génération reste indisponible et les contrôles serveur d’authentification et de quota restent appliqués. Après ajout d’un paramètre Vercel, redéployer la preview puis recharger la page.
+La clé service role et la clé Anthropic ne doivent jamais être copiées dans le code client, GitHub ou une conversation. `/api/config` publie uniquement l'URL et une clé Supabase reconnue comme publique. Il expose `authReady` pour les paramètres des comptes, `ready` pour l'ensemble des paramètres, et les listes `missing` / `invalid` contenant uniquement leurs noms. Une clé privée placée par erreur dans `SUPABASE_ANON_KEY` n'est jamais renvoyée, y compris en Preview. Le contrôle reconnaît les clés publishable/secret modernes et les anciens JWT anon/service_role ; le décodage du type n'authentifie aucun utilisateur et ne vérifie pas une signature. Ces indicateurs contrôlent la présence et le format, pas l'acceptation des clés par les fournisseurs ni les emails. L'inscription et la récupération restent accessibles sur une Preview si seules les clés de génération manquent ; l'API garde ses protections serveur.
+
+Un build **Production** échoue avant de générer les fichiers si les quatre variables requises manquent ou sont mal formées. Le diagnostic contient uniquement les noms à corriger dans Vercel. Ce contrôle de configuration ne transmet aucune clé à un nouveau service et ne remplace pas un essai réel des comptes, de l'IA et des exports. Après modification des variables, relancer un build Production.
 
 Le projet utilise `npm ci`, `npm run build` et le répertoire de sortie `dist`. Les fonctions restent dans `api/`. `vercel.json` contient les réglages de build. Redéployer après modification des variables.
 
@@ -45,6 +47,8 @@ Les tests locaux passent et Vercel a publié une preview de la branche. Le proje
 Correction du parcours d'inscription : les appels à l'action gratuits ouvrent explicitement le formulaire de création de compte ; le formulaire fixe le type de requête envoyé. Une erreur de connexion est effacée au changement d'écran, l'email est conservé et les requêtes simultanées sont bloquées. Les erreurs de confirmation email, d'envoi SMTP, de configuration et de mot de passe sont distinguées. La console ne reçoit que le mode, le code d'erreur et le statut HTTP, jamais les identifiants ni le message brut du fournisseur. Quatre tests exercent les vrais gestionnaires de l'interface avec des doublures DOM/Auth ; aucun email réel n'est envoyé par ces tests. Les URLs Auth et l'inscription réelle restent à vérifier avant publication.
 
 Avant de promouvoir cette version : vérifier l’inscription et le lien reçu, la connexion, la création d’un projet, la génération d’un plan et sa validation, la recherche puis la lecture d’une source, l’enregistrement de son extrait, une rédaction, l’édition, le rechargement du navigateur et les trois exports. Créer un deuxième compte de test et confirmer qu’il ne voit pas le premier projet. Contrôler aussi le parcours sur mobile. Cette vérification ne doit pas utiliser des dossiers clients réels.
+
+Contrôle du 10 septembre 2026 : Supabase est `ACTIVE_HEALTHY`, les quatre tables étudiant ont RLS et le droit de lecture du rôle authentifié. Le compte du propriétaire existe et son email est confirmé. Il ne possède encore ni projet ni document étudiant ; la génération et les exports avec un compte réel restent donc à vérifier. Le contrôle ne consulte aucun contenu académique ni dossier médical.
 
 ### 4. Activer les offres
 
@@ -94,7 +98,7 @@ Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews
 
 `SITE_URL` est facultatif et vaut par défaut `https://soutenancepro.com`. Si une ancienne valeur existe dans Vercel, la remplacer par cette origine HTTPS dans l'environnement Production avant de redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni modification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
 
-Les tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les neuf URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** après vérification des variables : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
+Les 16 tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les neuf URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Les builds de test utilisent des clés factices non fonctionnelles ; ils vérifient aussi le refus d'une Production incomplète et l'absence de fuite de clé privée. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
 
 Le [plan de lancement SEO](docs/seo-launch.md) précise les intentions de recherche, les limites des mesures disponibles et le suivi du premier mois. Il n'annonce ni volume de recherches inventé ni garantie de première position.
 

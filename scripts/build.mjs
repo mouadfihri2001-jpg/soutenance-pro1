@@ -3,6 +3,8 @@ import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { pages } from '../content/pages.mjs';
 import { metadata, renderPage, renderGuides, renderNotFound, publicPaths, escapeHtml } from './seo.mjs';
+import { assertProductionConfiguration } from '../server/runtime-config.js';
+assertProductionConfiguration();
 const production = process.env.VERCEL_ENV === 'production';
 const site = new URL(process.env.SITE_URL?.trim() || 'https://soutenancepro.com');
 if (site.protocol !== 'https:' || site.username || site.password || site.pathname !== '/' || site.search || site.hash) {

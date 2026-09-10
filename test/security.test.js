@@ -27,7 +27,7 @@ test('account configuration works without generation secrets and generation stay
   assert.deepEqual(r.body.missing,['SUPABASE_SERVICE_ROLE_KEY','ANTHROPIC_API_KEY']);
   const generation=response();await handler({method:'POST',headers:{authorization:'Bearer invalid-test-token'},body:{}},generation);
   assert.equal(generation.code,503,'missing service credentials must stop the server before provider access');
-  process.env.SUPABASE_SERVICE_ROLE_KEY='private-service-test';
+  process.env.SUPABASE_SERVICE_ROLE_KEY='sb_secret_private-service-test';
   r=response();config({method:'GET'},r);assert.equal(r.body.authReady,true);assert.deepEqual(r.body.missing,['ANTHROPIC_API_KEY']);
   process.env.ANTHROPIC_API_KEY='private-provider-test';
   r=response();config({method:'GET'},r);assert.equal(r.body.ready,true);assert.deepEqual(r.body.missing,[]);
@@ -36,6 +36,27 @@ test('account configuration works without generation secrets and generation stay
   r=response();config({method:'GET'},r);assert.equal(r.body.authReady,false);assert.equal(r.body.ready,false);assert.deepEqual(r.body.missing,['SUPABASE_ANON_KEY']);
  }finally{
   for(const key of keys){if(saved[key]===undefined)delete process.env[key];else process.env[key]=saved[key];}
+ }
+});
+test('public configuration withholds a secret mistakenly assigned to the public key, including legacy JWT keys',()=>{
+ const names=['SUPABASE_URL','SUPABASE_ANON_KEY','SUPABASE_SERVICE_ROLE_KEY','ANTHROPIC_API_KEY'];
+ const saved=Object.fromEntries(names.map(name=>[name,process.env[name]]));
+ const jwt=role=>['e30',Buffer.from(JSON.stringify({role})).toString('base64url'),'testsignature'].join('.');
+ try{
+  process.env.SUPABASE_URL='https://example.supabase.co';
+  process.env.SUPABASE_SERVICE_ROLE_KEY='sb_secret_server-only-fixture';
+  process.env.ANTHROPIC_API_KEY='provider-only-fixture';
+  for(const secret of ['sb_secret_misplaced-fixture',jwt('service_role')]){
+   process.env.SUPABASE_ANON_KEY=secret;
+   const r=response();config({method:'GET'},r);
+   assert.equal(r.body.authReady,false);assert.equal(r.body.ready,false);
+   assert.equal(r.body.supabaseAnonKey,'');assert.deepEqual(r.body.invalid,['SUPABASE_ANON_KEY']);
+   assert.ok(!JSON.stringify(r.body).includes(secret));
+  }
+  process.env.SUPABASE_ANON_KEY=jwt('anon');process.env.SUPABASE_SERVICE_ROLE_KEY=jwt('service_role');
+  const r=response();config({method:'GET'},r);assert.equal(r.body.ready,true);
+ }finally{
+  for(const name of names){if(saved[name]===undefined)delete process.env[name];else process.env[name]=saved[name];}
  }
 });
 test('source-based writing requires both the plan and consulted excerpts',()=>{

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { inspectConfiguration } from './runtime-config.js';
 export class HttpError extends Error {
   constructor(status, message) { super(message); this.status = status; }
 }
@@ -12,8 +13,10 @@ export function method(req, res, allowed) {
 export async function authenticate(req) {
   const bearer = req.headers.authorization;
   if (!bearer?.startsWith('Bearer ') || bearer.length > 10000) throw new HttpError(401, 'Connecte-toi pour continuer.');
-  const { SUPABASE_URL: url, SUPABASE_ANON_KEY: key, SUPABASE_SERVICE_ROLE_KEY: service } = process.env;
-  if (!url || !key || !service) throw new HttpError(503, 'La plateforme est en cours de configuration.');
+  const config = inspectConfiguration();
+  const service = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  if (!config.authReady || !service || config.invalid.includes('SUPABASE_SERVICE_ROLE_KEY')) throw new HttpError(503, 'La plateforme est en cours de configuration.');
+  const { supabaseUrl: url, supabaseAnonKey: key } = config;
   const options = { auth: { persistSession: false, autoRefreshToken: false }, global: { fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(10000) }) } };
   const db = createClient(url, key, { ...options, global: { ...options.global, headers: { Authorization: bearer } } });
   const { data, error } = await db.auth.getUser(bearer.slice(7));
