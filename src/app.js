@@ -3,6 +3,7 @@ import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { MODULES, sourceReady, validateInputs } from '../shared/modules.js';
 import { requestAuth } from './auth.js';
+import { authModeFromHash, projectPreset } from './onboarding.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
@@ -65,7 +66,7 @@ function renderProjects() {
 }
 const profileFields = [
  ['name','Nom complet','text',true], ['university','Université ou école','text',true], ['field','Filière ou spécialité','text',true],
- ['level','Niveau',['Licence','Master 1','Master 2','Ingénieur','Doctorat']], ['language','Langue',['Français','Anglais','Arabe','Bilingue FR/EN']],
+ ['level','Niveau',['Licence','Master 1','Master 2','Ingénieur','Doctorat','Doctorat en médecine']], ['language','Langue',['Français','Anglais','Arabe','Bilingue FR/EN']],
  ['type','Type de travail',['PFE','Mémoire','Rapport de stage','Thèse']], ['supervisor','Encadrant','text'], ['deadline','Date de soutenance','date'],
  ['citation','Style bibliographique',['APA 7e édition','IEEE','Chicago','Harvard','Vancouver']], ['pages','Nombre de pages attendu','text'],
  ['question','Problématique','textarea'], ['methodology','Méthodologie',['À définir','Quantitative','Qualitative','Mixte','Expérimentale','Étude de cas']],
@@ -76,7 +77,7 @@ function field(key,label,type,required=false,value='') {
   return `<label class="${type === 'textarea' ? 'sp-wide' : ''}">${e(label)}${required ? ' *' : ''}${Array.isArray(type) ? `<select ${common}>${type.map(x=>`<option ${x === value ? 'selected' : ''}>${e(x)}</option>`).join('')}</select>` : type === 'textarea' ? `<textarea ${common} maxlength="24000" rows="5">${e(value)}</textarea>` : `<input ${common} type="${type}" maxlength="500" value="${e(value)}">`}</label>`;
 }
 function renderProjectForm(isNew=false) {
-  const p = isNew ? {} : state.project.profile;
+  const p = isNew ? projectPreset(location.search) : state.project.profile;
   shell(`<form id="project-form" data-new="${isNew}" class="sp-card"><p>Ces informations guideront les modules. Tu peux les modifier à tout moment.</p>
     <div class="sp-form-grid">${field('title','Sujet ou titre du projet','text',true,isNew ? '' : state.project.title)}${profileFields.map(([k,l,t,r])=>field(k,l,t,r,p[k]||'')).join('')}</div>
     <div class="sp-actions"><button type="submit" class="sp-button primary">${isNew ? 'Créer le projet' : 'Enregistrer les consignes'}</button>${button('Retour aux projets','route','projects')}</div></form>`,isNew?'Nouveau projet':'Profil et consignes');
@@ -296,3 +297,6 @@ ready=(async()=>{
   const {data}=await state.db.auth.getSession();state.user=data.session?.user||null;
 })();
 ready.catch(()=>{});
+function openLinkedWorkspace(){const mode=authModeFromHash(location.hash);if(mode)window.openApp(mode);}
+window.addEventListener('hashchange',openLinkedWorkspace);
+openLinkedWorkspace();

@@ -12,6 +12,7 @@ Cette branche améliore le projet Vercel existant. Elle n’a pas été déploy�
 - Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
 - Authentification obligatoire de chaque appel API, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. Les échecs traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
 - Les scores de plagiat, partenariats et témoignages non vérifiés ont été retirés. Le module Correction est présenté comme une aide à la révision.
+- Deux parcours publics ISPITS et médecine, cinq guides pratiques et un répertoire des guides. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable.
 
 ## Configuration requise avant publication
 
@@ -69,7 +70,7 @@ Le propriétaire a confirmé le domaine **soutenancepro.com**, acheté chez Host
 4. Dans **Supabase > Authentication > URL Configuration**, définir Site URL à `https://soutenancepro.com` et ajouter cette origine aux Redirect URLs, en conservant les URLs de preview encore utilisées. Vérifier les liens de confirmation et de récupération depuis ce domaine.
 5. Après vérification du parcours utilisateur et publication de la nouvelle version en production, contrôler `https://soutenancepro.com/robots.txt` et `https://soutenancepro.com/sitemap.xml`, puis vérifier la propriété dans Google Search Console et soumettre le sitemap.
 
-Le code est préparé pour ce domaine. L'association dans Vercel, les changements DNS, le certificat, les URLs Auth et la propriété Search Console ne sont pas encore confirmés. Les modifications DNS n'ont pas été effectuées depuis cette branche.
+Le propriétaire a associé le domaine principal dans Vercel et remplacé l'enregistrement A Hostinger par la valeur indiquée pour son projet. Sa capture montre le lancement de la génération du certificat et il indique ensuite que le domaine fonctionne. L'accès HTTPS n'a pas encore été vérifié indépendamment depuis cet environnement. L'association de `www`, les URLs Auth et la propriété Search Console restent à vérifier. Le code prévoit une redirection permanente de `www` vers le domaine principal ; elle nécessite d'abord l'association de `www` au projet Vercel.
 
 Les coordonnées de l’exploitant, la politique de confidentialité et les conditions commerciales restent à fournir pour rédiger et publier les pages adaptées à l’activité réelle. Aucune identité légale ou certification n’est inventée dans cette branche.
 
@@ -87,11 +88,15 @@ Architecture : `index.html` / `src/` pour l’interface, `shared/modules.js` pou
 
 ## Référencement naturel
 
-Le build ajoute une description de la page, les balises de partage, une URL canonique, les données structurées `WebSite`, `robots.txt` et `sitemap.xml`. Le sitemap de production référence uniquement l’accueil public existant ; aucun projet étudiant ou écran de compte n’y figure. Les liens de navigation du pied de page sont de vrais liens HTML.
+Le build produit neuf pages publiques : l'accueil, le répertoire `/guides`, les parcours `/pfe-ispits` et `/these-medecine`, et cinq guides sur la problématique, le questionnaire, la bibliographie, SPSS et la soutenance. Leur texte est présent dans le HTML initial. Chaque page possède un titre, une description, une URL canonique, les balises de partage et des données structurées adaptées (`WebSite`, `WebPage`, `Article`, `BreadcrumbList`). Le sitemap de production ne contient que ces neuf URLs ; aucun projet étudiant ou écran de compte n'y figure. Les pages utilisent de vrais liens HTML, une navigation interne et une image de partage commune.
 
 Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews et builds locaux ont une balise `noindex,follow` et un sitemap vide. Leur `robots.txt` permet la lecture de cette balise ; `noindex` ne remplace pas le contrôle d’accès. Les routes `/api/` envoient aussi `X-Robots-Tag: noindex`.
 
 `SITE_URL` est facultatif et vaut par défaut `https://soutenancepro.com`. Si une ancienne valeur existe dans Vercel, la remplacer par cette origine HTTPS dans l'environnement Production avant de redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni modification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
+
+Les tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les neuf URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** après vérification des variables : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
+
+Le [plan de lancement SEO](docs/seo-launch.md) précise les intentions de recherche, les limites des mesures disponibles et le suivi du premier mois. Il n'annonce ni volume de recherches inventé ni garantie de première position.
 
 Références : [Guide SEO Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing), [nom du site](https://developers.google.com/search/docs/appearance/site-names).
 

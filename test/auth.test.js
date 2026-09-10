@@ -3,13 +3,14 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
 import { requestAuth } from '../src/auth.js';
+import { authModeFromHash, projectPreset } from '../src/onboarding.js';
 
 const appSource = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const landing = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 
 // Exercise the real app handlers with a small DOM double and an Auth client double.
 // No emails, credentials or requests are sent to a live service.
-function mount(overrides = {}) {
+function mount(overrides = {}, url = {}) {
   const listeners = {}, calls = [], diagnostics = [];
   let html = '', revision = 0;
   const notice = { hidden: true, textContent: '', addEventListener() {} };
@@ -29,13 +30,13 @@ function mount(overrides = {}) {
   };
   const window = { addEventListener() {} };
   runInNewContext(appSource, {
-    window, location: { origin: 'https://preview.example.test' },
+    window, location: { origin: 'https://preview.example.test',...url },
     document: {
       getElementById: id => id === 'workspace' ? root : notice,
       body: { classList: { add() {}, remove() {} } }
     },
     console: { warn: (...args) => diagnostics.push(args) },
-    createClient: () => ({ auth }), requestAuth,
+    createClient: () => ({ auth }), requestAuth, authModeFromHash, projectPreset,
     fetch: async () => ({ ok: true, json: async () => ({ authReady: true, ready: true }) }),
     FormData: class { constructor(form) { this.values = form.values; } [Symbol.iterator]() { return this.values[Symbol.iterator](); } },
     clearTimeout, setTimeout
@@ -76,6 +77,17 @@ test('free-trial and signup links open signup; the displayed signup form calls s
   assert.equal(app.calls[0][1].options.emailRedirectTo, 'https://preview.example.test');
   assert.match(app.root.innerHTML, /data-mode="login"/);
   assert.match(app.notice.textContent, /confirmer ton inscription/);
+});
+
+test('a guide signup link opens signup on arrival and healthcare presets remain editable defaults', async()=>{
+  const app=mount({}, {hash:'#inscription',search:'?parcours=medecine'});
+  await new Promise(resolve=>setTimeout(resolve,0));
+  assert.match(app.root.innerHTML,/data-mode="signup"/);
+  await app.submit(app.form());
+  assert.equal(app.calls[0][0],'signup');
+  assert.deepEqual(projectPreset('?parcours=medecine'),{type:'Thèse',level:'Doctorat en médecine',field:'Médecine',language:'Français',citation:'Vancouver'});
+  assert.deepEqual(projectPreset('?parcours=unexpected'),{});
+  assert.equal(authModeFromHash('#pricing'),null);
 });
 
 test('changing from a failed login to signup clears the old error and preserves email', async () => {
