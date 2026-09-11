@@ -4,13 +4,13 @@ Cette version améliore le projet Vercel existant. Le site conserve son identit�
 
 ## Fonctions implémentées
 
-- Inscription, confirmation email, connexion, déconnexion et réinitialisation du mot de passe.
+- Inscription directe par email et mot de passe, connexion, déconnexion et réinitialisation du mot de passe. Les nouveaux comptes créés sur le site n'attendent pas d'email de confirmation.
 - Projets persistants, profil étudiant et consignes universitaires.
 - Neuf modules, historique des documents, édition avec sauvegarde automatique et avertissement en cas de texte non enregistré.
 - Plan explicitement validé et identifié. Modifier ce plan invalide sa validation.
 - Recherche bibliographique Crossref, sélection des sources, extraits consultés, puis rédaction. Les métadonnées ne constituent pas une lecture automatique du texte intégral. Les dates proposées couvrent les dix dernières années et peuvent être changées.
 - Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
-- Authentification obligatoire de chaque appel API, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. Les échecs traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
+- Authentification obligatoire des appels aux données étudiant et à l'IA, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. L'inscription publique possède sa propre limitation des tentatives. Les échecs de génération traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
 - Les scores de plagiat, partenariats et témoignages non vérifiés ont été retirés. Le module Correction est présenté comme une aide à la révision.
 - Deux parcours publics ISPITS et médecine, cinq guides pratiques et un répertoire des guides. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable.
 
@@ -20,7 +20,9 @@ Cette version améliore le projet Vercel existant. Le site conserve son identit�
 
 Utiliser un nouveau projet Supabase dédié ou un projet existant dont le schéma a été vérifié. Sur un nouveau projet, exécuter dans l’ordre `supabase/migrations/001_platform.sql`, puis `supabase/migrations/002_restrict_student_helpers.sql` via les migrations Supabase ou le SQL Editor. La seconde migration retire les droits RPC hérités des rôles publics sur les fonctions de déclenchement. Ce fichier crée les tables `student_accounts`, `student_projects`, `student_documents` et `student_ai_jobs`, les politiques RLS, comptes gratuits et limites. Les fonctions et déclencheurs utilisent aussi le préfixe `student_`. Ce préfixe évite les conflits avec les 15 tables de gestion déjà présentes dans le projet Supabase, notamment `public.projects`. Il ne supprime aucune table existante et échoue si les noms sont déjà utilisés.
 
-Dans **Authentication > URL Configuration**, utiliser le domaine du site comme Site URL. Ajouter exactement les URLs de production et de preview utilisées dans Redirect URLs. Garder la confirmation email active et vérifier l’envoi/réception des messages d’authentification avant ouverture au public.
+Appliquer ensuite `supabase/signup-limits.sql` via une migration Supabase nommée `student_signup_limits`. Ce script ajoute uniquement la limitation des tentatives d'inscription, réservée au serveur. `/api/signup` crée un nouveau compte avec `email_confirm: true`, puis le navigateur se connecte avec son mot de passe. Aucun lien de confirmation n'est envoyé par ce parcours. Les paramètres Auth globaux du projet partagé restent inchangés. Les comptes existants ne sont ni confirmés ni réinitialisés par cet endpoint ; leur accès exige toujours leur propre mot de passe. L'absence de confirmation n'est pas une preuve de possession de l'adresse email.
+
+Pour la récupération de mot de passe, **Authentication > URL Configuration** doit utiliser `https://soutenancepro.com` comme Site URL et contenir les origines de production et preview autorisées dans Redirect URLs. Ce réglage distant et l'expéditeur SMTP ne sont pas modifiables par les outils Supabase exposés à cette session. Les anciens liens expirés ou dirigés vers localhost restent inutilisables ; le nouveau parcours d'inscription n'en dépend plus. Les réglages SMTP et le nom de l'expéditeur restent nécessaires pour des emails de récupération personnalisés.
 
 ### 2. Renseigner Vercel
 
@@ -46,7 +48,7 @@ Les tests locaux passent et Vercel a publié une preview de la branche. Le proje
 
 Correction du parcours d'inscription : les appels à l'action gratuits ouvrent explicitement le formulaire de création de compte ; le formulaire fixe le type de requête envoyé. Une erreur de connexion est effacée au changement d'écran, l'email est conservé et les requêtes simultanées sont bloquées. Les erreurs de confirmation email, d'envoi SMTP, de configuration et de mot de passe sont distinguées. La console ne reçoit que le mode, le code d'erreur et le statut HTTP, jamais les identifiants ni le message brut du fournisseur. Quatre tests exercent les vrais gestionnaires de l'interface avec des doublures DOM/Auth ; aucun email réel n'est envoyé par ces tests. Les URLs Auth et l'inscription réelle restent à vérifier avant publication.
 
-Avant de promouvoir cette version : vérifier l’inscription et le lien reçu, la connexion, la création d’un projet, la génération d’un plan et sa validation, la recherche puis la lecture d’une source, l’enregistrement de son extrait, une rédaction, l’édition, le rechargement du navigateur et les trois exports. Créer un deuxième compte de test et confirmer qu’il ne voit pas le premier projet. Contrôler aussi le parcours sur mobile. Cette vérification ne doit pas utiliser des dossiers clients réels.
+Avant de promouvoir cette version : vérifier l'inscription directe, la connexion, la récupération de mot de passe séparément, la création d'un projet, la génération d'un plan et sa validation, la recherche puis la lecture d'une source, l'enregistrement de son extrait, une rédaction, l'édition, le rechargement du navigateur et les trois exports. Créer un deuxième compte de test et confirmer qu'il ne voit pas le premier projet. Contrôler aussi le parcours sur mobile. Cette vérification ne doit pas utiliser des dossiers clients réels.
 
 ### 4. Activer les offres
 
@@ -69,7 +71,7 @@ Le propriétaire a confirmé le domaine **soutenancepro.com**, acheté chez Host
 1. Dans **Vercel > soutenance-pro1 > Settings > Domains**, ajouter `soutenancepro.com` et `www.soutenancepro.com`. Associer le premier à la production et configurer une redirection permanente de `www.soutenancepro.com` vers `soutenancepro.com`.
 2. Reporter chez le gestionnaire DNS autoritatif les enregistrements exacts affichés par Vercel : généralement A pour `@` et CNAME pour `www`. Utiliser les valeurs propres au projet, sans recopier une adresse générique. Chez Hostinger, ouvrir **Domains > DNS** et sélectionner le domaine. Préserver les enregistrements email existants.
 3. Attendre la validation des deux domaines et du certificat HTTPS dans Vercel. Si `SITE_URL` existe déjà dans l'environnement Production, lui donner la valeur `https://soutenancepro.com` ; sinon le build utilise cette origine par défaut.
-4. Dans **Supabase > Authentication > URL Configuration**, définir Site URL à `https://soutenancepro.com` et ajouter cette origine aux Redirect URLs, en conservant les URLs de preview encore utilisées. Vérifier les liens de confirmation et de récupération depuis ce domaine.
+4. Dans **Supabase > Authentication > URL Configuration**, définir Site URL à `https://soutenancepro.com` et ajouter cette origine aux Redirect URLs, en conservant les URLs de preview encore utilisées. Vérifier les liens de récupération depuis ce domaine. L'inscription directe n'utilise pas de lien email.
 5. Après vérification du parcours utilisateur et publication de la nouvelle version en production, contrôler `https://soutenancepro.com/robots.txt` et `https://soutenancepro.com/sitemap.xml`, puis vérifier la propriété dans Google Search Console et soumettre le sitemap.
 
 Le propriétaire a associé le domaine principal dans Vercel et remplacé l'enregistrement A Hostinger par la valeur indiquée pour son projet. Sa capture montre le lancement de la génération du certificat et il indique ensuite que le domaine fonctionne. L'accès HTTPS n'a pas encore été vérifié indépendamment depuis cet environnement. L'association de `www`, les URLs Auth et la propriété Search Console restent à vérifier. Le code prévoit une redirection permanente de `www` vers le domaine principal ; elle nécessite d'abord l'association de `www` au projet Vercel.

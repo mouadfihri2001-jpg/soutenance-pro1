@@ -2,8 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { MODULES, sourceReady, validateInputs } from '../shared/modules.js';
-import { requestAuth } from './auth.js';
+import { requestAuth, authLinkErrorFromHash } from './auth.js';
 import { authModeFromHash, projectPreset } from './onboarding.js';
+import { renderInstagramContact } from './contact.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
@@ -45,12 +46,12 @@ function renderAuth() {
   const mode = state.authMode;
   root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
     <h1>${mode === 'signup' ? 'Créer mon compte' : mode === 'reset' ? 'Réinitialiser le mot de passe' : mode === 'recovery' ? 'Nouveau mot de passe' : 'Retrouver mon projet'}</h1>
-    <p>${mode === 'signup' ? 'Un espace pour ton mémoire, tes sources et ta soutenance.' : mode === 'reset' ? 'Indique ton email pour recevoir un lien de réinitialisation.' : mode === 'recovery' ? 'Choisis un nouveau mot de passe pour ton compte.' : 'Connecte-toi à ton espace personnel.'}</p>
+    <p>${mode === 'signup' ? 'Crée ton compte et commence ton projet. Aucun email de confirmation à attendre.' : mode === 'reset' ? 'Indique ton email pour recevoir un lien de réinitialisation.' : mode === 'recovery' ? 'Choisis un nouveau mot de passe pour ton compte.' : 'Connecte-toi à ton espace personnel.'}</p>
     <form id="auth-form" data-mode="${mode}">${mode !== 'recovery' ? `<label>Email<input name="email" type="email" autocomplete="email" value="${e(state.authEmail)}" required></label>` : ''}
     ${mode !== 'reset' ? `<label>Mot de passe<input name="password" type="password" autocomplete="${mode === 'login' ? 'current-password' : 'new-password'}" ${mode === 'login' ? '' : 'minlength="8"'} required>${mode === 'login' ? '' : '<small>Au moins 8 caractères.</small>'}</label>` : ''}
     <button class="sp-button primary" type="submit">${mode === 'signup' ? 'Créer mon compte gratuit' : mode === 'reset' ? 'Recevoir le lien' : mode === 'recovery' ? 'Enregistrer' : 'Se connecter'}</button></form>
     <div class="sp-auth-links">${button(mode === 'signup' ? 'Déjà un compte ? Se connecter' : mode === 'reset' ? 'Revenir à la connexion' : 'Créer un compte gratuit', 'auth-mode', mode === 'signup' || mode === 'reset' ? 'login' : 'signup', 'sp-link')}
-    ${mode !== 'reset' ? button('Mot de passe oublié', 'auth-mode', 'reset', 'sp-link') : ''}${button('Revenir au site', 'close', '', 'sp-link')}</div></div></div>`;
+    ${mode !== 'reset' ? button('Mot de passe oublié', 'auth-mode', 'reset', 'sp-link') : ''}${button('Revenir au site', 'close', '', 'sp-link')}</div>${renderInstagramContact()}</div></div>`;
 }
 async function loadProjects() {
   const [projects, account] = await Promise.all([
@@ -172,13 +173,9 @@ async function submitAuth(form) {
   state.authEmail=String(values.email||state.authEmail).trim();
   state.authPending=true;clearNotice();root.setAttribute('aria-busy','true');
   try{
-    const result=await requestAuth(state.db.auth,mode,values,location.origin);
+    const result=await requestAuth(state.db.auth,mode,values,location.origin,fetch);
     if(!form.isConnected||root.hidden)return;
     if(mode==='reset'){notify('Si un compte existe, un lien a été envoyé à cette adresse.');return;}
-    if(mode==='signup'&&!result.data.session){
-      state.authMode='login';renderAuth();
-      notify('Si une confirmation est nécessaire, consulte ta boîte mail et les courriers indésirables. Si tu as déjà un compte, connecte-toi ou utilise « Mot de passe oublié ».');return;
-    }
     if(mode==='recovery'){state.authMode='login';notify('Mot de passe mis à jour.');}
     state.user=result.data.user;await loadProjects();state.route='projects';renderProjects();
   }finally{state.authPending=false;root.removeAttribute('aria-busy');}
@@ -297,6 +294,13 @@ ready=(async()=>{
   const {data}=await state.db.auth.getSession();state.user=data.session?.user||null;
 })();
 ready.catch(()=>{});
-function openLinkedWorkspace(){const mode=authModeFromHash(location.hash);if(mode)window.openApp(mode);}
+async function openLinkedWorkspace(){
+  const linkError=authLinkErrorFromHash(location.hash);
+  if(linkError){
+    window.history.replaceState(null,'',`${location.pathname}${location.search}#connexion`);
+    await window.openApp('login');notify(linkError,true);return;
+  }
+  const mode=authModeFromHash(location.hash);if(mode)await window.openApp(mode);
+}
 window.addEventListener('hashchange',openLinkedWorkspace);
 openLinkedWorkspace();

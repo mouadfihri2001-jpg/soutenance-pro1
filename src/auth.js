@@ -1,7 +1,7 @@
 export function authErrorMessage(error, mode) {
   const messages = {
     invalid_credentials: 'Email ou mot de passe incorrect. Si tu n’as pas encore de compte, choisis « Créer un compte gratuit ».',
-    email_not_confirmed: 'Confirme ton adresse email avec le lien reçu, puis reconnecte-toi. Vérifie aussi les courriers indésirables.',
+    email_not_confirmed: 'Ce compte attend encore une activation. Contacte Soutenance Pro avec le lien Instagram ci-dessous.',
     email_address_invalid: 'Vérifie ton adresse email et réessaie.',
     email_address_not_authorized: 'L’envoi des emails de confirmation n’est pas encore configuré pour cette adresse. Contacte l’assistance.',
     email_provider_disabled: 'La création de comptes par email est actuellement indisponible. Contacte l’assistance.',
@@ -33,13 +33,29 @@ export function authErrorMessage(error, mode) {
 }
 
 // The submitted form owns its mode; a later screen change cannot turn signup into login.
-export async function requestAuth(auth, mode, values, origin) {
+export async function requestAuth(auth, mode, values, origin, send = fetch) {
   const email = String(values.email || '').trim();
   const password = values.password;
   try {
     let result;
     switch (mode) {
-      case 'signup': result = await auth.signUp({ email, password, options: { emailRedirectTo: origin } }); break;
+      case 'signup': {
+        const response = await send('/api/signup', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin', cache: 'no-store',
+          body: JSON.stringify({ email, password }), signal: AbortSignal.timeout(20000)
+        });
+        const body = await response.json();
+        // A retried request may find the account created on the first attempt.
+        // Access still requires a successful password sign-in; existing users
+        // are never confirmed, updated or reset by the signup endpoint.
+        if (!response.ok && response.status !== 409) {
+          throw { code: body.error?.code, status: response.status };
+        }
+        result = await auth.signInWithPassword({ email, password });
+        if (!result.error && !result.data?.session) throw { code: 'session_not_found' };
+        break;
+      }
       case 'login': result = await auth.signInWithPassword({ email, password }); break;
       case 'reset': result = await auth.resetPasswordForEmail(email, { redirectTo: origin }); break;
       case 'recovery': result = await auth.updateUser({ password }); break;
@@ -57,4 +73,12 @@ export async function requestAuth(auth, mode, values, origin) {
     };
     throw failure;
   }
+}
+
+export function authLinkErrorFromHash(hash = '') {
+  const params = new URLSearchParams(hash.replace(/^#/, ''));
+  if (!params.has('error')) return null;
+  return params.get('error_code') === 'otp_expired'
+    ? 'Ce lien a expiré ou a déjà été utilisé. Connecte-toi avec ton mot de passe ou demande un nouveau lien.'
+    : 'Ce lien de connexion n’est pas valide. Connecte-toi avec ton email et ton mot de passe.';
 }

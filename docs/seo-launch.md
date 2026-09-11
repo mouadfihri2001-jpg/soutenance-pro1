@@ -23,7 +23,7 @@ Le contenu décrit les fonctions présentes : recherche Crossref, travail à par
 ## Avant la mise en production
 
 1. Vérifier les variables Production dans Vercel, distinctes des variables Preview : `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`. L'origine `SITE_URL`, si elle est définie, doit être `https://soutenancepro.com`.
-2. Vérifier Site URL et Redirect URLs dans Supabase pour le domaine public. Tester une inscription, la réception de l'email, la confirmation, la connexion et la récupération du mot de passe. La présence de `ready: true` ne suffit pas à prouver ces parcours.
+2. Tester l'inscription directe et la connexion par mot de passe. Ce parcours ne demande plus de confirmation email. Pour la récupération de mot de passe, vérifier séparément Site URL, Redirect URLs, l'expéditeur et la réception du message. La présence de `ready: true` ne suffit pas à prouver ces parcours.
 3. Vérifier un projet, un plan validé, une source consultée, une rédaction enregistrée, le rechargement et les exports. Utiliser du contenu de démonstration sans dossier médical identifiable.
 4. Publier par un nouveau build Production. Un artefact construit en Preview contient volontairement `noindex`.
 5. Vérifier que les neuf URLs répondent en HTTP 200, qu'une URL inexistante répond en 404, que les pages publiques ont `index,follow` et le bon canonical, et que le sitemap est accessible. Vérifier mobile, liens et formulaire.

@@ -2,8 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
-import { requestAuth } from '../src/auth.js';
+import { requestAuth, authLinkErrorFromHash } from '../src/auth.js';
 import { authModeFromHash, projectPreset } from '../src/onboarding.js';
+import { renderInstagramContact } from '../src/contact.js';
 
 const appSource = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const landing = await readFile(new URL('../index.html', import.meta.url), 'utf8');
@@ -12,7 +13,7 @@ const landing = await readFile(new URL('../index.html', import.meta.url), 'utf8'
 // No emails, credentials or requests are sent to a live service.
 function mount(overrides = {}, url = {}) {
   const listeners = {}, calls = [], diagnostics = [];
-  let html = '', revision = 0;
+  let html = '', revision = 0, created = false;
   const notice = { hidden: true, textContent: '', addEventListener() {} };
   const root = {
     hidden: true,
@@ -24,20 +25,27 @@ function mount(overrides = {}, url = {}) {
   };
   const auth = {
     onAuthStateChange() {}, getSession: async () => ({ data: { session: null } }),
-    signUp: async payload => { calls.push(['signup', payload]); return { data: { user: { id: 'test' }, session: null }, error: null }; },
-    signInWithPassword: async payload => { calls.push(['login', payload]); return { error: { code: 'invalid_credentials', status: 400 } }; },
+    signInWithPassword: async payload => { calls.push(['login', payload]); return created ? { data: { user: { id: 'test', email: payload.email }, session: { access_token: 'test-only-token' } }, error: null } : { error: { code: 'invalid_credentials', status: 400 } }; },
     ...overrides
   };
-  const window = { addEventListener() {} };
+  const window = { addEventListener() {}, history: { replaceState() {} } };
   runInNewContext(appSource, {
-    window, location: { origin: 'https://preview.example.test',...url },
+    window, location: { origin: 'https://preview.example.test', pathname: '/', search: '',...url },
     document: {
       getElementById: id => id === 'workspace' ? root : notice,
       body: { classList: { add() {}, remove() {} } }
     },
     console: { warn: (...args) => diagnostics.push(args) },
-    createClient: () => ({ auth }), requestAuth, authModeFromHash, projectPreset,
-    fetch: async () => ({ ok: true, json: async () => ({ authReady: true, ready: true }) }),
+    createClient: () => ({ auth, from() { const q = { select() { return q; }, order: async () => ({ data: [] }), single: async () => ({ data: { plan: 'free' } }) }; return q; } }), requestAuth, authLinkErrorFromHash, authModeFromHash, projectPreset, renderInstagramContact,
+    fetch: async (path, init) => {
+      if (path === '/api/signup') {
+        const payload = JSON.parse(init.body); calls.push(['signup', payload]);
+        const result = overrides.signupResult ? await overrides.signupResult(payload) : {};
+        if (!result.error) created = true;
+        return { ok: !result.error, status: result.error?.status || 201, json: async () => result.error ? result : { accepted: true } };
+      }
+      return { ok: true, json: async () => ({ authReady: true, ready: true }) };
+    },
     FormData: class { constructor(form) { this.values = form.values; } [Symbol.iterator]() { return this.values[Symbol.iterator](); } },
     clearTimeout, setTimeout
   });
@@ -58,7 +66,7 @@ function mount(overrides = {}, url = {}) {
   };
 }
 
-test('free-trial and signup links open signup; the displayed signup form calls signUp', async () => {
+test('signup creates an account through the server and immediately signs in without confirmation', async () => {
   const controls = [...landing.matchAll(/<(button|a)\b[^>]*onclick="([^"]+)"[^>]*>([\s\S]*?)<\/\1>/g)];
   const signup = controls.filter(match => /Essai gratuit|Commencer gratuitement|Créer mon compte|S'inscrire/.test(match[3]));
   assert.ok(signup.length >= 5);
@@ -70,13 +78,13 @@ test('free-trial and signup links open signup; the displayed signup form calls s
   await app.window.openApp('signup');
   assert.match(app.root.innerHTML, /Créer mon compte/);
   await app.submit(app.form());
-  assert.equal(app.calls.length, 1);
+  assert.equal(app.calls.length, 2);
   assert.equal(app.calls[0][0], 'signup');
   assert.equal(app.calls[0][1].email, 'student@example.test');
   assert.equal(app.calls[0][1].password, ' test-password-123 ');
-  assert.equal(app.calls[0][1].options.emailRedirectTo, 'https://preview.example.test');
-  assert.match(app.root.innerHTML, /data-mode="login"/);
-  assert.match(app.notice.textContent, /Si une confirmation est nécessaire/);
+  assert.equal(app.calls[1][0], 'login');
+  assert.match(app.root.innerHTML, /Ton premier projet commence ici/);
+  assert.equal(app.notice.hidden, true);
 });
 
 test('a guide signup link opens signup on arrival and healthcare presets remain editable defaults', async()=>{
@@ -102,7 +110,7 @@ test('changing from a failed login to signup clears the old error and preserves 
   assert.equal(app.notice.hidden, true);
   assert.equal(app.notice.textContent, '');
   await app.submit(app.form());
-  assert.deepEqual(app.calls.map(call => call[0]), ['login', 'signup']);
+  assert.deepEqual(app.calls.map(call => call[0]), ['login', 'signup', 'login']);
 });
 
 test('pending authentication prevents duplicate submits and mode changes; closing hides a late error', async () => {
@@ -125,7 +133,7 @@ test('pending authentication prevents duplicate submits and mode changes; closin
 
 test('authentication errors distinguish confirmation, SMTP, configuration and credentials without logging secrets', async () => {
   for (const [mode, code, status, expected] of [
-    ['login', 'email_not_confirmed', 400, /Confirme ton adresse/],
+    ['login', 'email_not_confirmed', 400, /attend encore une activation/],
     ['signup', 'email_address_not_authorized', 400, /envoi des emails/],
     ['signup', 'weak_password', 422, /mot de passe plus robuste/],
     ['login', undefined, 401, /service de connexion est indisponible/],
@@ -133,7 +141,7 @@ test('authentication errors distinguish confirmation, SMTP, configuration and cr
     ['signup', 'unexpected_failure', 500, /inscription n’a pas pu aboutir/]
   ]) {
     const fail = async () => ({ error: { code, status, message: 'private-provider-detail password=secret-test' } });
-    const app = mount({ signUp: fail, signInWithPassword: fail, resetPasswordForEmail: fail });
+    const app = mount({ signupResult: fail, signInWithPassword: fail, resetPasswordForEmail: fail });
     await app.window.openApp(mode === 'signup' ? 'signup' : 'login');
     if (mode === 'reset') await app.click('auth-mode', 'reset');
     await app.submit(app.form());
@@ -142,4 +150,25 @@ test('authentication errors distinguish confirmation, SMTP, configuration and cr
     assert.doesNotMatch(JSON.stringify(app.diagnostics), /private-provider|secret-test|student@|test-password/);
     assert.deepEqual(app.diagnostics[0][1], { mode, code: code || 'unknown', status });
   }
+});
+
+test('a duplicate signup only signs in with the supplied password and never updates an existing user', async () => {
+  const calls = [];
+  const auth = {
+    signInWithPassword: async values => { calls.push(values); return { error: { code: 'invalid_credentials', status: 400 } }; },
+    updateUser: async () => { throw new Error('Existing users must not be updated'); },
+    signUp: async () => { throw new Error('Email confirmation signup must not be called'); }
+  };
+  await assert.rejects(requestAuth(auth, 'signup', { email: 'existing@example.test', password: 'wrong-password' }, 'https://example.test', async () => ({ ok: false, status: 409, json: async () => ({ error: { code: 'user_already_exists' } }) })), /Email ou mot de passe incorrect/);
+  assert.deepEqual(calls, [{ email: 'existing@example.test', password: 'wrong-password' }]);
+});
+
+test('expired auth links display a safe action without echoing arbitrary URL text', async () => {
+  assert.match(authLinkErrorFromHash('#error=access_denied&error_code=otp_expired&error_description=private-token'), /Ce lien a expiré/);
+  assert.doesNotMatch(authLinkErrorFromHash('#error=private-token'), /private-token/);
+  assert.equal(authLinkErrorFromHash('#inscription'), null);
+  const app = mount({}, { hash: '#error=access_denied&error_code=otp_expired' });
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.match(app.root.innerHTML, /data-mode="login"/);
+  assert.match(app.notice.textContent, /Ce lien a expiré/);
 });

@@ -1,5 +1,6 @@
 import { marked } from 'marked';
 import { pages } from '../content/pages.mjs';
+import { contactStyles, renderInstagramContact } from '../src/contact.js';
 
 export const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const json = value => JSON.stringify(value).replace(/</g, '\\u003c');
@@ -29,11 +30,11 @@ function layout({title, description, meta, content, intent='ispits', article=fal
 <meta name="theme-color" content="#004d35"><meta property="og:type" content="${article?'article':'website'}"><meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${brand}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}">
-${meta}<link rel="stylesheet" href="/assets/site.css"></head><body class="editorial">
+${meta}<link rel="stylesheet" href="/assets/site.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="site-header"><a class="site-brand" href="/" aria-label="Soutenance Pro AI, accueil">${logo}</a><nav aria-label="Navigation principale"><a href="/pfe-ispits">ISPITS</a><a href="/these-medecine">Médecine</a><a href="/guides">Guides</a><a href="/#pricing">Tarifs</a></nav><a class="site-button compact" href="${signup(intent)}">Essai gratuit</a></header>
 ${content}
-<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec un ISPITS ou une faculté.</p></div><nav aria-label="Navigation de pied de page"><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/guides">Guides de méthode</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro AI</p></footer></body></html>`;
+<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec un ISPITS ou une faculté.</p>${renderInstagramContact()}</div><nav aria-label="Navigation de pied de page"><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/guides">Guides de méthode</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro AI</p></footer>${renderInstagramContact({floating:true})}</body></html>`;
 }
 
 const card = p => `<a class="guide-card" href="/${p.slug}"><span class="eyebrow">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.heading)}</h3><p>${escapeHtml(p.lead)}</p><span class="card-link">Lire le guide <span aria-hidden="true">→</span></span></a>`;
