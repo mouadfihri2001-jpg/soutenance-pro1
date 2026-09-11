@@ -32,8 +32,8 @@ function shell(content, title = 'Mes projets') {
 }
 function activePlan() {
   const a = state.account;
-  if (!a || a.plan === 'free' || !a.subscription_expires_at || new Date(a.subscription_expires_at) <= new Date()) return 'Gratuit';
-  return a.plan === 'offre' ? 'Offre' : 'Max';
+  if (!a || a.plan === 'free' || !a.subscription_expires_at || new Date(a.subscription_expires_at) <= new Date()) return 'Découverte';
+  return a.plan === 'offre' ? 'Essentiel' : 'Signature';
 }
 function renderAuth() {
   clearNotice();

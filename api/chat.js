@@ -28,7 +28,8 @@ export function createChatHandler(auth = authenticate, send = (...args) => fetch
       const response = await send('https://api.anthropic.com/v1/messages', {
         method: 'POST', signal: AbortSignal.timeout(40000),
         headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-        body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-4-6', max_tokens: 4096, ...prompt })
+        // Sonnet 5 enables adaptive thinking by default; preserve the synchronous text budget.
+        body: JSON.stringify({ model: process.env.ANTHROPIC_MODEL || 'claude-sonnet-5', thinking: { type: 'disabled' }, max_tokens: 4096, ...prompt })
       });
       if (!response.ok) throw new HttpError(response.status === 429 ? 429 : 502, response.status === 429 ? 'Le service IA est occupé. Réessaie dans un instant.' : 'Le service IA est temporairement indisponible.');
       const data = await response.json();

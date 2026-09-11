@@ -80,9 +80,11 @@ function sessionMock({quota=true,saveError=false}={}){
 }
 test('server selects the model, bounds tokens and saves the generated document',async()=>{
  const mock=sessionMock();let payload;
- const h=createChatHandler(async()=>mock.session,async(url,opts)=>{payload=JSON.parse(opts.body);return{ok:true,json:async()=>({content:[{type:'text',text:'# Plan\nContenu'}],usage:{input_tokens:20,output_tokens:30}})}});
+ const h=createChatHandler(async()=>mock.session,async(url,opts)=>{payload=JSON.parse(opts.body);return{ok:true,json:async()=>({content:[{type:'text',text:'# Plan'},{type:'thinking',thinking:'Internal reasoning must not be saved'},{type:'text',text:'Contenu'}],usage:{input_tokens:20,output_tokens:30}})}});
  const r=response();await h({method:'POST',headers:{},body:{projectId,module:'plan',inputs:{instructions:'Adapté à mon sujet'},model:'attacker-model',max_tokens:100000}},r);
- assert.equal(r.code,200);assert.equal(payload.model,process.env.ANTHROPIC_MODEL||'claude-sonnet-4-6');assert.equal(payload.max_tokens,4096);
+ assert.equal(r.code,200);assert.equal(payload.model,process.env.ANTHROPIC_MODEL||'claude-sonnet-5');assert.equal(payload.max_tokens,4096);
+ assert.deepEqual(payload.thinking,{type:'disabled'});
+ assert.equal(mock.writes[0].content,'# Plan\nContenu');
  assert.equal(mock.writes[0].user_id,owner);assert.equal(mock.jobUpdates.at(-1).status,'completed');
 });
 test('quota exhaustion stops generation and upstream failures refund reservations',async()=>{

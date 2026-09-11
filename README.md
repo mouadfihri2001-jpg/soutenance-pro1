@@ -31,7 +31,7 @@ Ajouter dans **Project Settings > Environment Variables**, séparément pour Pre
 | Variable | Valeur |
 | --- | --- |
 | `ANTHROPIC_API_KEY` | Clé Anthropic existante du projet |
-| `ANTHROPIC_MODEL` | `claude-sonnet-4-6` par défaut ; configurable côté serveur |
+| `ANTHROPIC_MODEL` | `claude-sonnet-5` par défaut ; configurable côté serveur |
 | `SUPABASE_URL` | URL du projet Supabase |
 | `SUPABASE_ANON_KEY` | Clé publique / anon Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé service role, strictement serveur |
@@ -52,15 +52,19 @@ Avant de promouvoir cette version : vérifier l'inscription directe, la connexio
 
 ### 4. Activer les offres
 
-Les tarifs affichés restent 0 / 199 / 399 MAD. Les offres payantes sont indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites initiales sont :
+Les tarifs affichés sont Découverte à 0 MAD, Essentiel à 199 MAD/mois et Signature à 299 MAD/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes restent indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites sont :
 
 | Offre | Projets | Générations par mois calendaire UTC |
 | --- | ---: | ---: |
-| Gratuit | 1 | 3 |
-| Offre | 5 | 60 |
-| Max | 20 | 150 |
+| Découverte (`free`) | 1 | 3 |
+| Essentiel (`offre`) | 5 | 60 |
+| Signature (`max`) | 20 | 150 |
 
 Maximum trois réservations de génération par utilisateur et par minute. Les limites sont des réglages de départ à ajuster après mesure des coûts réels. Les formules d’accès sont appliquées dans les fonctions SQL ; garder l’affichage des tarifs et ces limites synchronisés.
+
+Le moteur proposé pour les trois offres est le même : Claude Sonnet 5, via la clé Anthropic déjà configurée côté serveur. Une valeur explicite de `ANTHROPIC_MODEL` dans Vercel prend toujours priorité sur ce défaut. Le mode de réflexion est désactivé explicitement pour conserver le budget synchrone de 4 096 tokens de sortie et le délai actuel. Les consignes de génération renforcent l’argumentation, l’adaptation au sujet, la fidélité aux extraits et la révision du style. Les tests utilisent une réponse fournisseur simulée : ils ne mesurent pas la qualité rédactionnelle réelle. Valider cette qualité sur des exemples représentatifs avant toute promesse commerciale.
+
+Références fournisseur consultées le 11 septembre 2026 : [Claude Sonnet 5](https://www.anthropic.com/news/claude-sonnet-5) et [guide de migration](https://platform.claude.com/docs/en/models/sonnet-5/migration-guide). Au tarif de 2 $ par million de tokens entrants et 10 $ par million sortants, une action de 10 000 tokens entrants et 3 000 sortants coûte environ 0,05 $ ; 60 actions coûtent 3 $ et 150 coûtent 7,50 $. Ce scénario exclut relances, recherche, hébergement, paiement et support ; ce n’est pas une mesure des usages réels ni une garantie de marge.
 
 Seul l’administrateur peut attribuer un plan dans la table `student_accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Ajouter la méthode de paiement choisie et sa validation serveur avant de rendre les offres achetables.
 
