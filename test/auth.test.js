@@ -76,7 +76,7 @@ test('free-trial and signup links open signup; the displayed signup form calls s
   assert.equal(app.calls[0][1].password, ' test-password-123 ');
   assert.equal(app.calls[0][1].options.emailRedirectTo, 'https://preview.example.test');
   assert.match(app.root.innerHTML, /data-mode="login"/);
-  assert.match(app.notice.textContent, /confirmer ton inscription/);
+  assert.match(app.notice.textContent, /Si une confirmation est nécessaire/);
 });
 
 test('a guide signup link opens signup on arrival and healthcare presets remain editable defaults', async()=>{

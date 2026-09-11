@@ -177,7 +177,7 @@ async function submitAuth(form) {
     if(mode==='reset'){notify('Si un compte existe, un lien a été envoyé à cette adresse.');return;}
     if(mode==='signup'&&!result.data.session){
       state.authMode='login';renderAuth();
-      notify('Consulte ta boîte mail pour confirmer ton inscription. Si tu as déjà un compte, connecte-toi.');return;
+      notify('Si une confirmation est nécessaire, consulte ta boîte mail et les courriers indésirables. Si tu as déjà un compte, connecte-toi ou utilise « Mot de passe oublié ».');return;
     }
     if(mode==='recovery'){state.authMode='login';notify('Mot de passe mis à jour.');}
     state.user=result.data.user;await loadProjects();state.route='projects';renderProjects();
