@@ -71,7 +71,7 @@ test('the third result stays accessible while the generation button stops and of
   const renders = app.renders;
   app.showPlans();
   const offers = app.elements.get('upgrade-panel').innerHTML;
-  assert.match(offers, /199 DH/); assert.match(offers, /299 DH/); assert.match(offers, /Recommandé/);
+  assert.match(offers, /19 €/); assert.match(offers, /29 €/); assert.match(offers, /Recommandé/);
   assert.match(offers, /https:\/\/wa.me\/212708186441/);
   assert.match(offers, /aucun paiement ni changement d’offre/);
   assert.equal(app.renders, renders);

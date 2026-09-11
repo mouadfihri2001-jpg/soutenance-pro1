@@ -1,15 +1,18 @@
 # Bibliothèque Soutenance Pro : publication et mesure
 
-Objectif : devenir une ressource utile pour les étudiants francophones du Maroc et d’Algérie, puis convertir une partie des lecteurs en utilisateurs de l’espace. Une position Top 1 ou Top 3 ne peut pas être promise. Ce document décrit le travail préparé et la méthode de suivi, pas des résultats de trafic constatés.
+Objectif : devenir une ressource utile pour les étudiants francophones de France, du Maroc, d’Algérie et de Tunisie, puis convertir une partie des lecteurs en utilisateurs de l’espace. Une position Top 1 ou Top 3 ne peut pas être promise. Ce document décrit le travail préparé et la méthode de suivi, pas des résultats de trafic constatés.
 
 ## Version préparée le 11 septembre 2026
 
-- 16 pages HTML publiques : accueil, parcours de lecture, bibliothèque, méthode éditoriale et 12 guides/dossiers.
+- 17 pages HTML publiques : accueil, parcours de lecture, bibliothèque, méthode éditoriale, répertoire des établissements et 12 guides/dossiers.
 - Cinq nouvelles ressources originales : PFE, rapport de stage, soutenance, plan de rapport et introduction de rapport.
 - Trois modèles Word originaux et modifiables, téléchargeables sans compte : plan commenté de rapport de stage, checklist de soutenance et fiche de lecture d’une source.
-- Recherche locale par mots et thèmes ; les liens des ressources existent dans le HTML même sans JavaScript. Aucun nouvel appel IA pour chercher dans la bibliothèque.
-- Liens internes vers les ressources spécialisées ISPITS et médecine. Les exemples institutionnels du Maroc et d’Algérie sont présentés comme locaux, jamais comme une règle nationale universelle.
+- Recherche locale par mots, thèmes et formats ; les liens des ressources existent dans le HTML même sans JavaScript. Aucun nouvel appel IA pour chercher dans la bibliothèque.
+- Liens internes vers les ressources spécialisées ISPITS et médecine. Les exemples institutionnels de France, du Maroc, d’Algérie et de Tunisie sont présentés comme locaux, jamais comme une règle nationale universelle.
 - Production indexable, Preview en `noindex`, canonicals, sitemap des URL HTML et données structurées cohérentes avec les pages. Les téléchargements Word portent `X-Robots-Tag: noindex` pour privilégier leurs guides explicatifs.
+- Accueil centré sur la recherche et la découverte de ressources ; entrée distincte vers le projet personnel. Offres affichées en euros : Découverte gratuite, Essentiel 19 €/mois, Signature 29 €/mois. Les liens Stripe restent à fournir, donc aucun abonnement payant ne peut être acheté ou activé ici.
+- Répertoire de consignes officielles d’établissements dans les quatre pays. Chaque fiche indique la formation concernée, la source et sa date quand elle est indiquée. Pas de règle nationale déduite d’un guide local, de logo repris sans droit vérifié ou de partenariat implicite.
+- Une version française commune sur le domaine .com ; pas de duplication de pages par pays ni de hreflang fictif.
 - Pas de scripts publicitaires, de faux identifiant AdSense, de statistiques d’audience inventées ni de pages dupliquées par ville.
 
 ## Intentions de recherche à travailler
@@ -27,7 +30,7 @@ Les expressions larges « PFE », « soutenance » et « rapport de stage » dé
 ## Les trente jours après publication
 
 1. **Jours 1–7 : vérifier et mesurer.** Vérifier le vrai build Production, les réponses des URL, la navigation mobile et les téléchargements. Dans une propriété Google Search Console vérifiée, envoyer le sitemap et inspecter les pages prioritaires. Ne pas confondre publication et indexation. Aucun accès Search Console ni envoi de sitemap n’est confirmé ici.
-2. **Jours 8–14 : améliorer les premiers points d’entrée.** Examiner séparément Maroc et Algérie, par page et par requête. Comparer impressions, clics, CTR et position moyenne sur la même période. Une position moyenne n’est pas une position fixe pour chaque personne. Compléter les réponses réellement manquantes plutôt que multiplier les pages synonymes.
+2. **Jours 8–14 : améliorer les premiers points d’entrée.** Examiner séparément France, Maroc, Algérie et Tunisie, par page et par requête. Comparer impressions, clics, CTR et position moyenne sur la même période. Une position moyenne n’est pas une position fixe pour chaque personne. Compléter les réponses réellement manquantes plutôt que multiplier les pages synonymes.
 3. **Jours 15–21 : montrer le résultat.** Utiliser les modèles et des démonstrations réelles du produit sur Instagram. Relier chaque démonstration au guide correspondant. Un avis ou un travail client ne doit être publié qu’avec l’autorisation correspondante ; un exemple inventé reste explicitement pédagogique.
 4. **Jours 22–30 : décider à partir des observations.** Comparer les pages qui attirent des lecteurs et celles qui conduisent à une inscription. Préparer ensuite quelques nouveaux guides distincts : conclusion de stage, remerciements, page de garde ou problématique, selon les recherches et demandes observées.
 

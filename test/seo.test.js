@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { institutions } from '../content/institutions.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const expected = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/pfe-ispits', '/these-medecine',
+const expected = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/etablissements', '/pfe-ispits', '/these-medecine',
   '/guides/problematique-pfe-infirmier', '/guides/questionnaire-recherche-sante',
   '/guides/analyse-spss-pfe-sante', '/guides/presentation-soutenance-pfe',
   '/guides/recherche-bibliographique-sante', '/pfe', '/rapport-de-stage', '/soutenance',
@@ -67,7 +68,7 @@ test('preview builds stay out of search; production exposes the library and all 
   }
   assert.match(read('404.html'),/name="robots" content="noindex,follow"/);
   const library=read('bibliotheque.html');
-  assert.equal([...library.matchAll(/data-resource data-topic=/g)].length,15,'all guides and templates have default-visible resource cards');
+  assert.equal([...library.matchAll(/\sdata-resource(?:\s|>)/g)].length,15,'all guides and templates have default-visible resource cards');
   assert.match(library,/"@type":"CollectionPage"/);
   assert.match(library,/"@type":"ItemList"/);
   assert.match(library,/src="\/assets\/library.js"/);
@@ -75,6 +76,19 @@ test('preview builds stay out of search; production exposes the library and all 
   for(const template of templates) assert.ok(library.includes(`href="${template}" download`),template);
   for(const location of locations) assert.doesNotMatch(location,/modeles|\?|#/,'only canonical HTML routes enter the sitemap');
   assert.doesNotMatch(library,/adsbygoogle|ca-pub-/,'no invented publisher setup');
+  const directory=read('etablissements.html');
+  assert.match(directory,/"@type":"CollectionPage"/);
+  assert.deepEqual([...new Set(institutions.map(item=>item.country))].sort(),['DZ','FR','MA','TN']);
+  for (const institution of institutions) {
+    assert.equal(new URL(institution.sourceUrl).protocol,'https:','HTTPS official source');
+    assert.ok(directory.includes(institution.sourceUrl.replaceAll('&','&amp;')),'official source is present without JavaScript');
+    assert.ok(directory.includes(institution.name),'institution name is present without JavaScript');
+    assert.ok(institution.scope && institution.checkedAt && institution.guidePath,'scope, date and next step are explicit');
+  }
+  const home=read('index.html');
+  assert.match(home,/action="\/bibliotheque"/,'homepage search reaches the library');
+  assert.match(home,/name="q"/);
+  assert.match(home,/\/assets\/home.css/);
   const headers=JSON.parse(readFileSync(root+'vercel.json','utf8')).headers;
   assert.ok(headers.find(rule=>rule.source==='/modeles/(.*)').headers.some(h=>h.key==='X-Robots-Tag'&&h.value==='noindex'));
   const png=readFileSync(root+'dist/assets/share.png');

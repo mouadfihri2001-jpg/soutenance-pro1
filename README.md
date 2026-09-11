@@ -12,7 +12,7 @@ Cette version améliore le projet Vercel existant. Le site conserve son identit�
 - Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
 - Authentification obligatoire des appels aux données étudiant et à l'IA, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. L'inscription publique possède sa propre limitation des tentatives. Les échecs de génération traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
 - Les scores de plagiat, partenariats et témoignages non vérifiés ont été retirés. Le module Correction est présenté comme une aide à la révision.
-- Deux parcours publics ISPITS et médecine, cinq guides pratiques et un répertoire des guides. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable.
+- Une bibliothèque francophone avec douze guides et dossiers, trois modèles Word, deux parcours spécialisés ISPITS et médecine, et un répertoire de consignes institutionnelles. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable.
 
 ## Configuration requise avant publication
 
@@ -54,7 +54,7 @@ Avant de promouvoir cette version : vérifier l'inscription directe, la connexio
 
 ### 4. Activer les offres
 
-Les tarifs affichés sont Découverte à 0 MAD, Essentiel à 199 MAD/mois et Signature à 299 MAD/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes restent indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites sont :
+Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes restent indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites sont :
 
 | Offre | Projets | Générations par mois calendaire UTC |
 | --- | ---: | ---: |
@@ -64,7 +64,7 @@ Les tarifs affichés sont Découverte à 0 MAD, Essentiel à 199 MAD/mois et Sig
 
 Maximum trois réservations de génération par utilisateur et par minute. Les limites sont des réglages de départ à ajuster après mesure des coûts réels. Les formules d’accès sont appliquées dans les fonctions SQL ; garder l’affichage des tarifs et ces limites synchronisés.
 
-`GET /api/usage` expose uniquement le quota du compte connecté, avec les générations réservées ou terminées du mois UTC. L’offre gratuite donne trois générations **par mois**, puis l’interface bloque les nouvelles générations et affiche les offres à 199 / 299 DH. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
+`GET /api/usage` expose uniquement le quota du compte connecté, avec les générations réservées ou terminées du mois UTC. L’offre gratuite donne trois générations **par mois**, puis l’interface bloque les nouvelles générations et affiche les offres à 19 / 29 €. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
 
 Les liens Stripe existants seront fournis séparément par le propriétaire. Les boutons actuels demandent des informations sur WhatsApp : ils ne facturent rien et ne débloquent aucun abonnement. L’activation future doit vérifier le paiement côté serveur et l’associer au bon compte ; un retour depuis une page de paiement ne suffit pas.
 
@@ -112,21 +112,21 @@ Architecture : `index.html` / `src/` pour l’interface, `shared/modules.js` pou
 
 ## Référencement naturel
 
-Le build produit **16 pages HTML publiques** : l’accueil, un parcours de lecture `/guides`, la bibliothèque `/bibliotheque`, la page `/methode-editoriale`, et 12 guides/dossiers. Les entrées générales `/pfe`, `/rapport-de-stage` et `/soutenance` complètent les parcours ISPITS et médecine. Les cinq nouvelles ressources de `content/library-pages.mjs` comportent des explications originales, des exemples explicitement pédagogiques et des sources universitaires ; `content/catalog.mjs` rassemble les ressources.
+Le build produit **17 pages HTML publiques** : l’accueil, un parcours de lecture `/guides`, la bibliothèque `/bibliotheque`, la page `/methode-editoriale`, le répertoire `/etablissements`, et 12 guides/dossiers. Les entrées générales `/pfe`, `/rapport-de-stage` et `/soutenance` complètent les parcours ISPITS et médecine. Les cinq nouvelles ressources de `content/library-pages.mjs` comportent des explications originales, des exemples explicitement pédagogiques et des sources universitaires ; `content/catalog.mjs` rassemble les ressources.
 
-Le texte et les liens existent dans le HTML initial, sans inscription. La bibliothèque propose une recherche par mots et des thèmes avec recoupements, notamment pour les guides en santé. Les filtres restent locaux au navigateur et ne génèrent aucune URL supplémentaire à indexer. Trois modèles Word éditables sont construits par `scripts/templates.mjs` dans `/modeles/` : plan de rapport de stage, checklist de soutenance et fiche de lecture. Leurs téléchargements sont marqués `noindex` pour privilégier les pages explicatives.
+Le texte et les liens existent dans le HTML initial, sans inscription. La bibliothèque propose une recherche par mots, des thèmes avec recoupements et un filtre de format. Le formulaire de l’accueil ouvre la bibliothèque avec la recherche préremplie ; les filtres suivants restent locaux. Le répertoire des établissements permet de retrouver des consignes publiques en France, au Maroc, en Algérie et en Tunisie, avec leur portée locale et leur source officielle. Les filtres restent locaux au navigateur et ne génèrent aucune URL supplémentaire à indexer. Trois modèles Word éditables sont construits par `scripts/templates.mjs` dans `/modeles/` : plan de rapport de stage, checklist de soutenance et fiche de lecture. Leurs téléchargements sont marqués `noindex` pour privilégier les pages explicatives.
 
-Chaque page possède un titre, une description, une URL canonique, des balises de partage et des données structurées adaptées (`WebSite`, `WebPage`, `Article`, `CollectionPage`, `ItemList`, `BreadcrumbList`). Les dates de modification ne sont ajoutées que lorsqu’elles sont déclarées sur la ressource. Le sitemap contient uniquement les 16 URL HTML publiques, jamais les projets étudiants, les comptes ou les filtres.
+Chaque page possède un titre, une description, une URL canonique, des balises de partage et des données structurées adaptées (`WebSite`, `WebPage`, `Article`, `CollectionPage`, `ItemList`, `BreadcrumbList`). Les dates de modification ne sont ajoutées que lorsqu’elles sont déclarées sur la ressource. Le sitemap contient uniquement les 17 URL HTML publiques, jamais les projets étudiants, les comptes ou les filtres.
 
 Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews et builds locaux ont une balise `noindex,follow` et un sitemap vide. Leur `robots.txt` permet la lecture de cette balise ; `noindex` ne remplace pas le contrôle d’accès. Les routes `/api/` envoient aussi `X-Robots-Tag: noindex`.
 
 `SITE_URL` est facultatif et vaut par défaut `https://soutenancepro.com`. Si une ancienne valeur existe dans Vercel, la remplacer par cette origine HTTPS dans l'environnement Production avant de redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni modification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
 
-Les tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les 16 URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Les builds de test utilisent des clés factices non fonctionnelles ; ils vérifient aussi le refus d'une Production incomplète et l'absence de fuite de clé privée. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
+Les tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les 17 URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Les builds de test utilisent des clés factices non fonctionnelles ; ils vérifient aussi le refus d'une Production incomplète et l'absence de fuite de clé privée. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
 
 Le [plan de lancement SEO](docs/seo-launch.md) précise les intentions de recherche, les limites des mesures disponibles et le suivi du premier mois. Il n'annonce ni volume de recherches inventé ni garantie de première position.
 
-La [feuille de route bibliothèque et revenus](docs/seo-library-plan.md) détaille l’extension Maroc/Algérie, les critères éditoriaux et le suivi des trente jours après publication. Aucun accès Search Console, trafic mesuré, compte AdSense ou revenu publicitaire n’est confirmé. Les règles Google sur les services de rédaction académique doivent être examinées pour le service réel : cette bibliothèque ne garantit pas l’admissibilité de l’ensemble du site. Aucun script publicitaire ni identifiant d’éditeur fictif n’est ajouté.
+La [feuille de route bibliothèque et revenus](docs/seo-library-plan.md) détaille l’extension France/Maroc/Algérie/Tunisie, les critères éditoriaux et le suivi des trente jours après publication. Aucun accès Search Console, trafic mesuré, compte AdSense ou revenu publicitaire n’est confirmé. Les règles Google sur les services de rédaction académique doivent être examinées pour le service réel : cette bibliothèque ne garantit pas l’admissibilité de l’ensemble du site. Aucun script publicitaire ni identifiant d’éditeur fictif n’est ajouté.
 
 Références : [Guide SEO Google](https://developers.google.com/search/docs/fundamentals/seo-starter-guide), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [noindex](https://developers.google.com/search/docs/crawling-indexing/block-indexing), [nom du site](https://developers.google.com/search/docs/appearance/site-names).
 
@@ -142,3 +142,5 @@ Le Security Advisor signale au niveau INFO l’absence volontaire de politiques 
 - [API Crossref](https://www.crossref.org/documentation/retrieve-metadata/rest-api/)
 - [Word avec docx](https://docx.js.org/)
 - [PowerPoint avec PptxGenJS](https://gitbrent.github.io/PptxGenJS/docs/introduction/)
+
+Le [registre des sources institutionnelles](docs/institution-sources.md) précise les documents officiels utilisés et leurs limites. Les noms des établissements servent à identifier les consignes ; aucun logo ni partenariat non autorisé n’est ajouté.
