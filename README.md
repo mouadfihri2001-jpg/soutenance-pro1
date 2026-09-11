@@ -32,6 +32,8 @@ Ajouter dans **Project Settings > Environment Variables**, séparément pour Pre
 | --- | --- |
 | `ANTHROPIC_API_KEY` | Clé Anthropic existante du projet |
 | `ANTHROPIC_MODEL` | `claude-sonnet-5` par défaut ; configurable côté serveur |
+| `AI_DAILY_BUDGET_USD` | `5` par défaut ; budget estimé global par jour UTC |
+| `AI_MONTHLY_BUDGET_USD` | `30` par défaut ; budget estimé global par mois UTC |
 | `SUPABASE_URL` | URL du projet Supabase |
 | `SUPABASE_ANON_KEY` | Clé publique / anon Supabase |
 | `SUPABASE_SERVICE_ROLE_KEY` | Clé service role, strictement serveur |
@@ -61,6 +63,20 @@ Les tarifs affichés sont Découverte à 0 MAD, Essentiel à 199 MAD/mois et Sig
 | Signature (`max`) | 20 | 150 |
 
 Maximum trois réservations de génération par utilisateur et par minute. Les limites sont des réglages de départ à ajuster après mesure des coûts réels. Les formules d’accès sont appliquées dans les fonctions SQL ; garder l’affichage des tarifs et ces limites synchronisés.
+
+`GET /api/usage` expose uniquement le quota du compte connecté, avec les générations réservées ou terminées du mois UTC. L’offre gratuite donne trois générations **par mois**, puis l’interface bloque les nouvelles générations et affiche les offres à 199 / 299 DH. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
+
+Les liens Stripe existants seront fournis séparément par le propriétaire. Les boutons actuels demandent des informations sur WhatsApp : ils ne facturent rien et ne débloquent aucun abonnement. L’activation future doit vérifier le paiement côté serveur et l’associer au bon compte ; un retour depuis une page de paiement ne suffit pas.
+
+### Protection de la consommation IA
+
+Appliquer `supabase/ai-budget.sql` avec le nom de migration `student_ai_budget` avant de déployer le contrôle de budget. Ce script ajoute une table et une fonction réservées au serveur, avec RLS activée, sans modifier les tables existantes de l’ancien espace.
+
+Avant chaque appel au fournisseur, une transaction réserve simultanément un montant estimé dans les budgets quotidien et mensuel. L’estimation prudente compte les octets UTF-8 de la requête et 1 024 tokens de marge en entrée, puis les 4 096 tokens de sortie possibles. Les réservations sont conservées après une erreur ou un délai dépassé ; les tokens connus de la réponse sont enregistrés avant la sauvegarde du document.
+
+Les valeurs initiales sont **5 USD par jour et 30 USD par mois UTC pour tout le projet**, à ajuster après mesure. Preview et Production partagent ce budget lorsqu’elles utilisent le même projet Supabase. Lorsque le budget est épuisé, seule la génération est suspendue : les documents restent accessibles et une offre payante n’est pas présentée comme une solution à cette suspension.
+
+Une configuration invalide, un modèle sans tarif connu ou une erreur de réservation bloque l’appel fournisseur. Les tarifs pris en charge sont ceux de Sonnet 5 et Sonnet 4.6. Ce contrôle porte sur une estimation conservatrice, pas sur le montant exact de la facture Anthropic ; il ne couvre pas d’autres applications utilisant la même clé, les taxes, d’autres services ou des changements de tarifs du fournisseur.
 
 Le moteur proposé pour les trois offres est le même : Claude Sonnet 5, via la clé Anthropic déjà configurée côté serveur. Une valeur explicite de `ANTHROPIC_MODEL` dans Vercel prend toujours priorité sur ce défaut. Le mode de réflexion est désactivé explicitement pour conserver le budget synchrone de 4 096 tokens de sortie et le délai actuel. Les consignes de génération renforcent l’argumentation, l’adaptation au sujet, la fidélité aux extraits et la révision du style. Les tests utilisent une réponse fournisseur simulée : ils ne mesurent pas la qualité rédactionnelle réelle. Valider cette qualité sur des exemples représentatifs avant toute promesse commerciale.
 
@@ -102,7 +118,7 @@ Seul un build avec `VERCEL_ENV=production` autorise l’indexation. Les previews
 
 `SITE_URL` est facultatif et vaut par défaut `https://soutenancepro.com`. Si une ancienne valeur existe dans Vercel, la remplacer par cette origine HTTPS dans l'environnement Production avant de redéployer. La même origine est utilisée pour canonical, Open Graph, `WebSite` et sitemap. Vérifier le domaine dans Google Search Console et soumettre `/sitemap.xml` après publication en production. Ces changements sont préparés dans la branche de travail ; aucune soumission à Google ni modification DNS n’a été effectuée. Le référencement demande aussi du contenu utile et ne garantit aucun classement.
 
-Les 16 tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les neuf URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Les builds de test utilisent des clés factices non fonctionnelles ; ils vérifient aussi le refus d'une Production incomplète et l'absence de fuite de clé privée. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
+Les tests construisent réellement les versions Preview et Production et contrôlent l'indexabilité, les neuf URLs du sitemap, les liens internes et leurs ancres, les titres distincts, les données structurées et les ressources de partage. Les builds de test utilisent des clés factices non fonctionnelles ; ils vérifient aussi le refus d'une Production incomplète et l'absence de fuite de clé privée. Ils ne remplacent pas la vérification des réponses HTTP sur Vercel. Pour publier, déclencher un **nouveau build Production** : promouvoir tel quel un artefact Preview conserverait ses balises `noindex`.
 
 Le [plan de lancement SEO](docs/seo-launch.md) précise les intentions de recherche, les limites des mesures disponibles et le suivi du premier mois. Il n'annonce ni volume de recherches inventé ni garantie de première position.
 
@@ -110,7 +126,7 @@ Références : [Guide SEO Google](https://developers.google.com/search/docs/fund
 
 ## Points relevés dans la configuration existante
 
-Le Security Advisor ne signale plus les objets `student_`. Il signale encore les anciennes fonctions `get_user_role` et `user_project_ids` pour leur [search_path non fixé](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable) et leurs [droits d’exécution publics](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable). Leur usage par les politiques de l’ancien espace doit être examiné avant modification. La [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) est également désactivée. Ces réglages existants restent à traiter avant une ouverture au public.
+Le Security Advisor signale au niveau INFO l’absence volontaire de politiques sur `student_signup_limits` et `student_ai_budget` : ces tables sont réservées au serveur, avec les droits des rôles publics et authentifiés révoqués. Il signale encore les anciennes fonctions `get_user_role` et `user_project_ids` pour leur [search_path non fixé](https://supabase.com/docs/guides/database/database-linter?lint=0011_function_search_path_mutable) et leurs [droits d’exécution publics](https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable). Leur usage par les politiques de l’ancien espace doit être examiné avant modification. La [protection contre les mots de passe compromis](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) est également désactivée. Ces réglages existants restent à traiter avant une ouverture au public.
 
 ## Références techniques
 

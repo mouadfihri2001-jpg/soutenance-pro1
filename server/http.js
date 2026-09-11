@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import { inspectConfiguration } from './runtime-config.js';
 export class HttpError extends Error {
-  constructor(status, message) { super(message); this.status = status; }
+  constructor(status, message, code) { super(message); this.status = status; if (code) this.code = code; }
 }
 export function jsonError(res, error) {
-  return res.status(error.status || 500).json({ error: { message: error.status ? error.message : 'Une erreur est survenue. Réessaie dans un instant.' } });
+  return res.status(error.status || 500).json({ error: { message: error.status ? error.message : 'Une erreur est survenue. Réessaie dans un instant.', ...(error instanceof HttpError && error.code ? { code: error.code } : {}) } });
 }
 export function method(req, res, allowed) {
   res.setHeader('Cache-Control', 'no-store');

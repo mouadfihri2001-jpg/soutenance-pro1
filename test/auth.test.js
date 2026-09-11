@@ -4,7 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
 import { requestAuth, authLinkErrorFromHash } from '../src/auth.js';
 import { authModeFromHash, projectPreset } from '../src/onboarding.js';
-import { renderInstagramContact } from '../src/contact.js';
+import { renderInstagramContact, WHATSAPP_URL } from '../src/contact.js';
+import { normalizeUsage, usageAfterGeneration, usageLimitReached } from '../src/usage.js';
 
 const appSource = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const landing = await readFile(new URL('../index.html', import.meta.url), 'utf8');
@@ -36,7 +37,7 @@ function mount(overrides = {}, url = {}) {
       body: { classList: { add() {}, remove() {} } }
     },
     console: { warn: (...args) => diagnostics.push(args) },
-    createClient: () => ({ auth, from() { const q = { select() { return q; }, order: async () => ({ data: [] }), single: async () => ({ data: { plan: 'free' } }) }; return q; } }), requestAuth, authLinkErrorFromHash, authModeFromHash, projectPreset, renderInstagramContact,
+    createClient: () => ({ auth, from() { const q = { select() { return q; }, order: async () => ({ data: [] }), single: async () => ({ data: { plan: 'free' } }) }; return q; } }), requestAuth, authLinkErrorFromHash, authModeFromHash, projectPreset, renderInstagramContact, WHATSAPP_URL, normalizeUsage, usageAfterGeneration, usageLimitReached,
     fetch: async (path, init) => {
       if (path === '/api/signup') {
         const payload = JSON.parse(init.body); calls.push(['signup', payload]);

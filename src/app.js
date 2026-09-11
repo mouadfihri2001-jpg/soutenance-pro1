@@ -4,12 +4,13 @@ import DOMPurify from 'dompurify';
 import { MODULES, sourceReady, validateInputs } from '../shared/modules.js';
 import { requestAuth, authLinkErrorFromHash } from './auth.js';
 import { authModeFromHash, projectPreset } from './onboarding.js';
-import { renderInstagramContact } from './contact.js';
+import { renderInstagramContact, WHATSAPP_URL } from './contact.js';
+import { normalizeUsage, usageAfterGeneration, usageLimitReached } from './usage.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
-const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '' };
-let saveTimer, saving, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
+const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, usage: null, usageBlocked: false, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '' };
+let saveTimer, saving, usageRefreshVersion = 0, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 const markdown = value => DOMPurify.sanitize(marked.parse(value || ''), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
 const button = (label, action, value = '', cls = 'sp-button') => `<button type="button" class="${cls}" data-action="${action}" data-value="${e(value)}">${label}</button>`;
@@ -26,14 +27,47 @@ function shell(content, title = 'Mes projets') {
     <div class="sp-project-name">${e(project?.title || 'Ton espace académique')}</div>
     <nav aria-label="Espace de travail">${button('Mes projets', 'route', 'projects', 'sp-nav')}
     ${project ? button('Profil et consignes', 'edit-project', '', 'sp-nav') + button('Sources de recherche', 'route', 'sources', 'sp-nav') + Object.entries(MODULES).map(([id,m]) => button(m.label,'route',id,`sp-nav ${state.route === id ? 'active' : ''}`)).join('') : ''}</nav>
-    <div class="sp-account">${e(state.user.email)}<br><span id="plan-name">${e(activePlan())}</span>${button('Se déconnecter', 'logout', '', 'sp-link')}</div></aside>
+    <div class="sp-account">${e(state.user.email)}<br><span id="plan-name">${e(activePlan())}</span>${button('Voir les offres', 'show-plans', '', 'sp-link')}${button('Se déconnecter', 'logout', '', 'sp-link')}</div></aside>
     <main class="sp-main"><header class="sp-topbar"><h1>${e(title)}</h1>${button('Accueil du site','close','','sp-link')}</header>
-    <div class="sp-body">${content}</div></main></div>`;
+    <div class="sp-body"><div id="usage-status" aria-live="polite">${usagePanel()}</div><div id="upgrade-panel" hidden></div>${content}</div></main></div>`;
 }
 function activePlan() {
+  if (state.usage) return { free: 'Découverte', offre: 'Essentiel', max: 'Signature' }[state.usage.plan];
   const a = state.account;
   if (!a || a.plan === 'free' || !a.subscription_expires_at || new Date(a.subscription_expires_at) <= new Date()) return 'Découverte';
   return a.plan === 'offre' ? 'Essentiel' : 'Signature';
+}
+function generationDisabled() {
+  return !state.aiReady || state.busy || usageLimitReached(state.usage, state.usageBlocked)
+    || (state.route === 'redaction' && !(state.project?.profile.planValidated && state.project.sources.some(sourceReady)));
+}
+function usagePanel() {
+  const usage = state.usage, exhausted = usageLimitReached(usage, state.usageBlocked);
+  const reset = usage ? new Date(usage.resetsAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
+  if (state.busy) return '<section class="sp-usage" aria-label="Génération en cours"><div><strong>Ton résultat est en préparation…</strong><p>Le compteur sera actualisé à la fin. Tu peux consulter et exporter tes documents.</p></div></section>';
+  if (exhausted) return `<section class="sp-usage sp-usage-exhausted" aria-label="Limite de génération atteinte"><div><strong>${usage?.plan === 'free' ? 'Tes 3 générations gratuites de ce mois sont utilisées.' : 'Ton quota de génération est atteint.'}</strong><p>Tu peux toujours consulter, modifier et exporter tes documents.${reset ? ` Ton quota se renouvelle le ${e(reset)} à 00 h UTC.` : ''}</p></div>${usage?.plan === 'max' ? button('Actualiser le quota', 'refresh-usage') : button('Découvrir les offres 199 / 299 DH', 'show-plans', '', 'sp-button primary')}</section>`;
+  return `<section class="sp-usage" aria-label="Utilisation des générations"><div><strong>${usage ? `${usage.remaining} / ${usage.limit} génération${usage.remaining === 1 ? '' : 's'} restante${usage.remaining === 1 ? '' : 's'} ce mois-ci` : 'Ton utilisation'}</strong><p>${usage ? `${e(activePlan())} · Quota partagé entre tes projets.` : 'Compteur momentanément indisponible. Tes documents restent accessibles.'}</p></div>${button(usage ? 'Voir les offres' : 'Actualiser', usage ? 'show-plans' : 'refresh-usage', '', 'sp-link')}</section>`;
+}
+function syncUsagePanel() {
+  const panel = root.querySelector('#usage-status'); if (panel) panel.innerHTML = usagePanel();
+  const submit = root.querySelector('#generation-form [type="submit"]'); if (submit) { submit.disabled = generationDisabled(); submit.textContent = state.busy ? 'Génération en cours…' : usageLimitReached(state.usage, state.usageBlocked) ? 'Quota atteint' : 'Générer et enregistrer'; }
+  const plan = root.querySelector('#plan-name'); if (plan) plan.textContent = activePlan();
+  const editor = root.querySelector('#document-editor'); if (editor) editor.readOnly = state.busy;
+}
+async function refreshUsage() {
+  if (!state.user) return;
+  const userId = state.user.id, version = ++usageRefreshVersion;
+  try {
+    const usage = normalizeUsage(await api('/api/usage', null, { signal: AbortSignal.timeout(8000) }));
+    if (state.user?.id !== userId || version !== usageRefreshVersion || !usage) return;
+    state.usage = usage; state.usageBlocked = usage.remaining === 0;
+    syncUsagePanel();
+  } catch { /* A failed counter request must not hide or replace a student's work. */ }
+}
+function showPlans() {
+  const panel = root.querySelector('#upgrade-panel'); if (!panel) return;
+  panel.innerHTML = `<section class="sp-upgrade" aria-labelledby="upgrade-heading"><div class="sp-intro"><div><span class="sp-eyebrow">Plus de place pour ton projet</span><h2 id="upgrade-heading" tabindex="-1">Choisis ton rythme de travail</h2></div>${button('Fermer', 'close-plans', '', 'sp-link')}</div><p>Les abonnements payants sont en préparation. Contacte-nous sur WhatsApp pour les disponibilités ; aucun paiement ni changement d’offre n’est effectué ici.</p><div class="sp-offer-grid"><article class="sp-offer"><span class="sp-eyebrow">Essentiel</span><h3>199 DH <small>/ mois</small></h3><p>5 projets · 60 générations par mois</p><p>Pour construire ton plan, développer tes sections et préparer ta soutenance.</p><a class="sp-button" href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Me renseigner sur Essentiel</a></article><article class="sp-offer sp-offer-recommended"><span class="sp-offer-badge">Recommandé</span><span class="sp-eyebrow">Signature</span><h3>299 DH <small>/ mois</small></h3><p>20 projets · 150 générations par mois</p><p>Pour avancer plus régulièrement et disposer de davantage de révisions.</p><a class="sp-button primary" href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Me renseigner sur Signature</a></article></div><p class="sp-muted">Les générations déjà utilisées et les documents enregistrés restent attachés à ton compte.</p></section>`;
+  panel.hidden = false; panel.querySelector?.('#upgrade-heading')?.focus?.();
 }
 function renderAuth() {
   clearNotice();
@@ -56,7 +90,8 @@ function renderAuth() {
 async function loadProjects() {
   const [projects, account] = await Promise.all([
     state.db.from('student_projects').select('*').order('updated_at',{ascending:false}),
-    state.db.from('student_accounts').select('*').single()
+    state.db.from('student_accounts').select('*').single(),
+    refreshUsage()
   ]);
   if (projects.error || account.error) throw new Error('Impossible de charger ton espace. Réessaie dans un instant.');
   state.projects = projects.data; state.account = account.data;
@@ -103,7 +138,7 @@ function renderModule() {
     ${!state.aiReady ? '<div class="sp-warning" role="status">La génération est temporairement indisponible. Tu peux préparer ton projet et consulter ou modifier tes documents enregistrés.</div>' : ''}
     ${state.route==='redaction'&&!ready?`<div class="sp-warning">Valide d’abord ton plan, puis ajoute une source et un extrait consulté d’au moins 50 caractères.${button('Ouvrir les sources','route','sources','sp-link')}</div>`:''}
     <form id="generation-form" class="sp-card"><div class="sp-form-grid">${m.fields.map(f=>field(...f)).join('')}</div>
-    <button type="submit" class="sp-button primary" ${!state.aiReady || state.busy || (state.route==='redaction'&&!ready)?'disabled':''}>${state.busy?'Génération en cours…':'Générer et enregistrer'}</button>
+    <button type="submit" class="sp-button primary" ${generationDisabled()?'disabled':''}>${state.busy?'Génération en cours…':usageLimitReached(state.usage,state.usageBlocked)?'Quota atteint':'Générer et enregistrer'}</button>
     <p class="sp-muted">Chaque résultat est enregistré dans ton projet. Ton quota s’applique aux générations réussies.</p></form>
     <div id="history-panel">${history()}</div><div id="document-panel">${state.doc?documentPanel():''}</div>`,m.label);
 }
@@ -112,7 +147,7 @@ function documentPanel() {
   return `<section class="sp-card sp-document"><div class="sp-actions"><h2>${e(d.title)}</h2><span id="save-status" role="status">Enregistré</span></div>
     <div class="sp-actions">${button('Word (.docx)','export','word')}${button('Imprimer / PDF','export','pdf')}${d.module==='ppt'?button('PowerPoint (.pptx)','export','ppt'):''}
     ${d.module==='plan'?button(state.project.profile.planValidated?'Plan validé':'Valider ce plan','validate-plan','','sp-button primary'):''}</div>
-    <label>Modifier le contenu<textarea id="document-editor" class="sp-editor" dir="auto" maxlength="120000">${e(d.content)}</textarea></label>
+    <label>Modifier le contenu<textarea id="document-editor" class="sp-editor" dir="auto" maxlength="120000" ${state.busy?'readonly':''}>${e(d.content)}</textarea></label>
     <details><summary>Aperçu mis en forme</summary><div class="sp-prose" dir="auto" id="document-preview">${markdown(d.content)}</div></details></section>`;
 }
 function sourceCard(s,index,selected=false) {
@@ -132,10 +167,10 @@ async function token() {
   if(error||!data.session)throw new Error('Reconnecte-toi pour continuer.');
   return data.session.access_token;
 }
-async function api(url,body) {
-  const response=await fetch(url,{method:body?'POST':'GET',headers:{Authorization:`Bearer ${await token()}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+async function api(url,body,options={}) {
+  const response=await fetch(url,{...options,method:body?'POST':'GET',cache:'no-store',headers:{Authorization:`Bearer ${await token()}`,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
   let data;try{data=await response.json();}catch{throw new Error('Le serveur n’a pas renvoyé une réponse valide. Réessaie.');}
-  if(!response.ok)throw new Error(data.error?.message||'Le service est temporairement indisponible.');
+  if(!response.ok){const error=new Error(data.error?.message||'Le service est temporairement indisponible.');error.code=data.error?.code;throw error;}
   return data;
 }
 async function saveDoc() {
@@ -197,15 +232,21 @@ root.addEventListener('submit',async event=>{
     }
     if(form.id==='generation-form'){
       if(!state.aiReady)throw new Error('La génération est temporairement indisponible.');
+      if(usageLimitReached(state.usage,state.usageBlocked)){showPlans();throw new Error('Ton quota est atteint. Tes documents restent accessibles.');}
       if(state.busy)throw new Error('Une génération est déjà en cours.');
-      await flush();const module=state.route,projectId=state.project.id;
+      const module=state.route,projectId=state.project.id;
       const inputs=validateInputs(module,Object.fromEntries(new FormData(form)));
-      state.busy=true;submit.textContent='Génération en cours…';
+      state.busy=true;syncUsagePanel();
       try{
+        await flush();
         const data=await api('/api/chat',{module,projectId,inputs});
+        state.usage=usageAfterGeneration(state.usage,data.remaining);state.usageBlocked=data.remaining===0;
         if(state.project?.id===projectId){state.docs.unshift(data.document);if(state.route===module){state.doc=data.document;document.getElementById('document-panel').innerHTML=documentPanel();document.getElementById('history-panel').innerHTML=history();}}
         notify(data.truncated?'Résultat enregistré. La limite de longueur a été atteinte : poursuis dans une section séparée.':`Résultat enregistré. ${data.remaining} génération(s) restante(s) ce mois-ci.`);
-      }finally{state.busy=false;submit.textContent='Générer et enregistrer';const current=root.querySelector('#generation-form [type="submit"]');if(current){current.textContent='Générer et enregistrer';current.disabled=state.route==='redaction'&&!(state.project.profile.planValidated&&state.project.sources.some(sourceReady));}}
+      }catch(error){
+        if(error.code==='quota_exceeded')state.usageBlocked=true;
+        throw error;
+      }finally{state.busy=false;syncUsagePanel();void refreshUsage();}
     }
     if(form.id==='source-form'){
       const values=Object.fromEntries(new FormData(form));searchTerm=values.q;fromYear=values.fromYear;const projectId=state.project.id;
@@ -216,12 +257,15 @@ root.addEventListener('submit',async event=>{
   }catch(error){
     if(error.authDetails)console.warn('Authentication request failed',error.authDetails);
     if(form.id!=='auth-form'||(form.isConnected&&!root.hidden))notify(error.message,true);
-  }finally{submit.disabled=form.id==='generation-form'&&!state.aiReady;}
+  }finally{submit.disabled=form.id==='generation-form'&&generationDisabled();}
 });
 root.addEventListener('click',async event=>{
   const el=event.target.closest('[data-action]');if(!el)return;
   const action=el.dataset.action,value=el.dataset.value;
   try{
+    if(action==='show-plans'){showPlans();return;}
+    if(action==='close-plans'){const panel=root.querySelector('#upgrade-panel');if(panel)panel.hidden=true;return;}
+    if(action==='refresh-usage'){await refreshUsage();return;}
     if(action==='reload-auth'){location.reload();return;}
     if(action==='auth-mode'){
       if(state.authPending)return;
@@ -234,7 +278,7 @@ root.addEventListener('click',async event=>{
     if(action==='new-project'||action==='edit-project'){await flush();renderProjectForm(action==='new-project');}
     if(action==='logout'){
       await flush();const {error}=await state.db.auth.signOut();if(error)throw error;
-      Object.assign(state,{user:null,project:null,docs:[],doc:null,projects:[],dirty:false,sourceDirty:false,authMode:'login'});renderAuth();
+      Object.assign(state,{user:null,project:null,docs:[],doc:null,projects:[],usage:null,usageBlocked:false,dirty:false,sourceDirty:false,authMode:'login'});renderAuth();
     }
     if(action==='validate-plan'){
       await flush();const profile={...state.project.profile,planValidated:true,validatedPlanId:state.doc.id};
@@ -269,6 +313,7 @@ root.addEventListener('change',async event=>{
   }
 });
 window.addEventListener('beforeunload',event=>{if(state.dirty||state.sourceDirty){event.preventDefault();event.returnValue='';}});
+window.addEventListener('focus',()=>{if(state.user&&!root.hidden)void refreshUsage();});
 document.getElementById('sp-notice').addEventListener('click',event=>{event.currentTarget.hidden=true;});
 let ready;
 window.openApp=async(mode='login')=>{
@@ -287,6 +332,7 @@ ready=(async()=>{
   state.aiReady=config.ready;
   state.db=createClient(config.supabaseUrl,config.supabaseAnonKey);
   state.db.auth.onAuthStateChange((event,session)=>{
+    if(state.user?.id!==session?.user?.id){state.usage=null;state.usageBlocked=false;}
     state.user=session?.user||null;
     if(event==='PASSWORD_RECOVERY'){state.authMode='recovery';root.hidden=false;document.body.classList.add('sp-open');renderAuth();}
     if(event==='SIGNED_OUT'&&!root.hidden)renderAuth();
