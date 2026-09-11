@@ -5,10 +5,12 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const expected = ['/', '/guides', '/pfe-ispits', '/these-medecine',
+const expected = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/pfe-ispits', '/these-medecine',
   '/guides/problematique-pfe-infirmier', '/guides/questionnaire-recherche-sante',
   '/guides/analyse-spss-pfe-sante', '/guides/presentation-soutenance-pfe',
-  '/guides/recherche-bibliographique-sante'];
+  '/guides/recherche-bibliographique-sante', '/pfe', '/rapport-de-stage', '/soutenance',
+  '/guides/plan-rapport-de-stage', '/guides/introduction-rapport-de-stage'];
+const templates = ['/modeles/plan-rapport-stage.docx','/modeles/checklist-soutenance.docx','/modeles/fiche-lecture-source.docx'];
 const file = path => root + 'dist/' + (path === '/' ? 'index.html' : path.slice(1) + '.html');
 const read = path => readFileSync(root + 'dist/' + path, 'utf8');
 // Nonfunctional fixtures for offline builds. These are not service credentials.
@@ -29,7 +31,7 @@ test('production builds stop on missing configuration or a misplaced secret with
   }
 });
 
-test('preview builds stay out of search; production exposes only the nine public pages with working links', () => {
+test('preview builds stay out of search; production exposes the library and all public pages with working links', () => {
   build('preview');
   for (const path of expected) assert.match(readFileSync(file(path),'utf8'), /name="robots" content="noindex,follow"/, path);
   assert.doesNotMatch(read('sitemap.xml'), /<loc>/);
@@ -55,6 +57,7 @@ test('preview builds stay out of search; production exposes only the nine public
       const url=new URL(href,'https://soutenancepro.com'+path);
       if(url.origin!=='https://soutenancepro.com')continue;
       if(url.pathname.startsWith('/assets/')) { assert.ok(existsSync(root+'dist'+url.pathname),href);continue; }
+      if(url.pathname.startsWith('/modeles/')) { assert.ok(templates.includes(url.pathname),href);assert.ok(existsSync(root+'dist'+url.pathname),href);continue; }
       assert.ok(expected.includes(url.pathname),'public link: '+href+' from '+path);
       if(url.hash && !['#inscription','#connexion','#workspace'].includes(url.hash)) {
         const target=readFileSync(file(url.pathname),'utf8');
@@ -63,6 +66,17 @@ test('preview builds stay out of search; production exposes only the nine public
     }
   }
   assert.match(read('404.html'),/name="robots" content="noindex,follow"/);
+  const library=read('bibliotheque.html');
+  assert.equal([...library.matchAll(/data-resource data-topic=/g)].length,15,'all guides and templates have default-visible resource cards');
+  assert.match(library,/"@type":"CollectionPage"/);
+  assert.match(library,/"@type":"ItemList"/);
+  assert.match(library,/src="\/assets\/library.js"/);
+  assert.ok(existsSync(root+'dist/assets/library.js'));
+  for(const template of templates) assert.ok(library.includes(`href="${template}" download`),template);
+  for(const location of locations) assert.doesNotMatch(location,/modeles|\?|#/,'only canonical HTML routes enter the sitemap');
+  assert.doesNotMatch(library,/adsbygoogle|ca-pub-/,'no invented publisher setup');
+  const headers=JSON.parse(readFileSync(root+'vercel.json','utf8')).headers;
+  assert.ok(headers.find(rule=>rule.source==='/modeles/(.*)').headers.some(h=>h.key==='X-Robots-Tag'&&h.value==='noindex'));
   const png=readFileSync(root+'dist/assets/share.png');
   assert.equal(png.readUInt32BE(16),1200);assert.equal(png.readUInt32BE(20),630);
 });

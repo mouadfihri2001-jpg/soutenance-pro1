@@ -1,8 +1,10 @@
 import { build } from 'esbuild';
 import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { pages } from '../content/pages.mjs';
+import { pages } from '../content/catalog.mjs';
 import { metadata, renderPage, renderGuides, renderNotFound, publicPaths, escapeHtml } from './seo.mjs';
+import { renderLibrary, renderEditorialMethod } from './library.mjs';
+import { buildTemplates } from './templates.mjs';
 import { assertProductionConfiguration } from '../server/runtime-config.js';
 assertProductionConfiguration();
 const production = process.env.VERCEL_ENV === 'production';
@@ -20,7 +22,10 @@ await mkdir('dist/assets', { recursive: true });
 await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
+await writeFile('dist/bibliotheque.html',renderLibrary(context));
+await writeFile('dist/methode-editoriale.html',renderEditorialMethod(context));
 await writeFile('dist/404.html',renderNotFound(context));
+await buildTemplates('dist/modeles');
 // Allow crawlers to read the noindex meta tag on previews. Disallow would hide it.
 await writeFile('dist/robots.txt',`User-agent: *\nAllow: /\n${production ? `Sitemap: ${canonical}sitemap.xml\n` : ''}`);
 await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${production ? publicPaths.map(path=>`\n  <url><loc>${escapeHtml(site.origin+path)}</loc></url>`).join('')+'\n' : ''}</urlset>\n`);
@@ -29,8 +34,8 @@ await copyFile('src/site.css','dist/assets/site.css');
 await copyFile('public/favicon.svg','dist/assets/favicon.svg');
 await copyFile('public/share.png','dist/assets/share.png');
 await build({
-  entryPoints: ['src/app.js'], outdir: 'dist/assets', bundle: true,
+  entryPoints: { app: 'src/app.js', library: 'src/library.js' }, outdir: 'dist/assets', bundle: true,
   minify: true, splitting: true, format: 'esm', platform: 'browser',
-  target: ['es2022'], entryNames: 'app', chunkNames: 'chunk-[hash]',
+  target: ['es2022'], entryNames: '[name]', chunkNames: 'chunk-[hash]',
   legalComments: 'eof'
 });
