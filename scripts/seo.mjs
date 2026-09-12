@@ -31,7 +31,7 @@ export function layout({title, description, meta, content, intent='general', art
 <meta name="theme-color" content="#004d35"><meta property="og:type" content="${article?'article':'website'}"><meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${brand}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}">
-${meta}<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/research.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
+${meta}<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/research.css"><link rel="stylesheet" href="/assets/discovery.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="site-header"><a class="site-brand" href="/" aria-label="Soutenance Pro, accueil">${logo}</a><nav aria-label="Navigation principale"><a href="/bibliotheque">Bibliothèque</a><a href="/guides">Guides</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/etablissements">Établissements</a><a href="/tarifs">Tarifs</a></nav><a class="site-button compact" href="${signup(intent)}">Essai gratuit</a></header>
 ${content}

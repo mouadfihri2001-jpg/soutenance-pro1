@@ -2,6 +2,18 @@
 
 Version préparée le 11 septembre 2026. Publication sur le domaine de production et paiements non confirmés par ce document.
 
+## Mise à jour du 12 septembre 2026
+
+L’accueil et les pages publiques reçoivent une direction visuelle plus affirmée : hero vert profond, typographie claire, recherche contrastée, image existante et six collections par domaine. La bibliothèque réduit son introduction et sépare « Guides & sélection » de « Archives HAL ».
+
+La recherche étendue interroge en direct le catalogue HAL francophone, années 2016–2026 et types ART/THESE/MEM/REPORT/HDR, avec fichier déclaré. Le relevé officiel du 12 septembre à 03:47 UTC a renvoyé **219 476 dépôts** (`numFoundExact: true`). La requête et son interprétation sont versionnées dans `content/hal-coverage.json`. Ce nombre représente le catalogue du fournisseur ; il ne signifie pas que Soutenance Pro héberge, a importé ou a relu 219 476 fichiers, ni que toutes les publications sont distinctes.
+
+Les recherches renvoient au maximum 24 notices validées par réponse. Les utilisateurs peuvent préciser mots-clés, discipline, type et année. La pagination est limitée aux 2 400 premiers résultats de chaque requête ; l’interface explique comment affiner. Les liens d’origine et de fichier restent chez HAL ; RIS/BibTeX sont produits localement à partir des métadonnées. Les 1 000 notices de la sélection locale et leurs liens statiques restent disponibles si le service externe ne répond pas.
+
+Le service ne charge pas tout le corpus dans le navigateur, ne télécharge aucun PDF, n’appelle aucun modèle et n’ajoute pas de service payant. Le fournisseur est fixe, les termes de recherche sont échappés, les URLs sont validées, les réponses et délais sont bornés et les erreurs publiques n’exposent pas les erreurs du fournisseur. Les réponses réussies sont mises en cache pendant cinq minutes côté CDN. Comme tout endpoint public Vercel, son trafic reste soumis au forfait d’hébergement existant.
+
+Le nombre de pages du site et le sitemap restent inchangés : cette recherche étendue ne crée pas des milliers de pages SEO issues de métadonnées dupliquées. Deux appels réels ont vérifié le chemin de recherche : catalogue général (219 476 dépôts, 24 notices) et éducation/articles/2024 (207 dépôts, 24 notices). La vérification graphique dans un navigateur reste indisponible.
+
 ## Livrable
 
 - Logo fourni par le propriétaire intégré à l’accueil, aux pages publiques et à l’authentification. Nom public : Soutenance Pro.

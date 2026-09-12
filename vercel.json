@@ -20,6 +20,9 @@
   "functions": {
     "api/chat.js": {
       "maxDuration": 60
+    },
+    "api/library-search.js": {
+      "maxDuration": 20
     }
   },
   "headers": [

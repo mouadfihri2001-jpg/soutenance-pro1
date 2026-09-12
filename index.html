@@ -21,6 +21,7 @@
 <link href="/assets/app.css" rel="stylesheet">
 <link href="/assets/home.css" rel="stylesheet">
 <link href="/assets/research.css" rel="stylesheet">
+<link href="/assets/discovery.css" rel="stylesheet">
 </head>
 <body class="sp-home">
 <a class="home-skip" href="#contenu">Aller au contenu</a>
@@ -31,28 +32,30 @@
       <a href="/bibliotheque">Bibliothèque</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/tarifs">Tarifs</a>
     </nav>
     <div class="home-nav-actions"><button type="button" class="home-login" onclick="openApp('login')">Se connecter</button><button type="button" class="home-button small" onclick="openApp('signup')">Essai gratuit</button></div>
-    <details class="home-mobile-menu"><summary aria-label="Ouvrir la navigation"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></summary><nav aria-label="Navigation mobile"><a href="/bibliotheque">Bibliothèque</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/tarifs">Tarifs</a><button type="button" onclick="openApp('login')">Se connecter</button></nav></details>
+    <details class="home-mobile-menu"><summary aria-label="Ouvrir la navigation"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></summary><nav aria-label="Navigation mobile"><button type="button" onclick="openApp('signup')">Créer mon compte</button><a href="/bibliotheque">Bibliothèque</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/tarifs">Tarifs</a><button type="button" onclick="openApp('login')">Se connecter</button></nav></details>
   </div>
 </header>
 <main id="contenu">
   <section class="home-hero" id="hero" aria-labelledby="home-title">
     <div class="home-container home-hero-grid">
       <div class="home-hero-copy">
-        <p class="home-eyebrow"><span aria-hidden="true"></span>Le bon repère, au bon moment</p>
-        <h1 id="home-title">Lis. Comprends.<br><em>Construis ton travail.</em></h1>
-        <p class="home-intro">Des thèses, mémoires et articles à explorer. Des méthodes pour ton PFE, ton rapport de stage ou ton doctorat. Et un espace pour construire ton propre projet.</p>
+        <p class="home-eyebrow"><span aria-hidden="true"></span>La bibliothèque qui fait avancer ton projet</p>
+        <h1 id="home-title">Tout commence par<br><em>une bonne source.</em></h1>
+        <p class="home-intro">Explore les publications, trouve ta méthode et construis ton propre travail. Du premier PFE à la thèse, tes lectures et ton projet se rencontrent ici.</p>
         <form class="home-search" role="search" action="/bibliotheque" method="get">
           <label for="home-query">Que prépares-tu aujourd’hui ?</label>
-          <div class="home-search-field"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" name="q" id="home-query" placeholder="Un plan, une introduction, une soutenance…" maxlength="200"><button type="submit">Rechercher <span aria-hidden="true">→</span></button></div>
+          <div class="home-search-field"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" name="q" id="home-query" placeholder="Un sujet, un auteur, une méthode…" maxlength="200"><button type="submit">Rechercher <span aria-hidden="true">→</span></button></div>
         </form>
         <div class="home-search-shortcuts"><span>Pour commencer :</span><a href="/pfe">PFE &amp; mémoire</a><a href="/rapport-de-stage">Rapport de stage</a><a href="/soutenance">Soutenance</a></div>
-        <div class="home-hero-actions"><a href="/bibliotheque" class="home-text-link">Explorer la bibliothèque <span aria-hidden="true">↗</span></a><button type="button" class="home-text-button" onclick="openApp('signup')">Créer mon compte gratuit</button></div>
+        <div class="home-hero-actions"><a href="/bibliotheque?scope=hal" class="home-text-link">Élargir ma recherche dans HAL <span aria-hidden="true">↗</span></a><button type="button" class="home-text-button" onclick="openApp('signup')">Créer mon compte gratuit</button></div>
         <p class="home-hero-note">Recherche et ressources sans inscription. Un compte pour tes projets.</p><!-- LIBRARY_METRICS -->
       </div>
-      <div class="home-featured-resource"><figure class="home-library-figure"><img src="/assets/library-reading-room.webp" alt="" width="1536" height="1024" fetchpriority="high"><div class="home-library-note"><span>BIBLIOTHÈQUE ACADÉMIQUE</span><h2>De la première lecture<br>à ta propre contribution.</h2><a href="/bibliotheque/documents">Explorer les documents de recherche →</a></div><figcaption>Sources identifiées · Références exportables · Documents chez leur hébergeur</figcaption></figure></div>
+      <div class="home-featured-resource"><figure class="home-library-figure"><img src="/assets/library-reading-room.webp" alt="" width="1536" height="1024" fetchpriority="high"><div class="home-library-note"><span>BIBLIOTHÈQUE ACADÉMIQUE</span><h2>Une lecture.<br>Une nouvelle perspective.</h2><a href="/bibliotheque/documents">Explorer les documents de recherche →</a></div><figcaption>Sources identifiées · Références exportables · Documents chez leur hébergeur</figcaption></figure></div>
     </div>
     <div class="home-container home-regions"><span>Étudiants · Doctorants · Enseignants</span><p>France <i aria-hidden="true">/</i> Maroc <i aria-hidden="true">/</i> Algérie <i aria-hidden="true">/</i> Tunisie</p><a href="/etablissements">Retrouver les consignes d’un établissement <span aria-hidden="true">→</span></a></div>
   </section>
+
+  <!-- HOME_DISCOVERY -->
 
   <section class="home-section" aria-labelledby="topics-title">
     <div class="home-container">

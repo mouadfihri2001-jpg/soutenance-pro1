@@ -1,0 +1,13 @@
+{
+  "provider": "HAL",
+  "totalDeposits": 219476,
+  "observedAt": "2026-09-12T03:47:07.501Z",
+  "language": "fr",
+  "fromYear": 2016,
+  "toYear": 2026,
+  "types": ["ART", "THESE", "MEM", "REPORT", "HDR"],
+  "fileCondition": "submitType_s:file",
+  "queryUrl": "https://api.archives-ouvertes.fr/search/?q=language_s%3Afr+AND+submitType_s%3Afile+AND+docType_s%3A%28ART+OR+THESE+OR+MEM+OR+REPORT+OR+HDR%29+AND+producedDateY_i%3A%5B2016+TO+2026%5D&wt=json&rows=3&fl=halId_s%2Ctitle_s%2CauthFullName_s%2CproducedDateY_i%2CdocType_s%2Curi_s%2CfileMain_s%2CdoiId_s&sort=producedDateY_i+desc%2Cdocid+asc",
+  "documentation": "https://api.archives-ouvertes.fr/docs/search",
+  "interpretation": "Nombre de dépôts déclarant un fichier selon HAL, pas un nombre de PDF copiés, dédupliqués ou relus par Soutenance Pro. La recherche étendue interroge HAL en direct ; la sélection locale reste distincte."
+}

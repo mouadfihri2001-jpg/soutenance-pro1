@@ -1,3 +1,4 @@
+import { setupExtendedCatalogue } from './extended-catalogue.js';
 import { normalizeSearch } from './library.js';
 const KEY='soutenance-pro:reading-list:v1',PAGE_SIZE=24;
 export function matchCatalogue(record,{q='',discipline='all',format='all',type='all',year='all',saved=false},selected=new Set()){
@@ -34,4 +35,4 @@ async function setupCatalogue(){
     filter();form.hidden=false;results.hidden=false;fallback.hidden=true;
   }catch{status.textContent='Les filtres ne sont pas disponibles pour le moment. Les guides et le catalogue paginé ci-dessous restent accessibles.';}
 }
-if(typeof document!=='undefined')setupCatalogue();
+if(typeof document!=='undefined'){setupExtendedCatalogue();setupCatalogue();}
