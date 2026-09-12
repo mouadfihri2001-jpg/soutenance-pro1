@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { matchesResource, matchesInstitution, setupLibrary, setupInstitutions } from '../src/library.js';
 import { pages, resourceTopic } from '../content/catalog.mjs';
+import { templateResources } from '../content/catalog.mjs';
 import { institutions } from '../content/institutions.mjs';
 import { renderInstitutions, renderLibrary } from '../scripts/library.mjs';
 
@@ -91,7 +92,7 @@ test('institution discovery combines names, domains and levels with country and 
 test('catalog pages expose all resources without JavaScript and keep canonical URLs independent of search', () => {
   const context={origin:'https://soutenancepro.com',production:true};
   const library=renderLibrary(context),directory=renderInstitutions(context);
-  assert.equal((library.match(/data-resource data-format=/g)||[]).length,15);
+  assert.equal((library.match(/data-resource data-format=/g)||[]).length,pages.length+templateResources.length);
   assert.match(library,/<link rel="canonical" href="https:\/\/soutenancepro.com\/bibliotheque">/);
   assert.equal((directory.match(/data-institution data-country=/g)||[]).length,institutions.length);
   assert.match(directory,/<link rel="canonical" href="https:\/\/soutenancepro.com\/etablissements">/);

@@ -2,7 +2,11 @@
 
 Objectif : devenir une ressource utile pour les étudiants francophones de France, du Maroc, d’Algérie et de Tunisie, puis convertir une partie des lecteurs en utilisateurs de l’espace. Une position Top 1 ou Top 3 ne peut pas être promise. Ce document décrit le travail préparé et la méthode de suivi, pas des résultats de trafic constatés.
 
-## Version préparée le 11 septembre 2026
+## Première version préparée — remplacée par la bibliothèque étendue
+
+Le périmètre actuel, ses chiffres et ses limites sont décrits dans [research-library-release.md](research-library-release.md). Les 17 pages ci-dessous décrivent la première version conservée comme historique.
+
+### Périmètre historique
 
 - 17 pages HTML publiques : accueil, parcours de lecture, bibliothèque, méthode éditoriale, répertoire des établissements et 12 guides/dossiers.
 - Cinq nouvelles ressources originales : PFE, rapport de stage, soutenance, plan de rapport et introduction de rapport.

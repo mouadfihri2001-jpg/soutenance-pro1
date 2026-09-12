@@ -4,8 +4,8 @@ import { contactStyles, renderInstagramContact } from '../src/contact.js';
 
 export const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const json = value => JSON.stringify(value).replace(/</g, '\\u003c');
-const brand = 'Soutenance Pro AI';
-const logo = '<span class="site-mark" aria-hidden="true">S</span><span>Soutenance <strong>Pro</strong> AI</span>';
+const brand = 'Soutenance Pro';
+const logo = '<img class="brand-logo" src="/assets/brand-logo.jpg" width="76" height="76" alt=""><span>Soutenance <strong>Pro</strong></span>';
 const signup = intent => ['ispits','medecine'].includes(intent) ? `/?parcours=${intent}#inscription` : '/#inscription';
 export const publicPaths = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/etablissements', ...pages.map(p => '/' + p.slug)];
 
@@ -19,9 +19,9 @@ export function metadata({ origin, production, path = '/', title, description, a
 <meta property="og:url" content="${escapeHtml(url)}">
 <meta property="og:image" content="${escapeHtml(origin)}/assets/share.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Soutenance Pro AI — Ton PFE, une méthode claire">
+<meta property="og:image:alt" content="Soutenance Pro — Ton PFE, une méthode claire">
 <meta name="twitter:image" content="${escapeHtml(origin)}/assets/share.png">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/brand-logo.jpg" type="image/jpeg">
 <script type="application/ld+json">${json({'@context':'https://schema.org','@graph':graph})}</script>`;
 }
 
@@ -31,11 +31,11 @@ export function layout({title, description, meta, content, intent='general', art
 <meta name="theme-color" content="#004d35"><meta property="og:type" content="${article?'article':'website'}"><meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${brand}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}">
-${meta}<link rel="stylesheet" href="/assets/site.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
+${meta}<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/research.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
-<header class="site-header"><a class="site-brand" href="/" aria-label="Soutenance Pro AI, accueil">${logo}</a><nav aria-label="Navigation principale"><a href="/bibliotheque">Bibliothèque</a><a href="/pfe">PFE</a><a href="/rapport-de-stage">Stage</a><a href="/soutenance">Soutenance</a><a href="/etablissements">Établissements</a><a href="/#pricing">Tarifs</a></nav><a class="site-button compact" href="${signup(intent)}">Essai gratuit</a></header>
+<header class="site-header"><a class="site-brand" href="/" aria-label="Soutenance Pro, accueil">${logo}</a><nav aria-label="Navigation principale"><a href="/bibliotheque">Bibliothèque</a><a href="/guides">Guides</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/etablissements">Établissements</a><a href="/tarifs">Tarifs</a></nav><a class="site-button compact" href="${signup(intent)}">Essai gratuit</a></header>
 ${content}
-<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec une école ou une université.</p>${renderInstagramContact()}</div><nav aria-label="Navigation de pied de page"><a href="/bibliotheque">Bibliothèque gratuite</a><a href="/etablissements">Consignes des établissements</a><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/guides">Par où commencer ?</a><a href="/methode-editoriale">À propos et méthode</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro AI</p></footer>${renderInstagramContact({floating:true})}</body></html>`;
+<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec une école ou une université.</p>${renderInstagramContact()}</div><nav aria-label="Navigation de pied de page"><a href="/bibliotheque">Bibliothèque gratuite</a><a href="/etablissements">Consignes des établissements</a><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/guides">Par où commencer ?</a><a href="/recherche">Moteurs de recherche</a><a href="/outils">Outils gratuits</a><a href="/services">Modules et services</a><a href="/methode-editoriale">À propos et méthode</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro</p></footer>${renderInstagramContact({floating:true})}</body></html>`;
 }
 
 const card = p => `<a class="guide-card" href="/${p.slug}"><span class="eyebrow">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.heading)}</h3><p>${escapeHtml(p.lead)}</p><span class="card-link">Lire le guide <span aria-hidden="true">→</span></span></a>`;
@@ -77,5 +77,5 @@ export function renderGuides(context) {
 }
 
 export function renderNotFound(context) {
-  return layout({title:'Page introuvable',description:'Retrouve les guides et ton espace Soutenance Pro AI.',meta:metadata({...context,production:false,path:'/404',title:'Page introuvable',description:'Retrouve les guides Soutenance Pro AI.'}),content:'<main id="contenu" class="not-found"><span class="eyebrow">Erreur 404</span><h1>Cette page n’existe pas.</h1><p>Tu peux retrouver ton espace depuis l’accueil ou continuer avec un guide.</p><a class="site-button" href="/">Revenir à l’accueil</a> <a href="/guides">Consulter les guides</a></main>'});
+  return layout({title:'Page introuvable',description:'Retrouve les guides et ton espace Soutenance Pro.',meta:metadata({...context,production:false,path:'/404',title:'Page introuvable',description:'Retrouve les guides Soutenance Pro.'}),content:'<main id="contenu" class="not-found"><span class="eyebrow">Erreur 404</span><h1>Cette page n’existe pas.</h1><p>Tu peux retrouver ton espace depuis l’accueil ou continuer avec un guide.</p><a class="site-button" href="/">Revenir à l’accueil</a> <a href="/guides">Consulter les guides</a></main>'});
 }

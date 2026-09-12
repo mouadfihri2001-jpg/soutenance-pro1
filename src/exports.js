@@ -17,7 +17,7 @@ export async function createWord(document,project) {
     else if(token.type==='table')children.push(new Table({width:{size:100,type:WidthType.PERCENTAGE},rows:[token.header,...token.rows].map((row,index)=>new TableRow({children:row.map(cell=>new TableCell({children:[p(cell.text,{spacing:{after:80},...(index===0?{heading:HeadingLevel.HEADING_3}:{})})]}))}))}));
     else children.push(p(token.text||token.raw));
   }
-  return new Document({creator:'Soutenance Pro AI',title:document.title,styles:{default:{document:{run:{font:'Times New Roman',size:24}}}},sections:[{
+  return new Document({creator:'Soutenance Pro',title:document.title,styles:{default:{document:{run:{font:'Times New Roman',size:24}}}},sections:[{
     properties:{page:{margin:{top:1440,right:1440,bottom:1440,left:1440}}},children,
     footers:{default:new Footer({children:[new Paragraph({alignment:'center',children:[new TextRun({children:[PageNumber.CURRENT]})]})]})}
   }]});

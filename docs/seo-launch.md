@@ -1,6 +1,6 @@
-# Lancement SEO — Soutenance Pro AI
+# Lancement SEO — Soutenance Pro
 
-Origine retenue : https://soutenancepro.com. Cible : étudiants francophones en France, au Maroc, en Algérie et en Tunisie. Les parcours ISPITS et médecine restent des spécialisations de la bibliothèque générale.
+Origine retenue : https://soutenancepro.com. Cible : étudiants, doctorants et enseignants francophones en France, au Maroc, en Algérie et en Tunisie. Les parcours ISPITS et médecine restent des spécialisations de la bibliothèque générale.
 
 ## Pages et intentions
 
@@ -9,7 +9,9 @@ Les expressions ci-dessous sont des cibles éditoriales. Aucun outil de volume d
 | Page | Intention principale | Prochaine action proposée |
 | --- | --- | --- |
 | `/` | Bibliothèque et espace de travail PFE, mémoire, stage et soutenance | Trouver une ressource ou ouvrir son projet |
-| `/bibliotheque` | Guides et modèles originaux | Chercher par sujet et format |
+| `/bibliotheque` | Documents, guides et modèles | Chercher par sujet, auteur, discipline, type et année |
+| `/recherche`, `/outils` | Moteurs académiques et outils pratiques | Lire une source, préparer une référence ou un calendrier |
+| `/services`, `/tarifs` | Modules et offres de l’espace | Choisir une tâche et ouvrir son projet |
 | `/etablissements` | Consignes de travaux universitaires | Retrouver la source de sa formation |
 | `/pfe`, `/rapport-de-stage`, `/soutenance` | Dossiers de méthode | Choisir une étape concrète |
 | `/pfe-ispits` | PFE ISPITS au Maroc, plan PFE ISPITS | Créer son projet PFE |
@@ -29,7 +31,7 @@ Le contenu décrit les fonctions présentes : recherche Crossref, travail à par
 2. Tester l'inscription directe et la connexion par mot de passe. Ce parcours ne demande plus de confirmation email. Pour la récupération de mot de passe, vérifier séparément Site URL, Redirect URLs, l'expéditeur et la réception du message. La présence de `ready: true` ne suffit pas à prouver ces parcours.
 3. Vérifier un projet, un plan validé, une source consultée, une rédaction enregistrée, le rechargement et les exports. Utiliser du contenu de démonstration sans dossier médical identifiable.
 4. Publier par un nouveau build Production. Un artefact construit en Preview contient volontairement `noindex`.
-5. Vérifier que les dix-sept URLs répondent en HTTP 200, qu'une URL inexistante répond en 404, que les pages publiques ont `index,follow` et le bon canonical, et que le sitemap est accessible. Vérifier mobile, liens et formulaire.
+5. Vérifier les 1 102 URL publiques : HTTP 200, vrai 404 pour une URL inexistante, canoniques et sitemap. Les 83 pages éditoriales et de collection destinées au référencement ont `index,follow`. Les 1 000 notices de catalogue et les 19 pages secondaires de pagination restent en `noindex,follow`. Vérifier mobile, liens et formulaire.
 6. Ajouter `www.soutenancepro.com` au projet Vercel si ce n'est pas fait, suivre ses valeurs DNS et vérifier sa redirection permanente vers le domaine principal.
 
 Le build Production vérifie désormais la présence des quatre variables et le type des clés avant de produire les fichiers. Si ce contrôle échoue, corriger les noms signalés dans l'environnement Production puis redéployer le commit de `main`. Les logs du contrôle n'affichent aucune valeur privée. Ce contrôle ne prouve ni la délivrabilité des emails ni la validité des clés auprès des fournisseurs.

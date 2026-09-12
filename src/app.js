@@ -23,7 +23,7 @@ function clearNotice() { const el = document.getElementById('sp-notice'); el.hid
 function setStatus(message) { const el = document.getElementById('save-status'); if (el) el.textContent = message; }
 function shell(content, title = 'Mes projets') {
   const project = state.project;
-  root.innerHTML = `<div class="sp-shell"><aside class="sp-sidebar"><button class="sp-brand" data-action="route" data-value="projects">Soutenance <strong>Pro</strong> AI</button>
+  root.innerHTML = `<div class="sp-shell"><aside class="sp-sidebar"><button class="sp-brand" data-action="route" data-value="projects"><img src="/assets/brand-logo.jpg" alt="" width="54" height="54">Soutenance <strong>Pro</strong></button>
     <div class="sp-project-name">${e(project?.title || 'Ton espace académique')}</div>
     <nav aria-label="Espace de travail">${button('Mes projets', 'route', 'projects', 'sp-nav')}
     ${project ? button('Profil et consignes', 'edit-project', '', 'sp-nav') + button('Sources de recherche', 'route', 'sources', 'sp-nav') + Object.entries(MODULES).map(([id,m]) => button(m.label,'route',id,`sp-nav ${state.route === id ? 'active' : ''}`)).join('') : ''}</nav>
@@ -72,13 +72,13 @@ function showPlans() {
 function renderAuth() {
   clearNotice();
   if (!state.db) {
-    root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
+    root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand"><img src="/assets/brand-logo.jpg" alt="" width="72" height="72"><span>Soutenance <strong>Pro</strong></span></div>
       <h1>Connexion indisponible</h1><p>Ton espace n’a pas pu être chargé. Réessaie dans un instant.</p>
       ${button('Réessayer','reload-auth','','sp-button primary')}${button('Revenir au site','close','','sp-link')}</div></div>`;
     return;
   }
   const mode = state.authMode;
-  root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand">Soutenance <strong>Pro</strong> AI</div>
+  root.innerHTML = `<div class="sp-auth"><div class="sp-auth-card"><div class="sp-brand"><img src="/assets/brand-logo.jpg" alt="" width="72" height="72"><span>Soutenance <strong>Pro</strong></span></div>
     <h1>${mode === 'signup' ? 'Créer mon compte' : mode === 'reset' ? 'Réinitialiser le mot de passe' : mode === 'recovery' ? 'Nouveau mot de passe' : 'Retrouver mon projet'}</h1>
     <p>${mode === 'signup' ? 'Crée ton compte et commence ton projet. Aucun email de confirmation à attendre.' : mode === 'reset' ? 'Indique ton email pour recevoir un lien de réinitialisation.' : mode === 'recovery' ? 'Choisis un nouveau mot de passe pour ton compte.' : 'Connecte-toi à ton espace personnel.'}</p>
     <form id="auth-form" data-mode="${mode}">${mode !== 'recovery' ? `<label>Email<input name="email" type="email" autocomplete="email" value="${e(state.authEmail)}" required></label>` : ''}
@@ -97,8 +97,12 @@ async function loadProjects() {
   state.projects = projects.data; state.account = account.data;
 }
 function renderProjects() {
-  shell(`<div class="sp-intro"><p>Reprends ton travail ou démarre un nouveau projet.</p>${button('Nouveau projet','new-project','','sp-button primary')}</div>
+  const requestedModule=new URLSearchParams(location.search).get('outil');
+  const requestedLabel=Object.hasOwn(MODULES,requestedModule)?MODULES[requestedModule].label:null;
+  shell(`<div class="sp-intro"><p>${requestedLabel ? `Tu as choisi « ${e(requestedLabel)} ». Ouvre un projet ou crée-en un pour continuer.` : 'Reprends ton travail ou démarre un nouveau projet.'}</p>${button('Nouveau projet','new-project','','sp-button primary')}</div>
     ${state.projects.length ? `<div class="sp-projects">${state.projects.map(p => `<article class="sp-card"><span class="sp-eyebrow">${e(p.profile.type || 'Projet académique')}</span><h2>${e(p.title)}</h2><p>${e(p.profile.university)} · ${e(p.profile.level)}</p><small>Modifié le ${date(p.updated_at)}</small>${button('Ouvrir le projet','open-project',p.id,'sp-button primary')}</article>`).join('')}</div>` : '<div class="sp-empty"><h2>Ton premier projet commence ici.</h2><p>Renseigne ton sujet et les consignes de ton établissement. Tu pourras ensuite construire le plan et rechercher tes sources.</p></div>'}`);
+  const requestedPlan=new URLSearchParams(location.search).get('offre');
+  if(['offre','max'].includes(requestedPlan))showPlans();
 }
 const profileFields = [
  ['name','Nom complet','text',true], ['university','Université ou école','text',true], ['field','Filière ou spécialité','text',true],
@@ -123,7 +127,7 @@ async function openProject(id) {
   if (!p) throw new Error('Projet introuvable.');
   const docs = await state.db.from('student_documents').select('*').eq('project_id',id).order('updated_at',{ascending:false});
   if (docs.error) throw new Error('Impossible de charger les documents.');
-  state.project=p; state.docs=docs.data; state.route='plan'; state.doc=null; renderModule();
+  state.project=p; state.docs=docs.data; const requestedModule=new URLSearchParams(location.search).get('outil'); state.route=Object.hasOwn(MODULES,requestedModule)?requestedModule:'plan'; state.doc=null; renderModule();
 }
 function history() {
   const docs=state.docs.filter(d=>d.module===state.route);

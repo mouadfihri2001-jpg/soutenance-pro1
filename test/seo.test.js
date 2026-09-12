@@ -4,13 +4,14 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { institutions } from '../content/institutions.mjs';
+import { publicPaths } from '../scripts/seo.mjs';
+import { documentPublicPaths, documentIndexPaths } from '../scripts/documents.mjs';
+import { toolsPublicPaths } from '../scripts/tools-pages.mjs';
+import { pages,templateResources } from '../content/catalog.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const expected = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/etablissements', '/pfe-ispits', '/these-medecine',
-  '/guides/problematique-pfe-infirmier', '/guides/questionnaire-recherche-sante',
-  '/guides/analyse-spss-pfe-sante', '/guides/presentation-soutenance-pfe',
-  '/guides/recherche-bibliographique-sante', '/pfe', '/rapport-de-stage', '/soutenance',
-  '/guides/plan-rapport-de-stage', '/guides/introduction-rapport-de-stage'];
+const expected=[...publicPaths,...documentPublicPaths,...toolsPublicPaths];
+const indexable=[...publicPaths,...documentIndexPaths,...toolsPublicPaths];
 const templates = ['/modeles/plan-rapport-stage.docx','/modeles/checklist-soutenance.docx','/modeles/fiche-lecture-source.docx'];
 const file = path => root + 'dist/' + (path === '/' ? 'index.html' : path.slice(1) + '.html');
 const read = path => readFileSync(root + 'dist/' + path, 'utf8');
@@ -40,12 +41,12 @@ test('preview builds stay out of search; production exposes the library and all 
 
   build('production');
   const locations = [...read('sitemap.xml').matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]);
-  assert.deepEqual(locations,expected.map(path=>'https://soutenancepro.com'+path));
+  assert.deepEqual(locations,indexable.map(path=>'https://soutenancepro.com'+path));
   assert.match(read('robots.txt'), /Sitemap: https:\/\/soutenancepro\.com\/sitemap.xml/);
   const titles = new Set();
   for(const path of expected) {
     const html=readFileSync(file(path),'utf8');
-    assert.match(html,/name="robots" content="index,follow"/,path);
+    assert.ok(html.includes(`name="robots" content="${indexable.includes(path)?'index':'noindex'},follow"`),path);
     assert.ok(html.includes(`rel="canonical" href="https://soutenancepro.com${path}"`),path);
     assert.equal([...html.matchAll(/<h1\b/g)].length,1,path);
     const title=html.match(/<title>(.*?)<\/title>/s)?.[1];
@@ -59,6 +60,7 @@ test('preview builds stay out of search; production exposes the library and all 
       if(url.origin!=='https://soutenancepro.com')continue;
       if(url.pathname.startsWith('/assets/')) { assert.ok(existsSync(root+'dist'+url.pathname),href);continue; }
       if(url.pathname.startsWith('/modeles/')) { assert.ok(templates.includes(url.pathname),href);assert.ok(existsSync(root+'dist'+url.pathname),href);continue; }
+      if(url.pathname.startsWith('/references/')){assert.ok(existsSync(root+'dist'+url.pathname),href);continue;}
       assert.ok(expected.includes(url.pathname),'public link: '+href+' from '+path);
       if(url.hash && !['#inscription','#connexion','#workspace'].includes(url.hash)) {
         const target=readFileSync(file(url.pathname),'utf8');
@@ -68,11 +70,11 @@ test('preview builds stay out of search; production exposes the library and all 
   }
   assert.match(read('404.html'),/name="robots" content="noindex,follow"/);
   const library=read('bibliotheque.html');
-  assert.equal([...library.matchAll(/\sdata-resource(?:\s|>)/g)].length,15,'all guides and templates have default-visible resource cards');
+  assert.equal([...library.matchAll(/\sdata-resource(?:\s|>)/g)].length,pages.length+templateResources.length,'all guides and templates have default-visible resource cards');
   assert.match(library,/"@type":"CollectionPage"/);
   assert.match(library,/"@type":"ItemList"/);
-  assert.match(library,/src="\/assets\/library.js"/);
-  assert.ok(existsSync(root+'dist/assets/library.js'));
+  assert.match(library,/src="\/assets\/catalogue.js"/);
+  assert.ok(existsSync(root+'dist/assets/catalogue.js'));
   for(const template of templates) assert.ok(library.includes(`href="${template}" download`),template);
   for(const location of locations) assert.doesNotMatch(location,/modeles|\?|#/,'only canonical HTML routes enter the sitemap');
   assert.doesNotMatch(library,/adsbygoogle|ca-pub-/,'no invented publisher setup');

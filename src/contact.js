@@ -1,5 +1,5 @@
 export const INSTAGRAM_URL = 'https://www.instagram.com/soutenancepro.co/';
-export const WHATSAPP_URL = 'https://wa.me/212708186441';
+export const WHATSAPP_URL = 'https://wa.me/212680241471';
 
 const instagramIcon = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r=".9" fill="currentColor" stroke="none"/></svg>';
 const whatsappIcon = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.3-4.7A8.5 8.5 0 1 1 20.5 11.8Z"/><path d="m8.1 7.4 1.3-.1 1.1 2.5-1 1.1a7.2 7.2 0 0 0 3.5 3.4l1.1-1 2.5 1.1-.1 1.3c-.1 1-1.2 1.6-2.1 1.3a11.6 11.6 0 0 1-7.6-7.5c-.3-.9.3-2 1.3-2.1Z"/></svg>';
@@ -21,7 +21,7 @@ body.sp-open .sp-contact-floating,.sp-notice:not([hidden])~.sp-contact-floating{
 `;
 
 export function renderContactLinks({ floating = false } = {}) {
-  const links = `<a class="sp-contact-whatsapp" href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" aria-label="Contacter Soutenance Pro sur WhatsApp au +212 708 186 441 (nouvel onglet)">${whatsappIcon}<span>WhatsApp</span></a><a class="sp-contact-instagram" href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="Contacter Soutenance Pro sur Instagram (nouvel onglet)">${instagramIcon}<span>Instagram</span></a>`;
+  const links = `<a class="sp-contact-whatsapp" href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer" aria-label="Contacter Soutenance Pro sur WhatsApp au +212 680 241 471 (nouvel onglet)">${whatsappIcon}<span>WhatsApp</span></a><a class="sp-contact-instagram" href="${INSTAGRAM_URL}" target="_blank" rel="noopener noreferrer" aria-label="Contacter Soutenance Pro sur Instagram (nouvel onglet)">${instagramIcon}<span>Instagram</span></a>`;
   return floating
     ? `<nav class="sp-contact-floating" aria-label="Contact Soutenance Pro">${links}</nav>`
     : `<nav class="sp-contact-inline" aria-label="Contacter Soutenance Pro">${links}</nav>`;

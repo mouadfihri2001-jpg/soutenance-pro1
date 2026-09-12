@@ -6,6 +6,7 @@ import { requestAuth, authLinkErrorFromHash } from '../src/auth.js';
 import { authModeFromHash, projectPreset } from '../src/onboarding.js';
 import { renderInstagramContact, WHATSAPP_URL } from '../src/contact.js';
 import { normalizeUsage, usageAfterGeneration, usageLimitReached } from '../src/usage.js';
+import { MODULES } from '../shared/modules.js';
 
 const appSource = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const landing = await readFile(new URL('../index.html', import.meta.url), 'utf8');
@@ -48,7 +49,7 @@ function mount(overrides = {}, url = {}) {
       return { ok: true, json: async () => ({ authReady: true, ready: true }) };
     },
     FormData: class { constructor(form) { this.values = form.values; } [Symbol.iterator]() { return this.values[Symbol.iterator](); } },
-    clearTimeout, setTimeout
+    clearTimeout, setTimeout, URLSearchParams, MODULES
   });
   function form() {
     const renderedAt = revision;

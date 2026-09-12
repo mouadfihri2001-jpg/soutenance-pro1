@@ -3,7 +3,7 @@ export const pages = [
   {
     slug: 'pfe-ispits', category: 'ISPITS', kind: 'parcours', intent: 'ispits',
     title: 'PFE ISPITS au Maroc : plan, questionnaire et soutenance',
-    description: 'Prépare ton PFE ISPITS : question de recherche, plan, sources, questionnaire, analyse et PowerPoint. Un parcours guidé avec Soutenance Pro AI.',
+    description: 'Prépare ton PFE ISPITS : question de recherche, plan, sources, questionnaire, analyse et PowerPoint. Un parcours guidé avec Soutenance Pro.',
     heading: 'Ton PFE ISPITS, une étape à la fois.',
     lead: 'Du terrain de stage à la soutenance : organise tes idées, garde tes sources et avance avec les consignes de ton encadrant.',
     checklist: ['Le guide de rédaction de ton institut', 'Une question de recherche délimitée', 'Des sources lues et conservées', 'Les remarques de ton encadrant'],
@@ -26,7 +26,7 @@ Avant de rédiger, réunis le guide de ton ISPITS, le calendrier de remise et le
 | Résultats | Données réelles, tableaux, interprétation | Choix et limites de l'analyse |
 | Soutenance | Messages clés, diapositives, réponses | Respect du temps et des consignes |
 
-## Ce que tu peux préparer avec Soutenance Pro AI
+## Ce que tu peux préparer avec Soutenance Pro
 
 Crée ton espace et renseigne ta filière, ton institut, ton niveau et ton sujet. Ajoute ensuite les instructions de ton encadrant. Le module Plan propose une structure à réviser. Tu valides le plan choisi avant de passer à la rédaction.
 
@@ -61,7 +61,7 @@ L'offre gratuite permet un projet et trois générations par mois. Tu peux consu
   {
     slug: 'these-medecine', category: 'Médecine', kind: 'parcours', intent: 'medecine',
     title: 'Thèse de médecine au Maroc : méthode, références et présentation',
-    description: 'Organise ta thèse de médecine : protocole, bibliographie, résultats, discussion et soutenance. Prépare des documents modifiables avec Soutenance Pro AI.',
+    description: 'Organise ta thèse de médecine : protocole, bibliographie, résultats, discussion et soutenance. Prépare des documents modifiables avec Soutenance Pro.',
     heading: 'Une méthode claire pour ta thèse de médecine.',
     lead: 'Rassemble ton protocole, tes références et les corrections de ton directeur de thèse dans un même projet.',
     checklist: ['Le protocole et le guide de la faculté', 'La question et le critère principal', 'Une bibliographie vérifiée', 'Les résultats et leurs limites'],
@@ -90,7 +90,7 @@ Cette structure est un point de départ, pas une exigence universelle. Certaines
 
 Dans une recherche en santé, prépare les concepts de ta question puis leurs synonymes en français et en anglais. [PubMed](https://pubmed.ncbi.nlm.nih.gov/) permet de rechercher des publications biomédicales ; son [guide de recherche](https://pubmed.ncbi.nlm.nih.gov/help/) explique notamment les champs et les filtres disponibles. Garde la requête et la date de recherche pour pouvoir refaire la démarche.
 
-Dans Soutenance Pro AI, la recherche intégrée retrouve des métadonnées Crossref. Ouvre les publications utiles avant de conserver un extrait et sa référence. Vérifie le DOI, l'année, les auteurs et ce que l'article dit réellement. Un extrait isolé ou un résumé ne suffit pas toujours à apprécier une méthode.
+Dans Soutenance Pro, la recherche intégrée retrouve des métadonnées Crossref. Ouvre les publications utiles avant de conserver un extrait et sa référence. Vérifie le DOI, l'année, les auteurs et ce que l'article dit réellement. Un extrait isolé ou un résumé ne suffit pas toujours à apprécier une méthode.
 
 Si ton établissement demande Vancouver, sélectionne ce style dans ton profil de projet. Vérifie ensuite la numérotation et la correspondance entre chaque citation et la liste finale. Le style attendu reste celui de ta faculté.
 
@@ -160,7 +160,7 @@ La méthode doit rester cohérente avec les mots choisis. Explorer des expérien
 
 Ta question peut-elle recevoir une réponse grâce aux données que tu peux recueillir ? Les concepts importants sont-ils définis ? Les objectifs sont-ils formulés avec des verbes précis ? Le terrain et les autorisations sont-ils compatibles avec ton calendrier ?
 
-Dans ton espace Soutenance Pro AI, renseigne cette version dans le champ Problématique puis ajoute les remarques de ton encadrant. Demande un plan à partir de ces éléments. La validation du plan dans la plateforme est une action de suivi ; elle ne constitue pas une validation par ton institut.
+Dans ton espace Soutenance Pro, renseigne cette version dans le champ Problématique puis ajoute les remarques de ton encadrant. Demande un plan à partir de ces éléments. La validation du plan dans la plateforme est une action de suivi ; elle ne constitue pas une validation par ton institut.
 `
   },
   {
@@ -261,7 +261,7 @@ Un tableau doit avoir un titre, des libellés explicites, les unités nécessair
 
 Dans le texte, réponds à l'objectif au lieu de recopier chaque ligne du tableau. Dans la discussion, explique la portée du résultat et ses limites sans ajouter de résultats qui ne figurent pas dans l'analyse.
 
-## La place de Soutenance Pro AI
+## La place de Soutenance Pro
 
 Le module Analyse aide à préparer une démarche et à commenter les sorties que tu lui fournis. Il ne lance pas SPSS et ne produit pas automatiquement un fichier natif SPSS .sav ou .spv. Les calculs doivent être exécutés et vérifiés dans ton logiciel d'analyse. N'utilise pas des valeurs proposées par l'IA comme résultats réels et retire les identifiants personnels avant de partager un extrait.
 `
@@ -314,7 +314,7 @@ Une réponse peut reconnaître une limite sans affaiblir tout le projet. Expliqu
 
 ## Utiliser le module Présentation
 
-Dans Soutenance Pro AI, renseigne le sujet et les consignes, puis fournis les éléments utiles au module Présentation. Exporte le résultat en PowerPoint modifiable et contrôle chaque chiffre, référence et titre. Le module Préparation à la soutenance peut ensuite proposer des questions à travailler. Le support généré reste un brouillon à adapter à ta durée, à tes données et aux attentes du jury.
+Dans Soutenance Pro, renseigne le sujet et les consignes, puis fournis les éléments utiles au module Présentation. Exporte le résultat en PowerPoint modifiable et contrôle chaque chiffre, référence et titre. Le module Préparation à la soutenance peut ensuite proposer des questions à travailler. Le support généré reste un brouillon à adapter à ta durée, à tes données et aux attentes du jury.
 `
   },
   {
@@ -362,7 +362,7 @@ Classe les publications selon les questions auxquelles elles répondent. Une sou
 
 Lorsque deux études semblent se contredire, compare leurs méthodes et leurs populations avant de choisir celle qui arrange ton argument. La discussion doit rendre visibles les différences pertinentes, pas les effacer.
 
-## Ce qui est intégré dans Soutenance Pro AI
+## Ce qui est intégré dans Soutenance Pro
 
 La plateforme recherche des notices via Crossref. Tu sélectionnes ensuite les sources pertinentes et enregistres tes extraits consultés. La rédaction utilise ces éléments après validation de ton plan. PubMed est une ressource externe complémentaire ; il n'est pas présenté comme un moteur intégré à l'application.
 

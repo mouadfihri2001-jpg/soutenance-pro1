@@ -43,7 +43,7 @@ async function mount({ usage = free(1), chat, usageError = false } = {}) {
     FormData: class { [Symbol.iterator]() { return [['instructions', 'Précisions conservées']][Symbol.iterator](); } },
     MODULES, sourceReady, validateInputs, normalizeUsage, usageAfterGeneration, usageLimitReached, WHATSAPP_URL, renderInstagramContact, authModeFromHash, authLinkErrorFromHash,
     marked: { parse: text => text }, DOMPurify: { sanitize: text => text },
-    AbortSignal, setTimeout, clearTimeout, console
+    AbortSignal, setTimeout, clearTimeout, console, URLSearchParams
   };
   runInNewContext(`${source}\nglobalThis.controls={state,ready,refreshUsage,loadProjects,renderProjects,renderModule,showPlans,syncUsagePanel};`, context);
   const controls = context.controls;
@@ -72,7 +72,7 @@ test('the third result stays accessible while the generation button stops and of
   app.showPlans();
   const offers = app.elements.get('upgrade-panel').innerHTML;
   assert.match(offers, /19 €/); assert.match(offers, /29 €/); assert.match(offers, /Recommandé/);
-  assert.match(offers, /https:\/\/wa.me\/212708186441/);
+  assert.match(offers, /https:\/\/wa.me\/212680241471/);
   assert.match(offers, /aucun paiement ni changement d’offre/);
   assert.equal(app.renders, renders);
   assert.equal(app.state.account, null);
