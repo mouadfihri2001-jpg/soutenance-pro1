@@ -56,7 +56,7 @@ Avant de promouvoir cette version : vérifier l'inscription directe, la connexio
 
 ### 4. Activer les offres
 
-Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes restent indiquées **en préparation** : aucun encaissement ou abonnement récurrent n’a été implémenté. Les limites sont :
+Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes ouvrent directement les liens Stripe fournis et associés aux prix par le propriétaire. L’activation du compte reste manuelle après vérification du paiement ; aucun webhook de souscription n’est encore intégré. Les limites sont :
 
 | Offre | Projets | Générations par mois calendaire UTC |
 | --- | ---: | ---: |
@@ -68,7 +68,14 @@ Maximum trois réservations de génération par utilisateur et par minute. Les l
 
 `GET /api/usage` expose uniquement le quota du compte connecté, avec les générations réservées ou terminées du mois UTC. L’offre gratuite donne trois générations **par mois**, puis l’interface bloque les nouvelles générations et affiche les offres à 19 / 29 €. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
 
-Les liens Stripe existants seront fournis séparément par le propriétaire. Les boutons actuels demandent des informations sur WhatsApp : ils ne facturent rien et ne débloquent aucun abonnement. L’activation future doit vérifier le paiement côté serveur et l’associer au bon compte ; un retour depuis une page de paiement ne suffit pas.
+Le propriétaire a confirmé le 12 septembre 2026 les destinations suivantes :
+
+| Offre | Lien Stripe fourni |
+| --- | --- |
+| Essentiel · 19 €/mois | https://buy.stripe.com/4gM00k6ssetLeGr4TzbII0d |
+| Signature · 29 €/mois | https://buy.stripe.com/aFa9AU9EE3P741NbhXbII0c |
+
+Les boutons de l’accueil, de `/tarifs` et de l’espace client ouvrent ces liens dans un nouvel onglet. Après paiement, le client est invité à demander l’activation sur WhatsApp avec l’email de son compte. L’administrateur doit vérifier le paiement dans le compte Stripe propriétaire avant d’attribuer la formule et la période payée. Le rapprochement des renouvellements et annulations reste manuel. Le mapping des liens et tarifs vient du propriétaire ; la configuration Stripe réelle n’a pas pu être vérifiée depuis cette session. Un retour depuis Stripe ne modifie jamais les droits. L’automatisation future doit vérifier les événements côté serveur et les associer au bon compte.
 
 ### Protection de la consommation IA
 
@@ -84,7 +91,7 @@ Le moteur proposé pour les trois offres est le même : Claude Sonnet 5, via la 
 
 Références fournisseur consultées le 11 septembre 2026 : [Claude Sonnet 5](https://www.anthropic.com/news/claude-sonnet-5) et [guide de migration](https://platform.claude.com/docs/en/models/sonnet-5/migration-guide). Au tarif de 2 $ par million de tokens entrants et 10 $ par million sortants, une action de 10 000 tokens entrants et 3 000 sortants coûte environ 0,05 $ ; 60 actions coûtent 3 $ et 150 coûtent 7,50 $. Ce scénario exclut relances, recherche, hébergement, paiement et support ; ce n’est pas une mesure des usages réels ni une garantie de marge.
 
-Seul l’administrateur peut attribuer un plan dans la table `student_accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Ajouter la méthode de paiement choisie et sa validation serveur avant de rendre les offres achetables.
+Seul l’administrateur peut attribuer un plan dans la table `student_accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Les liens permettent le paiement externe ; seuls les droits attribués après vérification donnent accès aux quotas payants. Prévoir la validation serveur des événements Stripe avant d’annoncer une activation automatique.
 
 ### 5. Raccorder le domaine Hostinger
 

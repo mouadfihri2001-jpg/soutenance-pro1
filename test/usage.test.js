@@ -57,7 +57,7 @@ async function mount({ usage = free(1), chat, usageError = false } = {}) {
   };
 }
 
-test('the third result stays accessible while the generation button stops and offers remain informational', async () => {
+test('the third result stays accessible while the generation button stops and payment links leave entitlements unchanged', async () => {
   const app = await mount({ usage: free(0) });
   await app.submit();
   assert.equal(app.state.doc.id, 'saved-third');
@@ -73,7 +73,9 @@ test('the third result stays accessible while the generation button stops and of
   const offers = app.elements.get('upgrade-panel').innerHTML;
   assert.match(offers, /19 €/); assert.match(offers, /29 €/); assert.match(offers, /Recommandé/);
   assert.match(offers, /https:\/\/wa.me\/212680241471/);
-  assert.match(offers, /aucun paiement ni changement d’offre/);
+  assert.match(offers, /href="https:\/\/buy\.stripe\.com\/4gM00k6ssetLeGr4TzbII0d"[^>]*>Choisir Essentiel/);
+  assert.match(offers, /href="https:\/\/buy\.stripe\.com\/aFa9AU9EE3P741NbhXbII0c"[^>]*>Choisir Signature/);
+  assert.match(offers, /après vérification du paiement/);
   assert.equal(app.renders, renders);
   assert.equal(app.state.account, null);
 });
