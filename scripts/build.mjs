@@ -1,7 +1,7 @@
 import { build } from 'esbuild';
 import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { pages, templateResources } from '../content/catalog.mjs';
+import { pages } from '../content/catalog.mjs';
 import { metadata, renderPage, renderGuides, renderNotFound, publicPaths, escapeHtml } from './seo.mjs';
 import { renderLibrary, renderEditorialMethod, renderInstitutions } from './library.mjs';
 import { buildTemplates } from './templates.mjs';
@@ -11,6 +11,7 @@ import { services } from '../content/services.mjs';
 import { renderDocument, renderDiscipline, renderCataloguePage, cataloguePageCount, documentPath, disciplinePath, pagePath, documentIndexPaths, searchEntries, referenceFiles } from './documents.mjs';
 import { renderServices, renderService, renderResearch, renderTools, renderTool, renderPricing, toolDefinitions, toolsPublicPaths } from './tools-pages.mjs';
 import { renderHomeDiscovery } from './discovery.mjs';
+import { renderProductDemo, renderStartHub } from './start-hub.mjs';
 import { assertProductionConfiguration } from '../server/runtime-config.js';
 assertProductionConfiguration();
 const production = process.env.VERCEL_ENV === 'production';
@@ -28,9 +29,7 @@ const seo=metadata({...context,title,description});
 if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadata insertion point is missing.');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
-// CCSD confirms over one million open-access documents: https://www.ccsd.cnrs.fr/hal/
-// This is HAL's searchable corpus; the local selection and owned resources are counted separately.
-await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- LIBRARY_METRICS -->',`<div class="home-collection-metrics"><div class="home-metric-primary"><strong>1&nbsp;000&nbsp;000+</strong><span>documents scientifiques en libre accès à explorer via HAL</span></div><div><strong>${documents.length.toLocaleString('fr-FR')}</strong><span>références sélectionnées sur Soutenance Pro</span></div><div><strong>${pages.length + templateResources.length}</strong><span>guides, parcours et modèles</span></div></div><p class="home-metrics-context">Notre sélection couvre ${disciplines.length} disciplines, avec ${pages.length} guides et parcours et ${templateResources.length} modèles Word. <a href="/methode-editoriale">Notre bibliothèque en détail →</a></p>`));
+await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- PRODUCT_DEMO -->',renderProductDemo()).replace('<!-- START_HUB -->',renderStartHub()));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
 await writeFile('dist/bibliotheque.html',renderLibrary(context));
@@ -59,6 +58,7 @@ await copyFile('src/discovery.css','dist/assets/discovery.css');
 await copyFile('src/public-polish.css','dist/assets/public-polish.css');
 await copyFile('src/library-polish.css','dist/assets/library-polish.css');
 await copyFile('src/home-polish.css','dist/assets/home-polish.css');
+await copyFile('src/start-hub.css','dist/assets/start-hub.css');
 await copyFile('public/brand-logo.jpg','dist/assets/brand-logo.jpg');
 await copyFile('public/library-reading-room.webp','dist/assets/library-reading-room.webp');
 await copyFile('public/favicon.svg','dist/assets/favicon.svg');
