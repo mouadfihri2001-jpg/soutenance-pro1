@@ -1,3 +1,6 @@
+import { normalizeDocumentContent } from '../shared/document-format.js';
+import { sourceIdentity, normalizedDoi, halSourceUrl } from '../shared/source-identity.js';
+import { paymentReturnData, safeStripeUrl } from '../src/billing-client.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -49,7 +52,7 @@ function mount(overrides = {}, url = {}) {
       return { ok: true, json: async () => ({ authReady: true, ready: true }) };
     },
     FormData: class { constructor(form) { this.values = form.values; } [Symbol.iterator]() { return this.values[Symbol.iterator](); } },
-    clearTimeout, setTimeout, URLSearchParams, MODULES
+    normalizeDocumentContent, sourceIdentity, normalizedDoi, halSourceUrl, paymentReturnData, safeStripeUrl, clearTimeout, setTimeout, AbortSignal, URLSearchParams, MODULES
   });
   function form() {
     const renderedAt = revision;

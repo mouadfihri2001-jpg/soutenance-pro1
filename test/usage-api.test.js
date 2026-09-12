@@ -42,3 +42,15 @@ test('usage does not invent remaining credits when authentication or database re
   const method=response();await createUsageHandler(async()=>{throw new Error('must not authenticate');},now)({method:'POST'},method);
   assert.equal(method.code,405);
 });
+
+
+test('paid allowance starts with the paid cycle while free and legacy accounts keep the calendar month',async()=>{
+  const account={plan:'offre',subscription_period_start:'2026-09-11T11:59:00Z',subscription_expires_at:'2026-10-11T11:59:00Z'};
+  const s=session(account,0),r=response(); await createUsageHandler(async()=>s,now)({method:'GET'},r);
+  assert.equal(r.body.remaining,60); assert.equal(r.body.resetsAt,'2026-10-11T11:59:00.000Z');
+  assert.ok(s.filters.some(x=>Array.isArray(x)&&x[1]==='created_at'&&x[2]==='2026-09-11T11:59:00.000Z'));
+  const expired=session({...account,subscription_expires_at:'2026-09-11T11:59:30Z'},3),end=response();
+  await createUsageHandler(async()=>expired,now)({method:'GET'},end);
+  assert.equal(end.body.plan,'free'); assert.equal(end.body.remaining,0);
+  assert.ok(expired.filters.some(x=>Array.isArray(x)&&x[1]==='created_at'&&x[2]==='2026-09-01T00:00:00.000Z'));
+});

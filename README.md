@@ -8,8 +8,9 @@ Cette version améliore le projet Vercel existant. Le site conserve son identit�
 - Projets persistants, profil étudiant et consignes universitaires.
 - Neuf modules, historique des documents, édition avec sauvegarde automatique et avertissement en cas de texte non enregistré.
 - Plan explicitement validé et identifié. Modifier ce plan invalide sa validation.
-- Recherche bibliographique Crossref, sélection des sources, extraits consultés, puis rédaction. Les métadonnées ne constituent pas une lecture automatique du texte intégral. Les dates proposées couvrent les dix dernières années et peuvent être changées.
-- Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
+- Bibliographie à partir des sources choisies ou, si aucune référence exploitable n’est sélectionnée, recherche automatique selon le sujet enregistré du projet : Crossref, puis le catalogue HAL local si Crossref est indisponible ou sans résultat pertinent. Les références trouvées sont enregistrées avant leur mise en forme, sans écraser une modification simultanée du projet. Une recherche sans résultat ne consomme pas de génération. Les métadonnées, leur provenance et les champs manquants restent visibles ; aucun extrait consulté n’est inventé. Les dates proposées couvrent les dix dernières années et peuvent être changées.
+- Plans avec chapitres et sous-sections sur des lignes distinctes, titres hiérarchisés dans l’aperçu et les exports. Les anciens plans aux sections collées sont normalisés de manière conservatrice ; les paragraphes des autres modules restent inchangés. Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
+- Parcours d’abonnement authentifié préparé : Checkout créé côté serveur, rapprochement du paiement avec le compte, retour dans l’espace client, quota par période payée et gestion de l’abonnement. L’activation distante dépend encore de la configuration du compte Stripe Live propriétaire ; voir [la configuration des paiements](docs/billing-setup.md).
 - Authentification obligatoire des appels aux données étudiant et à l'IA, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. L'inscription publique possède sa propre limitation des tentatives. Les échecs de génération traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
 - Les scores de plagiat, partenariats et témoignages non vérifiés ont été retirés. Le module Correction est présenté comme une aide à la révision.
 - Une bibliothèque francophone avec 45 guides et parcours, huit modèles Word, 1 000 références sélectionnées et une recherche étendue dans tout HAL, avec filtres de langue, période et type. Le chiffre de plus d’un million décrit le fonds HAL officiel, pas des références sélectionnées ou hébergées par Soutenance Pro. Les parcours France, Maroc, Algérie et Tunisie relient les méthodes à des ressources institutionnelles vérifiées. Le catalogue distingue les documents, guides et modèles, avec des filtres adaptés à chaque format.
@@ -56,26 +57,30 @@ Avant de promouvoir cette version : vérifier l'inscription directe, la connexio
 
 ### 4. Activer les offres
 
-Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les offres payantes ouvrent directement les liens Stripe fournis et associés aux prix par le propriétaire. L’activation du compte reste manuelle après vérification du paiement ; aucun webhook de souscription n’est encore intégré. Les limites sont :
+Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les appels à l’action payants de l’accueil et de `/tarifs` ouvrent `/?offre=offre#inscription` ou `/?offre=max#inscription` pour associer l’offre choisie à un compte authentifié.
 
-| Offre | Projets | Générations par mois calendaire UTC |
-| --- | ---: | ---: |
-| Découverte (`free`) | 1 | 3 |
-| Essentiel (`offre`) | 5 | 60 |
-| Signature (`max`) | 20 | 150 |
+Dans l’espace client, `GET /api/billing` indique si le paiement automatique est disponible. Lorsqu’il renvoie `ready: true`, le serveur crée une session Stripe Checkout pour le compte connecté et le prix mensuel autorisé. Après le paiement, le retour dans l’espace client déclenche une vérification côté serveur ; le webhook signé assure aussi le rapprochement si le client ferme la page Stripe. Seule une facture et son paiement vérifiés peuvent attribuer la formule et sa période payée. Un simple retour depuis Stripe ou un email ne débloque jamais de générations.
 
-Maximum trois réservations de génération par utilisateur et par minute. Les limites sont des réglages de départ à ajuster après mesure des coûts réels. Les formules d’accès sont appliquées dans les fonctions SQL ; garder l’affichage des tarifs et ces limites synchronisés.
+| Offre | Projets | Générations | Période du quota |
+| --- | ---: | ---: | --- |
+| Découverte (`free`) | 1 | 3 | Mois calendaire UTC |
+| Essentiel (`offre`) | 5 | 60 | Période de la facture Stripe payée |
+| Signature (`max`) | 20 | 150 | Période de la facture Stripe payée |
 
-`GET /api/usage` expose uniquement le quota du compte connecté, avec les générations réservées ou terminées du mois UTC. L’offre gratuite donne trois générations **par mois**, puis l’interface bloque les nouvelles générations et affiche les offres à 19 / 29 €. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
+Maximum trois réservations de génération par utilisateur et par minute. Les quotas payants du parcours automatique suivent la période de facturation vérifiée, et non le premier jour du mois. Les accès manuels historiques sans début de période enregistré conservent leur compteur par mois calendaire UTC. Les limites sont des réglages de départ à ajuster après mesure des coûts réels ; garder les tarifs affichés et les fonctions SQL synchronisés.
 
-Le propriétaire a confirmé le 12 septembre 2026 les destinations suivantes :
+`GET /api/usage` expose uniquement le quota du compte connecté et sa date de remise à zéro. Les générations réservées ou terminées de la période sont comptées ; les tentatives marquées en échec ne le sont pas. À la limite, l’interface bloque les nouvelles générations et présente les offres. Lire, modifier et exporter les documents existants reste possible. Le serveur contrôle toujours le quota, y compris si l’interface affiche un ancien compteur.
+
+Le propriétaire a confirmé le 12 septembre 2026 les liens Live et leur association aux offres :
 
 | Offre | Lien Stripe fourni |
 | --- | --- |
 | Essentiel · 19 €/mois | https://buy.stripe.com/4gM00k6ssetLeGr4TzbII0d |
 | Signature · 29 €/mois | https://buy.stripe.com/aFa9AU9EE3P741NbhXbII0c |
 
-Les boutons de l’accueil, de `/tarifs` et de l’espace client ouvrent ces liens dans un nouvel onglet. Après paiement, le client est invité à demander l’activation sur WhatsApp avec l’email de son compte. L’administrateur doit vérifier le paiement dans le compte Stripe propriétaire avant d’attribuer la formule et la période payée. Le rapprochement des renouvellements et annulations reste manuel. Le mapping des liens et tarifs vient du propriétaire ; la configuration Stripe réelle n’a pas pu être vérifiée depuis cette session. Un retour depuis Stripe ne modifie jamais les droits. L’automatisation future doit vérifier les événements côté serveur et les associer au bon compte.
+Si le paiement automatique n’est pas configuré, l’espace client conserve ces destinations exactes comme solution de paiement externe, avec activation manuelle après vérification par l’administrateur. Le client peut transmettre l’email de son compte via WhatsApp ; cet email ne constitue pas une preuve de paiement. Les achats réalisés directement avec ces liens ne sont pas rattachés automatiquement au nouveau parcours Checkout authentifié.
+
+Le compte Stripe Live auquel appartiennent ces liens n’est pas connecté à cette session. L’automatisation est préparée dans le code, mais elle n’est pas activée à distance et aucun paiement réel n’a été testé. Appliquer les réglages et la migration décrits dans [docs/billing-setup.md](docs/billing-setup.md), puis vérifier le parcours complet avant d’annoncer l’activation automatique aux clients. Cette documentation ne constate pas un déploiement Production.
 
 ### Protection de la consommation IA
 
@@ -91,7 +96,7 @@ Le moteur proposé pour les trois offres est le même : Claude Sonnet 5, via la 
 
 Références fournisseur consultées le 11 septembre 2026 : [Claude Sonnet 5](https://www.anthropic.com/news/claude-sonnet-5) et [guide de migration](https://platform.claude.com/docs/en/models/sonnet-5/migration-guide). Au tarif de 2 $ par million de tokens entrants et 10 $ par million sortants, une action de 10 000 tokens entrants et 3 000 sortants coûte environ 0,05 $ ; 60 actions coûtent 3 $ et 150 coûtent 7,50 $. Ce scénario exclut relances, recherche, hébergement, paiement et support ; ce n’est pas une mesure des usages réels ni une garantie de marge.
 
-Seul l’administrateur peut attribuer un plan dans la table `student_accounts` et définir `subscription_expires_at`. Un compte dont l’abonnement est expiré retrouve les limites gratuites, sans suppression de ses documents. L’utilisateur ne peut pas modifier sa formule. Les liens permettent le paiement externe ; seuls les droits attribués après vérification donnent accès aux quotas payants. Prévoir la validation serveur des événements Stripe avant d’annoncer une activation automatique.
+Les droits payants et leur période sont écrits par le serveur après vérification Stripe, ou par l’administrateur pour les accès manuels. L’utilisateur ne peut pas modifier sa formule dans `student_accounts`. Un abonnement arrivé au terme de sa période payée retrouve les limites gratuites, sans suppression des documents. Le budget global du fournisseur reste applicable à toutes les formules ; ses limites sont distinctes du quota de générations de chaque compte.
 
 ### 5. Raccorder le domaine Hostinger
 

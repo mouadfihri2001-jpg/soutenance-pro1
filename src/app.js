@@ -6,13 +6,16 @@ import { requestAuth, authLinkErrorFromHash } from './auth.js';
 import { authModeFromHash, projectPreset } from './onboarding.js';
 import { renderInstagramContact, WHATSAPP_URL } from './contact.js';
 import { normalizeUsage, usageAfterGeneration, usageLimitReached } from './usage.js';
+import { normalizeDocumentContent } from '../shared/document-format.js';
+import { sourceIdentity, normalizedDoi, halSourceUrl } from '../shared/source-identity.js';
+import { paymentReturnData, safeStripeUrl } from './billing-client.js';
 import './landing.js';
 
 const root = document.getElementById('workspace');
-const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, usage: null, usageBlocked: false, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '' };
-let saveTimer, saving, usageRefreshVersion = 0, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
+const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, usage: null, usageBlocked: false, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '', billing: { ready: false, canManage: false }, billingPending: false, payment: null, sourceProvider: 'crossref' };
+let saveTimer, saving, paymentRetryTimer, usageRefreshVersion = 0, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
-const markdown = value => DOMPurify.sanitize(marked.parse(value || ''), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
+const markdown = (value, module = state.doc?.module) => DOMPurify.sanitize(marked.parse(normalizeDocumentContent(value || '', module)), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
 const button = (label, action, value = '', cls = 'sp-button') => `<button type="button" class="${cls}" data-action="${action}" data-value="${e(value)}">${label}</button>`;
 const date = value => new Date(value).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' });
 function notify(message, error = false) {
@@ -29,7 +32,7 @@ function shell(content, title = 'Mes projets') {
     ${project ? button('Profil et consignes', 'edit-project', '', 'sp-nav') + button('Sources de recherche', 'route', 'sources', 'sp-nav') + Object.entries(MODULES).map(([id,m]) => button(m.label,'route',id,`sp-nav ${state.route === id ? 'active' : ''}`)).join('') : ''}</nav>
     <div class="sp-account">${e(state.user.email)}<br><span id="plan-name">${e(activePlan())}</span>${button('Voir les offres', 'show-plans', '', 'sp-link')}${button('Se déconnecter', 'logout', '', 'sp-link')}</div></aside>
     <main class="sp-main"><header class="sp-topbar"><h1>${e(title)}</h1>${button('Accueil du site','close','','sp-link')}</header>
-    <div class="sp-body"><div id="usage-status" aria-live="polite">${usagePanel()}</div><div id="upgrade-panel" hidden></div>${content}</div></main></div>`;
+    <div class="sp-body"><div id="usage-status" aria-live="polite">${usagePanel()}</div><div id="billing-status" aria-live="polite">${billingPanel()}</div><div id="upgrade-panel" hidden></div>${content}</div></main></div>`;
 }
 function activePlan() {
   if (state.usage) return { free: 'Découverte', offre: 'Essentiel', max: 'Signature' }[state.usage.plan];
@@ -44,9 +47,10 @@ function generationDisabled() {
 function usagePanel() {
   const usage = state.usage, exhausted = usageLimitReached(usage, state.usageBlocked);
   const reset = usage ? new Date(usage.resetsAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', timeZone: 'UTC' }) : '';
+  if (state.busy && state.route === 'references') return '<section class="sp-usage" aria-label="Bibliographie en préparation"><div><strong>Recherche de références et préparation de la bibliographie…</strong><p>Les publications sont recherchées selon ton sujet. Le résultat sera enregistré dans ton projet.</p></div></section>';
   if (state.busy) return '<section class="sp-usage" aria-label="Génération en cours"><div><strong>Ton résultat est en préparation…</strong><p>Le compteur sera actualisé à la fin. Tu peux consulter et exporter tes documents.</p></div></section>';
-  if (exhausted) return `<section class="sp-usage sp-usage-exhausted" aria-label="Limite de génération atteinte"><div><strong>${usage?.plan === 'free' ? 'Tes 3 générations gratuites de ce mois sont utilisées.' : 'Ton quota de génération est atteint.'}</strong><p>Tu peux toujours consulter, modifier et exporter tes documents.${reset ? ` Ton quota se renouvelle le ${e(reset)} à 00 h UTC.` : ''}</p></div>${usage?.plan === 'max' ? button('Actualiser le quota', 'refresh-usage') : button('Découvrir les offres 19 € / 29 €', 'show-plans', '', 'sp-button primary')}</section>`;
-  return `<section class="sp-usage" aria-label="Utilisation des générations"><div><strong>${usage ? `${usage.remaining} / ${usage.limit} génération${usage.remaining === 1 ? '' : 's'} restante${usage.remaining === 1 ? '' : 's'} ce mois-ci` : 'Ton utilisation'}</strong><p>${usage ? `${e(activePlan())} · Quota partagé entre tes projets.` : 'Compteur momentanément indisponible. Tes documents restent accessibles.'}</p></div>${button(usage ? 'Voir les offres' : 'Actualiser', usage ? 'show-plans' : 'refresh-usage', '', 'sp-link')}</section>`;
+  if (exhausted) return `<section class="sp-usage sp-usage-exhausted" aria-label="Limite de génération atteinte"><div><strong>${usage?.plan === 'free' ? 'Tes 3 générations gratuites de ce mois sont utilisées.' : 'Ton quota de génération est atteint.'}</strong><p>Tu peux toujours consulter, modifier et exporter tes documents.${reset ? ` ${usage?.plan==='free'?'Ton quota se renouvelle le':'Fin de ta période payée :'} ${e(reset)}${usage?.plan==='free'?' à 00 h UTC.':'.'}` : ''}</p></div>${usage?.plan === 'max' ? button('Actualiser le quota', 'refresh-usage') : button('Découvrir les offres 19 € / 29 €', 'show-plans', '', 'sp-button primary')}</section>`;
+  return `<section class="sp-usage" aria-label="Utilisation des générations"><div><strong>${usage ? `${usage.remaining} / ${usage.limit} génération${usage.remaining === 1 ? '' : 's'} restante${usage.remaining === 1 ? '' : 's'} sur ta période` : 'Ton utilisation'}</strong><p>${usage ? `${e(activePlan())} · Quota partagé entre tes projets.` : 'Compteur momentanément indisponible. Tes documents restent accessibles.'}</p></div>${button(usage ? 'Voir les offres' : 'Actualiser', usage ? 'show-plans' : 'refresh-usage', '', 'sp-link')}</section>`;
 }
 function syncUsagePanel() {
   const panel = root.querySelector('#usage-status'); if (panel) panel.innerHTML = usagePanel();
@@ -61,12 +65,71 @@ async function refreshUsage() {
     const usage = normalizeUsage(await api('/api/usage', null, { signal: AbortSignal.timeout(8000) }));
     if (state.user?.id !== userId || version !== usageRefreshVersion || !usage) return;
     state.usage = usage; state.usageBlocked = usage.remaining === 0;
-    syncUsagePanel();
+    syncUsagePanel(); syncBillingPanel();
   } catch { /* A failed counter request must not hide or replace a student's work. */ }
 }
+
+function billingPanel() {
+  const payment = state.payment;
+  if (payment?.status === 'pending') return `<section class="sp-usage" role="status"><div><strong>Vérification de ton paiement…</strong><p>Ton offre et son quota seront affichés après confirmation.</p></div></section>`;
+  if (payment?.status === 'waiting') return `<section class="sp-usage"><div><strong>La confirmation du paiement est en attente.</strong><p>Tu peux poursuivre ton travail. Vérifie à nouveau pour actualiser ton offre.</p></div>${button('Vérifier mon paiement', 'recheck-payment')}</section>`;
+  if (payment?.status === 'paid') return `<section class="sp-usage"><div><strong>${e({offre:'Essentiel',max:'Signature'}[payment.plan] || 'Ton abonnement')} est activé.</strong><p>${state.usage?.plan === payment.plan ? `${state.usage.remaining} générations disponibles sur les ${state.usage.limit} de ton offre.` : 'Ton quota sera actualisé dans un instant.'}</p></div>${button('Actualiser le quota', 'refresh-usage')}</section>`;
+  if (payment?.status === 'cancelled') return '<section class="sp-usage"><div><strong>Paiement interrompu.</strong><p>Tu peux reprendre ton projet ou choisir une offre quand tu le souhaites.</p></div></section>';
+  if (payment?.status === 'invalid' || payment?.status === 'error') return `<section class="sp-usage"><div><strong>${e(payment.message || 'Ce retour de paiement ne peut pas être vérifié.')}</strong><p><a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Contacter Soutenance Pro</a></p></div></section>`;
+  return '';
+}
+function syncBillingPanel() { const panel = root.querySelector('#billing-status'); if (panel) panel.innerHTML = billingPanel(); }
+async function refreshBilling() {
+  const userId = state.user?.id; if (!userId) return;
+  try {
+    const result = await api('/api/billing', null, { signal: AbortSignal.timeout(10000) });
+    if (state.user?.id === userId) state.billing = { ready: result.ready === true, canManage: result.canManage === true, canSubscribe: result.canSubscribe === true };
+  } catch { if (state.user?.id === userId) state.billing = { ready: false, canManage: false }; }
+}
+async function confirmPaymentReturn(retry = false) {
+  const target = paymentReturnData(location.search), userId = state.user?.id;
+  if (!target || !userId || state.billingPending) return;
+  if (!retry && state.payment?.userId === userId && state.payment?.sessionId === target.sessionId) return;
+  clearTimeout(paymentRetryTimer);
+  const attempts = (state.payment?.sessionId === target.sessionId ? state.payment?.attempts || 0 : 0) + 1;
+  state.payment = { ...target, userId, attempts }; syncBillingPanel();
+  if (target.status !== 'pending') return;
+  state.billingPending = true;
+  try {
+    const result = await api('/api/billing', { action: 'confirm', sessionId: target.sessionId }, { signal: AbortSignal.timeout(25000) });
+    if (state.user?.id !== userId) return;
+    state.payment = { ...target, userId, attempts, status: result.paid === true && ['offre','max'].includes(result.plan) ? 'paid' : 'waiting', plan: result.plan };
+    if (result.paid === true) { await refreshUsage(); await refreshBilling(); }
+  } catch (error) {
+    if (state.user?.id === userId) state.payment = { ...target, userId, attempts, status: ['billing_busy', 'billing_pending'].includes(error.code) ? 'waiting' : 'error', message: error.message };
+  } finally {
+    state.billingPending = false; syncBillingPanel();
+    if (state.user?.id === userId && state.payment?.status === 'waiting' && attempts < 4) paymentRetryTimer = setTimeout(()=>{ if(state.user?.id === userId && !root.hidden) void confirmPaymentReturn(true); },1500);
+  }
+}
+async function startBilling(action, plan) {
+  if (state.billingPending) return;
+  if (action === 'checkout' && !['offre', 'max'].includes(plan)) return;
+  state.billingPending = true;
+  const userId = state.user?.id;
+  try {
+    await flush();
+    const result = await api('/api/billing', { action, ...(action === 'checkout' ? { plan } : {}) }, { signal: AbortSignal.timeout(25000) });
+    if (state.user?.id !== userId) return;
+    location.assign(safeStripeUrl(result.url, action === 'portal' ? 'portal' : 'checkout'));
+  } finally { state.billingPending = false; }
+}
+
 function showPlans() {
   const panel = root.querySelector('#upgrade-panel'); if (!panel) return;
-  panel.innerHTML = `<section class="sp-upgrade" aria-labelledby="upgrade-heading"><div class="sp-intro"><div><span class="sp-eyebrow">Plus de place pour ton projet</span><h2 id="upgrade-heading" tabindex="-1">Choisis ton rythme de travail</h2></div>${button('Fermer', 'close-plans', '', 'sp-link')}</div><p>Choisis ton offre et règle ton abonnement sur Stripe. Après paiement, demande son activation sur WhatsApp avec l’email de ton compte ; elle intervient après vérification du paiement.</p><div class="sp-offer-grid"><article class="sp-offer"><span class="sp-eyebrow">Essentiel</span><h3>19 € <small>/ mois</small></h3><p>5 projets · 60 générations par mois</p><p>Pour construire ton plan, développer tes sections et préparer ta soutenance.</p><a class="sp-button" href="https://buy.stripe.com/4gM00k6ssetLeGr4TzbII0d" target="_blank" rel="noopener noreferrer">Choisir Essentiel</a></article><article class="sp-offer sp-offer-recommended"><span class="sp-offer-badge">Recommandé</span><span class="sp-eyebrow">Signature</span><h3>29 € <small>/ mois</small></h3><p>20 projets · 150 générations par mois</p><p>Pour avancer plus régulièrement et disposer de davantage de révisions.</p><a class="sp-button primary" href="https://buy.stripe.com/aFa9AU9EE3P741NbhXbII0c" target="_blank" rel="noopener noreferrer">Choisir Signature</a></article></div><p class="sp-muted"><a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Demander l’activation sur WhatsApp ↗</a></p><p class="sp-muted">Les générations déjà utilisées et les documents enregistrés restent attachés à ton compte.</p></section>`;
+  const offers = [
+    ['offre', 'Essentiel', 19, 5, 60, 'https://buy.stripe.com/4gM00k6ssetLeGr4TzbII0d'],
+    ['max', 'Signature', 29, 20, 150, 'https://buy.stripe.com/aFa9AU9EE3P741NbhXbII0c']
+  ];
+  const intro = state.billing.ready
+    ? 'Le paiement est associé à ton compte. Après confirmation, tu retrouves ici ton offre et son quota pour la période payée.'
+    : 'Choisis ton offre et règle ton abonnement sur Stripe. Après paiement, demande son activation sur WhatsApp avec l’email de ton compte ; elle intervient après vérification du paiement.';
+  panel.innerHTML = `<section class="sp-upgrade" aria-labelledby="upgrade-heading"><div class="sp-intro"><div><span class="sp-eyebrow">Plus de place pour ton projet</span><h2 id="upgrade-heading" tabindex="-1">Choisis ton rythme de travail</h2></div>${button('Fermer', 'close-plans', '', 'sp-link')}</div><p>${intro}</p><div class="sp-offer-grid">${offers.map(([id,name,price,projects,generations,link])=>`<article class="sp-offer ${id==='max'?'sp-offer-recommended':''}">${id==='max'?'<span class="sp-offer-badge">Recommandé</span>':''}<span class="sp-eyebrow">${name}</span><h3>${price} € <small>/ mois</small></h3><p>${projects} projets · ${generations} générations par période mensuelle</p>${state.billing.ready ? state.billing.canManage && !state.billing.canSubscribe ? button('Gérer mon abonnement', 'billing-portal', '', 'sp-button primary') : button('Choisir '+name, 'checkout', id, 'sp-button primary') : `<a class="sp-button ${id==='max'?'primary':''}" href="${link}" target="_blank" rel="noopener noreferrer">Choisir ${name}</a>`}</article>`).join('')}</div><p class="sp-muted">${state.billing.ready ? 'Les quotas des abonnements se renouvellent à chaque nouvelle période payée. Le quota gratuit se renouvelle au début du mois civil.' : `<a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Demander l’activation sur WhatsApp ↗</a>`}</p><p class="sp-muted">Tes documents restent accessibles quand ton quota est atteint.</p></section>`;
   panel.hidden = false; panel.querySelector?.('#upgrade-heading')?.focus?.();
 }
 function renderAuth() {
@@ -91,7 +154,7 @@ async function loadProjects() {
   const [projects, account] = await Promise.all([
     state.db.from('student_projects').select('*').order('updated_at',{ascending:false}),
     state.db.from('student_accounts').select('*').single(),
-    refreshUsage()
+    refreshUsage(), refreshBilling()
   ]);
   if (projects.error || account.error) throw new Error('Impossible de charger ton espace. Réessaie dans un instant.');
   state.projects = projects.data; state.account = account.data;
@@ -103,6 +166,7 @@ function renderProjects() {
     ${state.projects.length ? `<div class="sp-projects">${state.projects.map(p => `<article class="sp-card"><span class="sp-eyebrow">${e(p.profile.type || 'Projet académique')}</span><h2>${e(p.title)}</h2><p>${e(p.profile.university)} · ${e(p.profile.level)}</p><small>Modifié le ${date(p.updated_at)}</small>${button('Ouvrir le projet','open-project',p.id,'sp-button primary')}</article>`).join('')}</div>` : '<div class="sp-empty"><h2>Ton premier projet commence ici.</h2><p>Renseigne ton sujet et les consignes de ton établissement. Tu pourras ensuite construire le plan et rechercher tes sources.</p></div>'}`);
   const requestedPlan=new URLSearchParams(location.search).get('offre');
   if(['offre','max'].includes(requestedPlan))showPlans();
+  void confirmPaymentReturn();
 }
 const profileFields = [
  ['name','Nom complet','text',true], ['university','Université ou école','text',true], ['field','Filière ou spécialité','text',true],
@@ -127,7 +191,7 @@ async function openProject(id) {
   if (!p) throw new Error('Projet introuvable.');
   const docs = await state.db.from('student_documents').select('*').eq('project_id',id).order('updated_at',{ascending:false});
   if (docs.error) throw new Error('Impossible de charger les documents.');
-  state.project=p; state.docs=docs.data; const requestedModule=new URLSearchParams(location.search).get('outil'); state.route=Object.hasOwn(MODULES,requestedModule)?requestedModule:'plan'; state.doc=null; renderModule();
+  state.project=p; state.results=[]; searchTerm=''; state.docs=docs.data; const requestedModule=new URLSearchParams(location.search).get('outil'); state.route=Object.hasOwn(MODULES,requestedModule)?requestedModule:'plan'; state.doc=null; renderModule();
 }
 function history() {
   const docs=state.docs.filter(d=>d.module===state.route);
@@ -141,8 +205,8 @@ function renderModule() {
     <p class="sp-lead">${e(m.hint)}</p>
     ${!state.aiReady ? '<div class="sp-warning" role="status">La génération est temporairement indisponible. Tu peux préparer ton projet et consulter ou modifier tes documents enregistrés.</div>' : ''}
     ${state.route==='redaction'&&!ready?`<div class="sp-warning">Valide d’abord ton plan, puis ajoute une source et un extrait consulté d’au moins 50 caractères.${button('Ouvrir les sources','route','sources','sp-link')}</div>`:''}
-    <form id="generation-form" class="sp-card"><div class="sp-form-grid">${m.fields.map(f=>field(...f)).join('')}</div>
-    <button type="submit" class="sp-button primary" ${generationDisabled()?'disabled':''}>${state.busy?'Génération en cours…':usageLimitReached(state.usage,state.usageBlocked)?'Quota atteint':'Générer et enregistrer'}</button>
+    <form id="generation-form" class="sp-card"><div class="sp-form-grid">${m.fields.map(f=>field(...f)).join('')}</div>${state.route==='references'?`<p>Sans source sélectionnée, une recherche de publications réelles est lancée à partir du sujet de ton projet. Tu peux aussi choisir tes références avant de formater la bibliographie.</p><div class="sp-actions">${button('Rechercher selon mon sujet','find-sources','crossref')}${button('Choisir dans la bibliothèque','find-sources','library')}</div>`:''}
+    <button type="submit" class="sp-button primary" ${generationDisabled()?'disabled':''}>${state.busy?'Génération en cours…':usageLimitReached(state.usage,state.usageBlocked)?'Quota atteint':state.route==='references'?'Trouver et formater ma bibliographie':'Générer et enregistrer'}</button>
     <p class="sp-muted">Chaque résultat est enregistré dans ton projet. Ton quota s’applique aux générations réussies.</p></form>
     <div id="history-panel">${history()}</div><div id="document-panel">${state.doc?documentPanel():''}</div>`,m.label);
 }
@@ -152,20 +216,21 @@ function documentPanel() {
     <div class="sp-actions">${button('Word (.docx)','export','word')}${button('Imprimer / PDF','export','pdf')}${d.module==='ppt'?button('PowerPoint (.pptx)','export','ppt'):''}
     ${d.module==='plan'?button(state.project.profile.planValidated?'Plan validé':'Valider ce plan','validate-plan','','sp-button primary'):''}</div>
     <label>Modifier le contenu<textarea id="document-editor" class="sp-editor" dir="auto" maxlength="120000" ${state.busy?'readonly':''}>${e(d.content)}</textarea></label>
-    <details><summary>Aperçu mis en forme</summary><div class="sp-prose" dir="auto" id="document-preview">${markdown(d.content)}</div></details></section>`;
+    <details open><summary>Aperçu mis en forme</summary><div class="sp-prose" dir="auto" id="document-preview">${markdown(d.content)}</div></details></section>`;
 }
 function sourceCard(s,index,selected=false) {
-  const href=`https://doi.org/${encodeURI(s.doi).replace(/"/g,'%22')}`;
-  return `<article class="sp-card"><span class="sp-eyebrow">${e(s.year||'Année non précisée')} · Métadonnées Crossref</span><h3>${e(s.title)}</h3><p>${e(s.authors)}</p><p class="sp-muted">${e(s.journal)}</p><a href="${e(href)}" target="_blank" rel="noopener noreferrer">Consulter la source · ${e(s.doi)}</a>
-    ${selected ? `<label>Extrait consulté ou notes de lecture attribuées à cette source<textarea data-source="${index}" rows="4" maxlength="6000" placeholder="Colle un extrait utile et indique sa page si disponible.">${e(s.excerpt)}</textarea></label><div class="sp-actions">${button('Retirer','remove-source',String(index),'sp-link')}<span>${sourceReady(s)?'Prête pour la rédaction':'Extrait requis avant rédaction'}</span></div>` : button(state.project.sources.some(x=>x.doi===s.doi)?'Déjà sélectionnée':'Ajouter à mes sources','add-source',String(index))}</article>`;
+  const doi = normalizedDoi(s.doi), href = doi ? `https://doi.org/${doi.split('/').map(encodeURIComponent).join('/')}` : halSourceUrl(s.url) || halSourceUrl(s.sourceUrl);
+  const identity = sourceIdentity(s);
+  return `<article class="sp-card"><span class="sp-eyebrow">${e(s.year||'Année non précisée')} · ${e(s.metadataProvider||'Source fournie')}</span><h3>${e(s.title)}</h3><p>${e(s.authors||'Auteur non renseigné')}</p><p class="sp-muted">${e(s.journal||'Publication non renseignée')}</p>${href?`<a href="${e(href)}" target="_blank" rel="noopener noreferrer">Consulter la source · ${e(doi||'Dépôt HAL')} ↗</a>`:''}
+    ${selected ? `<label>Extrait consulté ou notes de lecture attribuées à cette source<textarea data-source="${index}" rows="4" maxlength="6000" placeholder="Colle un extrait utile et indique sa page si disponible.">${e(s.excerpt)}</textarea></label><div class="sp-actions">${button('Retirer','remove-source',String(index),'sp-link')}<span>${sourceReady(s)?'Prête pour la rédaction':'Extrait requis avant rédaction'}</span></div>` : identity ? button(state.project.sources.some(x=>sourceIdentity(x)===identity)?'Déjà sélectionnée':'Ajouter à mes sources','add-source',String(index)) : '<p>Identifiant de source manquant.</p>'}</article>`;
 }
 function renderSources() {
-  shell(`<p class="sp-lead">Recherche des publications, consulte leur contenu puis conserve les extraits utiles à ton mémoire. Un DOI retrouvé confirme la notice bibliographique, pas les affirmations de l’article ni son accès gratuit.</p>
-    <form id="source-form" class="sp-card"><div class="sp-form-grid">${field('q','Sujet, titre ou DOI','text',true,searchTerm||state.project.title)}${field('fromYear','Publications depuis','number',true,fromYear)}</div><button class="sp-button primary" type="submit">Rechercher</button></form>
-    <h2>Mes sources (${state.project.sources.length}/30)</h2>${button('Enregistrer les extraits','save-sources','','sp-button primary')}
-    <div class="sp-source-grid">${state.project.sources.map((s,i)=>sourceCard(s,i,true)).join('')||'<p>Aucune source sélectionnée.</p>'}</div>
-    ${state.results.length?`<h2>Résultats de recherche</h2><div class="sp-source-grid">${state.results.map((s,i)=>sourceCard(s,i)).join('')}</div>`:''}`,'Sources de recherche');
+  shell(`<p class="sp-lead">Trouve des publications pour ton sujet, ou choisis parmi les documents de la bibliothèque Soutenance Pro. Consulte les textes puis conserve les extraits utiles pour la rédaction.</p>
+    <form id="source-form" class="sp-card"><div class="sp-form-grid">${field('q','Sujet ou mots-clés','text',true,searchTerm||state.project.title)}${field('fromYear','Publications depuis','number',true,fromYear)}<label>Où rechercher ?<select name="provider"><option value="crossref" ${state.sourceProvider==='crossref'?'selected':''}>Publications scientifiques · Crossref</option><option value="library" ${state.sourceProvider==='library'?'selected':''}>Bibliothèque Soutenance Pro · sélection HAL</option></select></label></div><button class="sp-button primary" type="submit">Trouver des références</button></form>
+    <h2>Sources sélectionnées (${state.project.sources.length}/30)</h2><p class="sp-muted">Une notice identifie une publication. Les extraits consultés sont nécessaires pour appuyer la rédaction.</p><div class="sp-source-grid">${state.project.sources.map((source,index)=>sourceCard(source,index,true)).join('')||'<p>Aucune source pour le moment. Lance une recherche ci-dessus ou utilise le module Bibliographie pour une recherche selon ton sujet.</p>'}</div>${state.project.sources.length?button('Enregistrer les extraits','save-sources','','sp-button primary'):''}
+    ${state.results.length?`<h2>Résultats pour ton sujet</h2><div class="sp-source-grid">${state.results.map((source,index)=>sourceCard(source,index)).join('')}</div>`:''}`, 'Sources de recherche');
 }
+
 async function token() {
   const {data,error}=await state.db.auth.getSession();
   if(error||!data.session)throw new Error('Reconnecte-toi pour continuer.');
@@ -245,16 +310,16 @@ root.addEventListener('submit',async event=>{
         await flush();
         const data=await api('/api/chat',{module,projectId,inputs});
         state.usage=usageAfterGeneration(state.usage,data.remaining);state.usageBlocked=data.remaining===0;
-        if(state.project?.id===projectId){state.docs.unshift(data.document);if(state.route===module){state.doc=data.document;document.getElementById('document-panel').innerHTML=documentPanel();document.getElementById('history-panel').innerHTML=history();}}
-        notify(data.truncated?'Résultat enregistré. La limite de longueur a été atteinte : poursuis dans une section séparée.':`Résultat enregistré. ${data.remaining} génération(s) restante(s) ce mois-ci.`);
+        if(state.project?.id===projectId){if(Array.isArray(data.sources))state.project.sources=data.sources;state.docs.unshift(data.document);if(state.route===module){state.doc=data.document;document.getElementById('document-panel').innerHTML=documentPanel();document.getElementById('history-panel').innerHTML=history();}}
+        notify(data.truncated?'Résultat enregistré. La limite de longueur a été atteinte : poursuis dans une section séparée.':`Résultat enregistré. ${data.remaining} génération(s) restante(s) sur ta période.`);
       }catch(error){
         if(error.code==='quota_exceeded')state.usageBlocked=true;
         throw error;
       }finally{state.busy=false;syncUsagePanel();void refreshUsage();}
     }
     if(form.id==='source-form'){
-      const values=Object.fromEntries(new FormData(form));searchTerm=values.q;fromYear=values.fromYear;const projectId=state.project.id;
-      const data=await api(`/api/references?q=${encodeURIComponent(searchTerm)}&fromYear=${encodeURIComponent(fromYear)}`);
+      const values=Object.fromEntries(new FormData(form));searchTerm=values.q;fromYear=values.fromYear;state.sourceProvider=values.provider||'crossref';const projectId=state.project.id;
+      const data=await api(`/api/references?q=${encodeURIComponent(searchTerm)}&fromYear=${encodeURIComponent(fromYear)}&provider=${encodeURIComponent(state.sourceProvider)}`);
       if(state.project?.id!==projectId||state.route!=='sources')return;
       state.results=data.sources;renderSources();if(!data.sources.length)notify('Aucune publication trouvée. Essaie des mots-clés plus précis.');
     }
@@ -267,6 +332,10 @@ root.addEventListener('click',async event=>{
   const el=event.target.closest('[data-action]');if(!el)return;
   const action=el.dataset.action,value=el.dataset.value;
   try{
+    if(action==='checkout'){await startBilling('checkout',value);return;}
+    if(action==='billing-portal'){await startBilling('portal');return;}
+    if(action==='recheck-payment'){await confirmPaymentReturn(true);return;}
+    if(action==='find-sources'){state.sourceProvider=value==='library'?'library':'crossref';searchTerm=state.project?.title||'';await route('sources');return;}
     if(action==='show-plans'){showPlans();return;}
     if(action==='close-plans'){const panel=root.querySelector('#upgrade-panel');if(panel)panel.hidden=true;return;}
     if(action==='refresh-usage'){await refreshUsage();return;}
@@ -281,8 +350,9 @@ root.addEventListener('click',async event=>{
     if(action==='open-project'){await flush();await openProject(value);}
     if(action==='new-project'||action==='edit-project'){await flush();renderProjectForm(action==='new-project');}
     if(action==='logout'){
+      clearTimeout(paymentRetryTimer);
       await flush();const {error}=await state.db.auth.signOut();if(error)throw error;
-      Object.assign(state,{user:null,project:null,docs:[],doc:null,projects:[],usage:null,usageBlocked:false,dirty:false,sourceDirty:false,authMode:'login'});renderAuth();
+      Object.assign(state,{user:null,project:null,docs:[],doc:null,projects:[],usage:null,usageBlocked:false,dirty:false,sourceDirty:false,authMode:'login',billing:{ready:false,canManage:false},payment:null});renderAuth();
     }
     if(action==='validate-plan'){
       await flush();const profile={...state.project.profile,planValidated:true,validatedPlanId:state.doc.id};
@@ -290,7 +360,7 @@ root.addEventListener('click',async event=>{
       state.project.profile=profile;notify('Plan validé. Tu peux préparer tes sources.');renderModule();
     }
     if(action==='add-source'){
-      const s=state.results[Number(value)];if(!s||state.project.sources.some(x=>x.doi===s.doi))return;
+      const s=state.results[Number(value)];if(!s||!sourceIdentity(s)||state.project.sources.some(x=>sourceIdentity(x)===sourceIdentity(s)))return;
       if(state.project.sources.length>=30)throw new Error('Maximum 30 sources par projet.');
       state.project.sources.push({...s});state.sourceDirty=true;await saveSources();renderSources();
     }
@@ -317,7 +387,7 @@ root.addEventListener('change',async event=>{
   }
 });
 window.addEventListener('beforeunload',event=>{if(state.dirty||state.sourceDirty){event.preventDefault();event.returnValue='';}});
-window.addEventListener('focus',()=>{if(state.user&&!root.hidden)void refreshUsage();});
+window.addEventListener('focus',()=>{if(state.user&&!root.hidden){void refreshUsage();if(state.payment?.status==='waiting')void confirmPaymentReturn(true);}});
 document.getElementById('sp-notice').addEventListener('click',event=>{event.currentTarget.hidden=true;});
 let ready;
 window.openApp=async(mode='login')=>{
@@ -336,7 +406,7 @@ ready=(async()=>{
   state.aiReady=config.ready;
   state.db=createClient(config.supabaseUrl,config.supabaseAnonKey);
   state.db.auth.onAuthStateChange((event,session)=>{
-    if(state.user?.id!==session?.user?.id){state.usage=null;state.usageBlocked=false;}
+    if(state.user?.id!==session?.user?.id){state.usage=null;state.usageBlocked=false;state.billing={ready:false,canManage:false};state.payment=null;clearTimeout(paymentRetryTimer);}
     state.user=session?.user||null;
     if(event==='PASSWORD_RECOVERY'){state.authMode='recovery';root.hidden=false;document.body.classList.add('sp-open');renderAuth();}
     if(event==='SIGNED_OUT'&&!root.hidden)renderAuth();

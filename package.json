@@ -15,7 +15,8 @@
     "docx": "9.7.1",
     "dompurify": "3.4.15",
     "marked": "18.0.12",
-    "pptxgenjs": "4.0.1"
+    "pptxgenjs": "4.0.1",
+    "stripe": "22.4.0"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",

@@ -1,3 +1,6 @@
+import { normalizeDocumentContent } from '../shared/document-format.js';
+import { sourceIdentity, normalizedDoi, halSourceUrl } from '../shared/source-identity.js';
+import { paymentReturnData, safeStripeUrl } from '../src/billing-client.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -11,11 +14,11 @@ import { normalizeUsage, usageAfterGeneration, usageLimitReached } from '../src/
 const source = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const free = remaining => ({ plan: 'free', limit: 3, used: 3 - remaining, remaining, resetsAt: '2026-10-01T00:00:00.000Z' });
 
-async function mount({ usage = free(1), chat, usageError = false } = {}) {
+async function mount({ usage = free(1), chat, usageError = false, billing = { ready: false, canManage: false }, confirm = { paid: false }, search = '' } = {}) {
   const listeners = {}, requests = [], elements = new Map();
   let html = '', renders = 0;
   const element = () => ({ innerHTML: '', hidden: false, textContent: '', disabled: false, querySelector() { return { focus() {} }; } });
-  for (const id of ['usage-status', 'upgrade-panel', 'plan-name', 'generation-submit', 'document-panel', 'document-editor', 'history-panel', 'save-status']) elements.set(id, element());
+  for (const id of ['billing-status', 'usage-status', 'upgrade-panel', 'plan-name', 'generation-submit', 'document-panel', 'document-editor', 'history-panel', 'save-status']) elements.set(id, element());
   elements.get('upgrade-panel').hidden = true;
   const root = {
     hidden: false,
@@ -28,7 +31,7 @@ async function mount({ usage = free(1), chat, usageError = false } = {}) {
   const user = { id: 'student-test', email: 'student@example.test' };
   const context = {
     document: { getElementById: id => id === 'workspace' ? root : id === 'sp-notice' ? notice : elements.get(id), body: { classList: { add() {}, remove() {} } } },
-    window: { addEventListener() {} }, location: { hash: '', search: '' },
+    window: { addEventListener() {} }, location: { hash: '', search, assign(url) { requests.push({navigate:url}); } },
     createClient: () => ({ auth: { onAuthStateChange() {}, getSession: async () => ({ data: { session: { user, access_token: 'test-session' } } }) }, from(table) { const query = { select() { return query; }, order: async () => ({ data: [] }), single: async () => ({ data: table === 'student_accounts' ? { plan: 'free' } : {} }) }; return query; } }),
     fetch: async (url, options) => {
       requests.push({ url, options });
@@ -37,15 +40,16 @@ async function mount({ usage = free(1), chat, usageError = false } = {}) {
         if (usageError) throw new Error('network unavailable');
         return { ok: true, json: async () => typeof usage === 'function' ? usage() : usage };
       }
+      if (url === '/api/billing') { const body = options.body ? JSON.parse(options.body) : null; return { ok: true, json: async () => body?.action === 'confirm' ? typeof confirm === 'function' ? confirm(body) : confirm : billing }; }
       if (url === '/api/chat') return typeof chat === 'function' ? chat() : chat || { ok: true, json: async () => ({ document: { id: 'saved-third', title: 'Mon plan', content: '# Plan enregistré', module: 'plan', updated_at: '2026-09-11T00:00:00Z' }, remaining: 0 }) };
       throw new Error('Unexpected request');
     },
     FormData: class { [Symbol.iterator]() { return [['instructions', 'Précisions conservées']][Symbol.iterator](); } },
-    MODULES, sourceReady, validateInputs, normalizeUsage, usageAfterGeneration, usageLimitReached, WHATSAPP_URL, renderInstagramContact, authModeFromHash, authLinkErrorFromHash,
+    normalizeDocumentContent, sourceIdentity, normalizedDoi, halSourceUrl, paymentReturnData, safeStripeUrl, MODULES, sourceReady, validateInputs, normalizeUsage, usageAfterGeneration, usageLimitReached, WHATSAPP_URL, renderInstagramContact, authModeFromHash, authLinkErrorFromHash,
     marked: { parse: text => text }, DOMPurify: { sanitize: text => text },
     AbortSignal, setTimeout, clearTimeout, console, URLSearchParams
   };
-  runInNewContext(`${source}\nglobalThis.controls={state,ready,refreshUsage,loadProjects,renderProjects,renderModule,showPlans,syncUsagePanel};`, context);
+  runInNewContext(`${source}\nglobalThis.controls={state,ready,refreshUsage,loadProjects,renderProjects,renderModule,showPlans,syncUsagePanel,confirmPaymentReturn,startBilling};`, context);
   const controls = context.controls;
   await controls.ready;
   Object.assign(controls.state, { route: 'plan', project: { id: 'project-test', title: 'Mon mémoire', profile: {}, sources: [] }, usage: free(1) });
@@ -163,4 +167,28 @@ test('a failed final generation refreshes the refunded quota, rejects an older r
   assert.equal(app.state.usage.remaining, 1);
   assert.equal(app.elements.get('generation-submit').disabled, false);
   assert.equal(app.elements.get('upgrade-panel').hidden, true);
+});
+
+
+test('a Stripe return grants no allowance until the server confirms, and paid allowance refresh preserves the document', async () => {
+  let approved = false;
+  const paidUsage = { plan:'offre', limit:60, used:0, remaining:60, resetsAt:'2026-10-12T12:00:00.000Z' };
+  const app = await mount({ search:'?checkout=success&session_id=cs_live_1234567890123456', usage:()=>approved?paidUsage:free(0), confirm:()=>({paid:approved,plan:approved?'offre':undefined}) });
+  app.state.doc = { id:'saved',module:'plan',content:'Mes modifications locales' }; app.state.dirty=true;
+  const original = app.state.doc, renders = app.renders;
+  await app.confirmPaymentReturn();
+  assert.equal(app.state.payment.status,'waiting');
+  assert.equal(app.state.account,null);
+  approved=true;
+  await app.confirmPaymentReturn(true);
+  assert.equal(app.state.payment.status,'paid');
+  assert.equal(app.state.usage.plan,'offre'); assert.equal(app.state.usage.remaining,60);
+  assert.equal(app.state.doc,original); assert.equal(app.state.dirty,true); assert.equal(app.renders,renders);
+});
+
+test('an invalid payment return never requests confirmation or changes the account',async()=>{
+  const app=await mount({search:'?checkout=success&session_id=https://evil.example/session'});
+  await app.confirmPaymentReturn();
+  assert.equal(app.state.payment.status,'invalid'); assert.equal(app.state.account,null);
+  assert.equal(app.requests.filter(r=>r.url==='/api/billing'&&r.options.body).length,0);
 });
