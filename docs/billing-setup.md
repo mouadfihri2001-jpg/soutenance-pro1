@@ -1,5 +1,7 @@
 # Abonnements Soutenance Pro
 
+Le propriétaire a ensuite demandé un accès provisoire par lien de retour sans vérification Stripe. Ce parcours séparé est décrit dans [temporary-access-links.md](temporary-access-links.md). Il ne remplace pas la vérification des abonnements ci-dessous et ne renouvelle pas automatiquement les droits.
+
 ## État au 12 septembre 2026
 
 Le code de paiement automatique est préparé. La migration `20260912175718_student_billing.sql` a été appliquée au projet Supabase existant sous le nom `student_billing`. Aucun paiement, remboursement, abonnement réel ou changement de configuration Stripe n’a été effectué dans cette session. La connexion Stripe disponible pointe vers un environnement de test différent du compte Live du propriétaire ; elle n’a pas été utilisée pour créer des produits.

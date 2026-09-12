@@ -14,11 +14,11 @@ import { normalizeUsage, usageAfterGeneration, usageLimitReached } from '../src/
 const source = (await readFile(new URL('../src/app.js', import.meta.url), 'utf8')).replace(/^import .*;\n/gm, '');
 const free = remaining => ({ plan: 'free', limit: 3, used: 3 - remaining, remaining, resetsAt: '2026-10-01T00:00:00.000Z' });
 
-async function mount({ usage = free(1), chat, usageError = false, billing = { ready: false, canManage: false }, confirm = { paid: false }, search = '' } = {}) {
+async function mount({ usage = free(1), chat, usageError = false, billing = { ready: false, canManage: false }, confirm = { paid: false }, accessPass = null, search = '' } = {}) {
   const listeners = {}, requests = [], elements = new Map();
   let html = '', renders = 0;
   const element = () => ({ innerHTML: '', hidden: false, textContent: '', disabled: false, querySelector() { return { focus() {} }; } });
-  for (const id of ['billing-status', 'usage-status', 'upgrade-panel', 'plan-name', 'generation-submit', 'document-panel', 'document-editor', 'history-panel', 'save-status']) elements.set(id, element());
+  for (const id of ['access-status', 'billing-status', 'usage-status', 'upgrade-panel', 'plan-name', 'generation-submit', 'document-panel', 'document-editor', 'history-panel', 'save-status']) elements.set(id, element());
   elements.get('upgrade-panel').hidden = true;
   const root = {
     hidden: false,
@@ -31,7 +31,7 @@ async function mount({ usage = free(1), chat, usageError = false, billing = { re
   const user = { id: 'student-test', email: 'student@example.test' };
   const context = {
     document: { getElementById: id => id === 'workspace' ? root : id === 'sp-notice' ? notice : elements.get(id), body: { classList: { add() {}, remove() {} } } },
-    window: { addEventListener() {} }, location: { hash: '', search, assign(url) { requests.push({navigate:url}); } },
+    window: { addEventListener() {}, history: { replaceState(a,b,url) { requests.push({replace:url}); context.location.hash = '#' + url.split('#')[1]; } } }, location: { pathname: '/', hash: '', search, assign(url) { requests.push({navigate:url}); } },
     createClient: () => ({ auth: { onAuthStateChange() {}, getSession: async () => ({ data: { session: { user, access_token: 'test-session' } } }) }, from(table) { const query = { select() { return query; }, order: async () => ({ data: [] }), single: async () => ({ data: table === 'student_accounts' ? { plan: 'free' } : {} }) }; return query; } }),
     fetch: async (url, options) => {
       requests.push({ url, options });
@@ -41,6 +41,7 @@ async function mount({ usage = free(1), chat, usageError = false, billing = { re
         return { ok: true, json: async () => typeof usage === 'function' ? usage() : usage };
       }
       if (url === '/api/billing') { const body = options.body ? JSON.parse(options.body) : null; return { ok: true, json: async () => body?.action === 'confirm' ? typeof confirm === 'function' ? confirm(body) : confirm : billing }; }
+      if (url === '/api/access-pass') { const value = typeof accessPass === 'function' ? await accessPass(JSON.parse(options.body)) : accessPass; return { ok: !value?.error, json: async () => value }; }
       if (url === '/api/chat') return typeof chat === 'function' ? chat() : chat || { ok: true, json: async () => ({ document: { id: 'saved-third', title: 'Mon plan', content: '# Plan enregistré', module: 'plan', updated_at: '2026-09-11T00:00:00Z' }, remaining: 0 }) };
       throw new Error('Unexpected request');
     },
@@ -49,13 +50,13 @@ async function mount({ usage = free(1), chat, usageError = false, billing = { re
     marked: { parse: text => text }, DOMPurify: { sanitize: text => text },
     AbortSignal, setTimeout, clearTimeout, console, URLSearchParams
   };
-  runInNewContext(`${source}\nglobalThis.controls={state,ready,refreshUsage,loadProjects,renderProjects,renderModule,showPlans,syncUsagePanel,confirmPaymentReturn,startBilling};`, context);
+  runInNewContext(`${source}\nglobalThis.controls={state,ready,refreshUsage,loadProjects,renderProjects,renderModule,showPlans,syncUsagePanel,confirmPaymentReturn,startBilling,redeemAccessPass,accessTokenFromHash,openLinkedWorkspace,setAccessToken(token){accessToken=token;accessResult=null;}};`, context);
   const controls = context.controls;
   await controls.ready;
   Object.assign(controls.state, { route: 'plan', project: { id: 'project-test', title: 'Mon mémoire', profile: {}, sources: [] }, usage: free(1) });
   controls.renderModule();
   return {
-    ...controls, root, notice, requests, elements,
+    ...controls, root, notice, requests, elements, location: context.location,
     get renders() { return renders; },
     submit: () => listeners.submit({ preventDefault() {}, target: { id: 'generation-form', querySelector: () => elements.get('generation-submit') } })
   };
@@ -191,4 +192,63 @@ test('an invalid payment return never requests confirmation or changes the accou
   await app.confirmPaymentReturn();
   assert.equal(app.state.payment.status,'invalid'); assert.equal(app.state.account,null);
   assert.equal(app.requests.filter(r=>r.url==='/api/billing'&&r.options.body).length,0);
+});
+
+test('an access link waits for authenticated server activation and uses the real remaining quota without replacing dirty work', async () => {
+  let resolveAccess, activated = false;
+  const token = 'b'.repeat(64);
+  const paid = { plan: 'offre', limit: 60, used: 2, remaining: 58, resetsAt: '2026-10-12T19:00:00.000Z' };
+  const app = await mount({ usage: () => activated ? paid : free(1), accessPass: body => {
+    assert.deepEqual(body, { token });
+    return new Promise(resolve => { resolveAccess = resolve; });
+  } });
+  const original = { id: 'draft', module: 'correction', content: 'Mon travail non enregistré' };
+  app.state.doc = original; app.state.dirty = true;
+  app.elements.get('document-panel').innerHTML = 'Texte intact';
+  app.setAccessToken(token);
+  const pending = app.redeemAccessPass();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(app.state.usage.plan, 'free');
+  assert.match(app.elements.get('access-status').innerHTML, /se prépare/);
+  activated = true;
+  resolveAccess({ status: 'activated', plan: 'offre', active: true, generations: 60, startsAt: '2026-09-12T19:00:00.000Z', expiresAt: paid.resetsAt });
+  await pending;
+  assert.equal(app.state.usage.remaining, 58);
+  assert.match(app.elements.get('access-status').innerHTML, /Merci\. Ton espace est prêt/);
+  assert.doesNotMatch(app.elements.get('access-status').innerHTML, /Paiement confirmé|b{64}/);
+  assert.equal(app.state.doc, original); assert.equal(app.state.dirty, true);
+  assert.equal(app.elements.get('document-panel').innerHTML, 'Texte intact');
+  await app.redeemAccessPass();
+  assert.equal(app.requests.filter(r => r.url === '/api/access-pass').length, 1);
+});
+
+test('expired replay and rejected access links never invent a paid quota', async () => {
+  const token = 'c'.repeat(64);
+  for (const response of [
+    { status: 'already_used', plan: 'offre', active: false, generations: 60, expiresAt: '2020-01-01T00:00:00Z' },
+    { error: { message: 'Ce lien n’est plus disponible.', code: 'access_pass_unavailable' } }
+  ]) {
+    const app = await mount({ usage: free(0), accessPass: response });
+    app.setAccessToken(token); await app.redeemAccessPass();
+    assert.equal(app.state.usage.plan, 'free');
+    assert.doesNotMatch(app.elements.get('access-status').innerHTML, /Merci\. Ton espace est prêt/);
+  }
+  const app = await mount();
+  assert.equal(app.accessTokenFromHash('#acces/' + token), token);
+  for (const hash of ['#acces/max', '#acces/' + token + '?plan=max', '#workspace', '#acces/' + 'a'.repeat(63)]) assert.equal(app.accessTokenFromHash(hash), null);
+  app.state.user = null; app.setAccessToken(token); await app.redeemAccessPass();
+  assert.equal(app.requests.filter(r => r.url === '/api/access-pass').length, 0);
+});
+
+test('an access-return fragment opens the workspace and is removed after activation without exposing it in rendered content', async () => {
+  const token = 'd'.repeat(64);
+  const app = await mount({ accessPass: { status: 'activated', plan: 'max', active: true, generations: 150, startsAt: '2026-09-12T19:00:00Z', expiresAt: '2026-10-12T19:00:00Z' } });
+  app.location.hash = '#acces/' + token;
+  await app.openLinkedWorkspace();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(app.location.hash, '#workspace');
+  assert.equal(app.root.hidden, false);
+  assert.match(app.elements.get('access-status').innerHTML, /Signature/);
+  assert.doesNotMatch(app.root.innerHTML + app.elements.get('access-status').innerHTML, /d{64}/);
+  assert.equal(app.requests.filter(r => r.url === '/api/access-pass').length, 1);
 });

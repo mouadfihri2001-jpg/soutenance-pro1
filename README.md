@@ -57,6 +57,8 @@ Avant de promouvoir cette version : vérifier l'inscription directe, la connexio
 
 ### 4. Activer les offres
 
+Un parcours provisoire par lien d’accès a été ajouté à la demande du propriétaire : il accorde 30 jours d’Essentiel ou Signature sans vérifier un paiement. Les jetons sont privés et bornés, avec une seule activation par compte et campagne. Ce parcours ne renouvelle pas les abonnements ; voir [temporary-access-links.md](docs/temporary-access-links.md).
+
 Les tarifs affichés sont Découverte à 0 €, Essentiel à 19 €/mois et Signature à 29 €/mois. Signature est mise en avant avec le badge **Recommandé** ; aucune popularité client non mesurée n’est revendiquée. Les appels à l’action payants de l’accueil et de `/tarifs` ouvrent `/?offre=offre#inscription` ou `/?offre=max#inscription` pour associer l’offre choisie à un compte authentifié.
 
 Dans l’espace client, `GET /api/billing` indique si le paiement automatique est disponible. Lorsqu’il renvoie `ready: true`, le serveur crée une session Stripe Checkout pour le compte connecté et le prix mensuel autorisé. Après le paiement, le retour dans l’espace client déclenche une vérification côté serveur ; le webhook signé assure aussi le rapprochement si le client ferme la page Stripe. Seule une facture et son paiement vérifiés peuvent attribuer la formule et sa période payée. Un simple retour depuis Stripe ou un email ne débloque jamais de générations.

@@ -14,6 +14,8 @@ import './landing.js';
 const root = document.getElementById('workspace');
 const state = { db: null, aiReady: false, user: null, projects: [], project: null, docs: [], route: 'projects', doc: null, account: null, usage: null, usageBlocked: false, results: [], dirty: false, sourceDirty: false, busy: false, authMode: 'login', authPending: false, authEmail: '', billing: { ready: false, canManage: false }, billingPending: false, payment: null, sourceProvider: 'crossref' };
 let saveTimer, saving, paymentRetryTimer, usageRefreshVersion = 0, searchTerm = '', fromYear = String(new Date().getFullYear() - 10);
+let accessToken = null, accessPending = false, accessResult = null;
+const accessTokenFromHash = hash => /^#acces\/([a-f0-9]{64})$/.exec(String(hash || ''))?.[1] || null;
 const e = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 const markdown = (value, module = state.doc?.module) => DOMPurify.sanitize(marked.parse(normalizeDocumentContent(value || '', module)), { USE_PROFILES: { html: true }, FORBID_TAGS: ['img','video','audio','iframe','style','form','input'], FORBID_ATTR: ['style'] });
 const button = (label, action, value = '', cls = 'sp-button') => `<button type="button" class="${cls}" data-action="${action}" data-value="${e(value)}">${label}</button>`;
@@ -32,7 +34,7 @@ function shell(content, title = 'Mes projets') {
     ${project ? button('Profil et consignes', 'edit-project', '', 'sp-nav') + button('Sources de recherche', 'route', 'sources', 'sp-nav') + Object.entries(MODULES).map(([id,m]) => button(m.label,'route',id,`sp-nav ${state.route === id ? 'active' : ''}`)).join('') : ''}</nav>
     <div class="sp-account">${e(state.user.email)}<br><span id="plan-name">${e(activePlan())}</span>${button('Voir les offres', 'show-plans', '', 'sp-link')}${button('Se déconnecter', 'logout', '', 'sp-link')}</div></aside>
     <main class="sp-main"><header class="sp-topbar"><h1>${e(title)}</h1>${button('Accueil du site','close','','sp-link')}</header>
-    <div class="sp-body"><div id="usage-status" aria-live="polite">${usagePanel()}</div><div id="billing-status" aria-live="polite">${billingPanel()}</div><div id="upgrade-panel" hidden></div>${content}</div></main></div>`;
+    <div class="sp-body"><div id="access-status" aria-live="polite">${accessPanel()}</div><div id="usage-status" aria-live="polite">${usagePanel()}</div><div id="billing-status" aria-live="polite">${billingPanel()}</div><div id="upgrade-panel" hidden></div>${content}</div></main></div>`;
 }
 function activePlan() {
   if (state.usage) return { free: 'Découverte', offre: 'Essentiel', max: 'Signature' }[state.usage.plan];
@@ -77,6 +79,33 @@ function billingPanel() {
   if (payment?.status === 'cancelled') return '<section class="sp-usage"><div><strong>Paiement interrompu.</strong><p>Tu peux reprendre ton projet ou choisir une offre quand tu le souhaites.</p></div></section>';
   if (payment?.status === 'invalid' || payment?.status === 'error') return `<section class="sp-usage"><div><strong>${e(payment.message || 'Ce retour de paiement ne peut pas être vérifié.')}</strong><p><a href="${WHATSAPP_URL}" target="_blank" rel="noopener noreferrer">Contacter Soutenance Pro</a></p></div></section>`;
   return '';
+}
+function accessPanel() {
+  if (!accessResult || accessResult.userId !== state.user?.id) return '';
+  if (accessResult.status === 'pending') return '<section class="sp-access"><span class="sp-eyebrow">Soutenance Pro</span><h2>Ton espace se prépare…</h2><p>Nous activons ton accès sur ce compte.</p></section>';
+  if (accessResult.status === 'error') return `<section class="sp-usage"><div><strong>${e(accessResult.message)}</strong><p>Ton compte et tes documents restent accessibles.</p></div>${button('Réessayer', 'retry-access')}${button('Voir les offres', 'show-plans', '', 'sp-link')}</section>`;
+  const name = { offre: 'Essentiel', max: 'Signature' }[accessResult.plan];
+  if (!name) return '';
+  const end = new Date(accessResult.expiresAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+  const expired = new Date(accessResult.expiresAt) <= new Date();
+  return `<section class="sp-access"><span class="sp-eyebrow">Ton espace Soutenance Pro</span><h2>${accessResult.active ? 'Merci. Ton espace est prêt.' : expired ? 'Cet accès est terminé.' : 'Ce lien a déjà été utilisé.'}</h2><p>${accessResult.active ? `L’offre <strong>${name}</strong> est disponible sur ton compte jusqu’au ${e(end)}.` : expired ? `La période ${name} associée à ce lien s’est terminée le ${e(end)}.` : 'Ton offre actuelle est conservée. Consulte ton solde disponible ci-dessous.'}</p>${accessResult.active ? `<div class="sp-access-facts"><span><strong>${accessResult.generations}</strong> générations sur cette période</span><span><strong>${accessResult.plan === 'max' ? 20 : 5}</strong> projets</span></div><p>Retrouve ton solde disponible ci-dessous. Réouvrir ce lien conserve ton compteur et la même date de fin.</p><div class="sp-actions">${button('Commencer mon projet', 'new-project', '', 'sp-button primary')}${button('Continuer dans mon espace', 'dismiss-access', '', 'sp-link')}</div>` : button('Voir les offres', 'show-plans', '', 'sp-button primary')}</section>`;
+}
+function syncAccessPanel() { const panel = root.querySelector('#access-status'); if (panel) panel.innerHTML = accessPanel(); }
+async function redeemAccessPass(retry = false) {
+  const token = accessToken, userId = state.user?.id;
+  if (!token || !userId || accessPending || (!retry && accessResult?.userId === userId)) return;
+  accessPending = true; accessResult = { status: 'pending', userId }; syncAccessPanel();
+  try {
+    const result = await api('/api/access-pass', { token }, { signal: AbortSignal.timeout(20000) });
+    if (state.user?.id !== userId) return;
+    if (!['activated', 'already_used'].includes(result.status) || !['offre', 'max'].includes(result.plan) || !Number.isFinite(new Date(result.expiresAt).getTime())) throw new Error('L’accès ne peut pas être confirmé. Réessaie dans un instant.');
+    accessResult = { ...result, userId };
+    accessToken = null;
+    if (accessTokenFromHash(location.hash) === token) window.history.replaceState(null, '', `${location.pathname}${location.search}#workspace`);
+    await refreshUsage();
+  } catch (error) {
+    if (state.user?.id === userId) accessResult = { status: 'error', userId, message: error.message };
+  } finally { accessPending = false; syncAccessPanel(); }
 }
 function syncBillingPanel() { const panel = root.querySelector('#billing-status'); if (panel) panel.innerHTML = billingPanel(); }
 async function refreshBilling() {
@@ -167,6 +196,7 @@ function renderProjects() {
   const requestedPlan=new URLSearchParams(location.search).get('offre');
   if(['offre','max'].includes(requestedPlan))showPlans();
   void confirmPaymentReturn();
+  void redeemAccessPass();
 }
 const profileFields = [
  ['name','Nom complet','text',true], ['university','Université ou école','text',true], ['field','Filière ou spécialité','text',true],
@@ -335,6 +365,8 @@ root.addEventListener('click',async event=>{
     if(action==='checkout'){await startBilling('checkout',value);return;}
     if(action==='billing-portal'){await startBilling('portal');return;}
     if(action==='recheck-payment'){await confirmPaymentReturn(true);return;}
+    if(action==='retry-access'){await redeemAccessPass(true);return;}
+    if(action==='dismiss-access'){accessResult=null;syncAccessPanel();return;}
     if(action==='find-sources'){state.sourceProvider=value==='library'?'library':'crossref';searchTerm=state.project?.title||'';await route('sources');return;}
     if(action==='show-plans'){showPlans();return;}
     if(action==='close-plans'){const panel=root.querySelector('#upgrade-panel');if(panel)panel.hidden=true;return;}
@@ -352,6 +384,7 @@ root.addEventListener('click',async event=>{
     if(action==='logout'){
       clearTimeout(paymentRetryTimer);
       await flush();const {error}=await state.db.auth.signOut();if(error)throw error;
+      accessToken=null;accessResult=null;
       Object.assign(state,{user:null,project:null,docs:[],doc:null,projects:[],usage:null,usageBlocked:false,dirty:false,sourceDirty:false,authMode:'login',billing:{ready:false,canManage:false},payment:null});renderAuth();
     }
     if(action==='validate-plan'){
@@ -406,7 +439,7 @@ ready=(async()=>{
   state.aiReady=config.ready;
   state.db=createClient(config.supabaseUrl,config.supabaseAnonKey);
   state.db.auth.onAuthStateChange((event,session)=>{
-    if(state.user?.id!==session?.user?.id){state.usage=null;state.usageBlocked=false;state.billing={ready:false,canManage:false};state.payment=null;clearTimeout(paymentRetryTimer);}
+    if(state.user?.id!==session?.user?.id){state.usage=null;state.usageBlocked=false;state.billing={ready:false,canManage:false};state.payment=null;accessResult=null;clearTimeout(paymentRetryTimer);}
     state.user=session?.user||null;
     if(event==='PASSWORD_RECOVERY'){state.authMode='recovery';root.hidden=false;document.body.classList.add('sp-open');renderAuth();}
     if(event==='SIGNED_OUT'&&!root.hidden)renderAuth();
@@ -415,6 +448,8 @@ ready=(async()=>{
 })();
 ready.catch(()=>{});
 async function openLinkedWorkspace(){
+  const linkedAccess = accessTokenFromHash(location.hash);
+  if(linkedAccess){accessToken=linkedAccess;accessResult=null;await window.openApp('login');return;}
   const linkError=authLinkErrorFromHash(location.hash);
   if(linkError){
     window.history.replaceState(null,'',`${location.pathname}${location.search}#connexion`);
