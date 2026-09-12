@@ -4,7 +4,7 @@ const prefix = 'soutenancepro:reading-notes:v1:';
 const readingIndexKey = 'soutenancepro:saved-readings:v1';
 export const savedReadingsLimit = 100;
 const validId = value => typeof value === 'string' && /^[a-z][a-z0-9-]{1,99}$/.test(value);
-const readingTypes = new Set(['ART','THESE','MEM','REPORT','HDR']);
+const readingTypes = new Set(['ART','THESE','MEM','REPORT','HDR','COMM','COUV','OUV','UNDEFINED','LECTURE','POSTER','OTHER']);
 
 function safeArchiveUrl(value) {
   if (typeof value !== 'string' || value.length > 2048 || /[\u0000-\u0020\u007f\\]/.test(value)) return false;
@@ -19,11 +19,17 @@ function safeArchiveUrl(value) {
 export function normalizeReadingReference(record) {
   if (!record || !validId(record.id) || typeof record.title !== 'string' || !record.title.trim() || record.title.length > 2000 ||
       !Array.isArray(record.authors) || record.authors.length > 100 || record.authors.some(author => typeof author !== 'string' || author.length > 200) ||
-      !Number.isInteger(record.year) || record.year < LIBRARY_SCOPE.minYear || record.year > LIBRARY_SCOPE.maxYear ||
+      !Number.isInteger(record.year) || record.year < LIBRARY_SCOPE.archiveMinYear || record.year > LIBRARY_SCOPE.maxYear ||
       !readingTypes.has(record.type) || !safeArchiveUrl(record.sourceUrl) || !safeArchiveUrl(record.fileUrl)) return null;
+  if (record.sourceType !== undefined && (typeof record.sourceType !== 'string' || record.sourceType.length > 40 || !/^[A-Z_]+$/.test(record.sourceType))) return null;
+  if (record.languages !== undefined && (!Array.isArray(record.languages) || record.languages.length > 8 ||
+      Array.from(record.languages).some(language => typeof language !== 'string' || !/^[a-z]{2,3}$/.test(language)) ||
+      new Set(record.languages).size !== record.languages.length)) return null;
   const plain = value => value.replace(/[\r\n\u0000-\u001f\u007f]/g,' ').trim();
   const clean = {id:record.id,title:plain(record.title),authors:record.authors.map(plain),year:record.year,type:record.type,sourceUrl:record.sourceUrl,fileUrl:record.fileUrl};
   if (typeof record.doi === 'string' && record.doi.length <= 500) clean.doi = plain(record.doi);
+  if (record.sourceType !== undefined) clean.sourceType = record.sourceType;
+  if (record.languages !== undefined) clean.languages = [...record.languages];
   return clean;
 }
 

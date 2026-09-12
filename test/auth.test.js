@@ -70,7 +70,7 @@ function mount(overrides = {}, url = {}) {
 
 test('signup creates an account through the server and immediately signs in without confirmation', async () => {
   const controls = [...landing.matchAll(/<(button|a)\b[^>]*onclick="([^"]+)"[^>]*>([\s\S]*?)<\/\1>/g)];
-  const signup = controls.filter(match => /Essai gratuit|Commencer gratuitement|Créer mon compte|S'inscrire/.test(match[3]));
+  const signup = controls.filter(match => /Essai gratuit|Commencer gratuitement|Commencer mon projet|Créer mon compte|S'inscrire/.test(match[3]));
   assert.ok(signup.length >= 5);
   for (const match of signup) assert.match(match[2], /^openApp\('signup'\)/);
   for (const match of controls.filter(match => /^(Se connecter|Connexion)$/.test(match[3]))) {

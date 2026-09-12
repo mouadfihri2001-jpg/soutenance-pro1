@@ -36,6 +36,47 @@ test('saved reading index keeps only safe metadata and never incorporates note b
   assert.equal(normalizeReadingReference({...fullRecord,authors:Array(101).fill('Auteur')}),null);
 });
 
+test('historical multilingual references retain source types and languages after local storage and reopening', () => {
+  const storage = memoryStorage();
+  const historical = {...fullRecord,year:1899,type:'OUV',sourceType:'OUV',languages:['fr','ar','eng']};
+  const result = saveReadingReference(storage,historical);
+  assert.equal(result.saved,true);
+  assert.deepEqual(result.record,historical);
+  historical.languages.push('de');
+  assert.deepEqual(findSavedReading(storage,historical.id).languages,['fr','ar','eng']);
+  assert.deepEqual(readSavedReadings(storage).records,[result.record]);
+  for (const type of ['COMM','COUV','UNDEFINED','LECTURE','POSTER','OTHER']) {
+    const reference = {...fullRecord,type,sourceType:type};
+    assert.equal(saveReadingReference(storage,reference).saved,true);
+    assert.deepEqual(findSavedReading(storage,reference.id),reference);
+  }
+  const otherSource = {...fullRecord,type:'OTHER',sourceType:'VIDEO',languages:['en']};
+  assert.equal(saveReadingReference(storage,otherSource).saved,true);
+  assert.deepEqual(findSavedReading(storage,otherSource.id),otherSource);
+  assert.equal(saveReadingReference(storage,fullRecord).saved,true);
+  assert.equal(Object.hasOwn(findSavedReading(storage,fullRecord.id),'languages'),false);
+  assert.equal(Object.hasOwn(findSavedReading(storage,fullRecord.id),'sourceType'),false);
+});
+
+test('saved references reject unsupported years, unsafe types and malformed language metadata', () => {
+  const invalid = [
+    {year:999},{year:2027},{year:1899.5},
+    {type:'UNKNOWN'},{type:'<script>'},{type:'art'},
+    {sourceType:''},{sourceType:'A'.repeat(41)},{sourceType:'ART\nSCRIPT'},{sourceType:'art'},{sourceType:42},{sourceType:null},
+    {languages:'fr'},{languages:null},{languages:['FR']},{languages:['fr-FR']},{languages:['f']},
+    {languages:['fren']},{languages:['fr\n']},{languages:['fr','fr']},{languages:['fr',42]},{languages:Array(1)},
+    {languages:['fr','en','ar','de','it','es','pt','nl','ru']}
+  ];
+  for (const fields of invalid) {
+    const storage = memoryStorage();
+    assert.equal(normalizeReadingReference({...fullRecord,...fields}),null,JSON.stringify(fields));
+    assert.equal(saveReadingReference(storage,{...fullRecord,...fields}).saved,false,JSON.stringify(fields));
+    assert.equal(storage.values.size,0);
+  }
+  assert.equal(normalizeReadingReference({...fullRecord,year:1000}).year,1000);
+  assert.deepEqual(normalizeReadingReference({...fullRecord,languages:[]}).languages,[]);
+});
+
 test('100 most recently saved readings can be reopened and removed without deleting their notes', () => {
   const storage = memoryStorage();
   saveNotes(storage,fullRecord.id,{question:'Keep these notes'});
