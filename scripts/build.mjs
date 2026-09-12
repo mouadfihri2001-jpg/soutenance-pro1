@@ -28,7 +28,7 @@ const seo=metadata({...context,title,description});
 if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadata insertion point is missing.');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
-await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- LIBRARY_METRICS -->',`<div class="home-collection-metrics"><div><strong>${documents.length.toLocaleString('fr-FR')}</strong><span>documents référencés</span></div><div><strong>${disciplines.length}</strong><span>disciplines</span></div><div><strong>${pages.length}</strong><span>guides et parcours</span></div></div>`));
+await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- LIBRARY_METRICS -->',`<div class="home-collection-metrics"><div class="home-metric-primary"><strong>100&nbsp;000+</strong><span>documents à explorer via HAL</span></div><div><strong>${disciplines.length}</strong><span>disciplines dans notre sélection</span></div><div><strong>${pages.length}</strong><span>guides et parcours</span></div></div><p class="home-metrics-context">${documents.length.toLocaleString('fr-FR')} références sélectionnées sur Soutenance Pro. <a href="/methode-editoriale">Notre bibliothèque en détail →</a></p>`));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
 await writeFile('dist/bibliotheque.html',renderLibrary(context));

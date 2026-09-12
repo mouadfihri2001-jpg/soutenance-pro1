@@ -884,3 +884,21 @@ body.editorial .library-workspace-reference .library-project-actions { align-ite
   body.editorial .library-workspace-reference .library-project-actions { align-items: stretch; }
   body.editorial .library-project-actions .site-button { width: 100%; }
 }
+
+/* Large research figures, with the provider and local selection kept explicit. */
+.sp-home .home-library-entry .home-collection-metrics {
+  display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 28px;
+}
+.sp-home .home-library-entry .home-collection-metrics > div { min-width: 0; }
+.sp-home .home-library-entry .home-collection-metrics .home-metric-primary { grid-column: 1 / -1; }
+.sp-home .home-library-entry .home-collection-metrics strong {
+  font: 800 clamp(34px,4vw,46px)/1.05 Inter,Arial,sans-serif; letter-spacing: -.045em; margin-bottom: 9px;
+}
+.sp-home .home-library-entry .home-collection-metrics .home-metric-primary strong {
+  font-size: clamp(44px,6vw,64px); white-space: nowrap;
+}
+.sp-home .home-library-entry .home-collection-metrics span { display: block; line-height: 1.5; }
+.sp-home .home-library-entry-info > .home-metrics-context {
+  display: block; margin: 20px 0 0; font-size: 12px; line-height: 1.7; color: var(--discovery-muted);
+}
+.sp-home .home-metrics-context a { color: var(--discovery-forest); text-decoration: underline; text-underline-offset: 3px; }
