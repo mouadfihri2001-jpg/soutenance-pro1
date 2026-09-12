@@ -1,3 +1,7 @@
+import { installPublicContact } from './contact.js';
+
+installPublicContact();
+
 window.scrollTo = id => document.getElementById(id)?.scrollIntoView({behavior:'smooth'});
 window.selectStep = index => {
   document.querySelectorAll('.how-step').forEach((el,i)=>el.classList.toggle('active-step',i===index));

@@ -1,0 +1,34 @@
+{
+  "provider": "HAL",
+  "scope": "All HAL deposits declaring a file; all languages, publication types and periods",
+  "reportedFullTextDocuments": 1594705,
+  "reportedAt": "2026-02-05",
+  "sourceKind": "Official CCSD annual report 2025",
+  "sourceUrl": "https://www.ccsd.cnrs.fr/wp-content/uploads/2026/03/RA2025_FR_VF.pdf",
+  "sourcePrintedPage": 13,
+  "sourcePdfPage": 7,
+  "overviewUrl": "https://www.ccsd.cnrs.fr/hal/",
+  "consultedAt": "2026-09-12",
+  "currentSearchCount": null,
+  "documentation": "https://api.archives-ouvertes.fr/docs/search",
+  "interpretation": "Dated total of full-text documents reported by HAL, not selected, hosted, read or deduplicated works owned by Soutenance Pro. Actual search totals are returned live by HAL. Records missing required safe metadata may be omitted from display.",
+  "frenchRecentSnapshot": {
+    "provider": "HAL",
+    "totalDeposits": 219476,
+    "observedAt": "2026-09-12T03:47:07.501Z",
+    "language": "fr",
+    "fromYear": 2016,
+    "toYear": 2026,
+    "types": [
+      "ART",
+      "THESE",
+      "MEM",
+      "REPORT",
+      "HDR"
+    ],
+    "fileCondition": "submitType_s:file",
+    "queryUrl": "https://api.archives-ouvertes.fr/search/?q=language_s%3Afr+AND+submitType_s%3Afile+AND+docType_s%3A%28ART+OR+THESE+OR+MEM+OR+REPORT+OR+HDR%29+AND+producedDateY_i%3A%5B2016+TO+2026%5D&wt=json&rows=3&fl=halId_s%2Ctitle_s%2CauthFullName_s%2CproducedDateY_i%2CdocType_s%2Curi_s%2CfileMain_s%2CdoiId_s&sort=producedDateY_i+desc%2Cdocid+asc",
+    "documentation": "https://api.archives-ouvertes.fr/docs/search",
+    "interpretation": "Nombre de dépôts déclarant un fichier selon HAL, pas un nombre de PDF copiés, dédupliqués ou relus par Soutenance Pro. La recherche étendue interroge HAL en direct ; la sélection locale reste distincte."
+  }
+}

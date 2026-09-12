@@ -1,0 +1,85 @@
+// A small, verified directory: these institutions are sources, not partners.
+// checkedAt records our consultation date, not publication or institutional approval.
+// Omit logoUrl until reuse permission has been documented for the intended use.
+export const institutions = [
+  {
+    id: 'polytech-lyon',
+    name: 'Polytech Lyon — Université Claude Bernard Lyon 1',
+    shortName: 'Polytech Lyon',
+    country: 'FR',
+    city: 'Villeurbanne',
+    level: 'Cycle ingénieur — 4e et 5e années',
+    subjects: ['Ingénierie', 'Rapport de stage', 'Mémoire', 'Soutenance'],
+    summary: 'Distingue les comptes rendus de début et de mi-stage du document final. Les consignes précisent aussi le support oral, les critères d’évaluation et le traitement des rapports confidentiels.',
+    scope: 'Consignes de stage de Polytech Lyon en 4A et 5A. Les responsables pédagogiques peuvent ajouter leurs exigences ; confirme le calendrier de ta filière auprès de l’école.',
+    sourceTitle: 'Rapport en 4A et Mémoire en 5A + Soutenance',
+    sourceUrl: 'https://moodle.univ-lyon1.fr/course/section.php?id=45846&lang=fr',
+    sourceYear: '2026–2027',
+    checkedAt: '2026-09-11',
+    guidePath: '/rapport-de-stage'
+  },
+  {
+    id: 'encg-marrakech',
+    name: 'ENCG Marrakech — Université Cadi Ayyad',
+    shortName: 'ENCG Marrakech',
+    country: 'MA',
+    city: 'Marrakech',
+    level: 'Cursus ENCG — stages S6, S8 et PFE S10',
+    subjects: ['Commerce', 'Gestion', 'PFE', 'Rapport de stage'],
+    summary: 'Identifie d’abord ton stage : initiation, approfondissement ou projet de fin d’études. La page explique leurs objectifs respectifs et le rapport suivi d’une soutenance prévu pour le PFE.',
+    scope: 'Organisation des stages de l’ENCG Marrakech. Cette page ne fournit pas un gabarit complet de rédaction ; demande les consignes de ta filière et de ton encadrant.',
+    sourceTitle: 'Professionnalisation des compétences',
+    sourceUrl: 'https://www.uca.ma/encg/fr/page/professionnalisation-des-competences',
+    sourceYear: null,
+    checkedAt: '2026-09-11',
+    guidePath: '/pfe'
+  },
+  {
+    id: 'fpmm-upm',
+    name: 'Faculté Privée de Médecine de Marrakech — UPM',
+    shortName: 'FPMM · UPM',
+    country: 'MA',
+    city: 'Marrakech',
+    level: 'Thèse de doctorat en médecine',
+    subjects: ['Médecine', 'Thèse', 'Méthodologie', 'Bibliographie'],
+    summary: 'Le guide accompagne le choix du sujet, sa validation, la recherche documentaire et la structure du manuscrit. Il rappelle de vérifier les articles cités et de protéger l’identité des patients.',
+    scope: 'Guide du thésard de la FPMM. Les procédures et modèles concernent cette faculté ; consulte ton directeur et le comité des thèses pour leur application à ton dossier.',
+    sourceTitle: 'Guide du thésard — Faculté Privée de Médecine de Marrakech',
+    sourceUrl: 'https://upm.ac.ma/wp-content/uploads/GUIDE-THESARD-FPMM-1-1.pdf',
+    sourceYear: null,
+    checkedAt: '2026-09-11',
+    guidePath: '/these-medecine'
+  },
+  {
+    id: 'tiaret-physique',
+    name: 'Université Ibn Khaldoun de Tiaret — Département de physique',
+    shortName: 'Tiaret · Physique',
+    country: 'DZ',
+    city: 'Tiaret',
+    level: 'Master de physique — matériaux ou médicale',
+    subjects: ['Physique', 'Master', 'PFE', 'Mise en page'],
+    summary: 'Consulte l’ordre des parties du mémoire, la numérotation des équations, tableaux et figures, puis les indications bibliographiques. Un modèle de couverture aide à repérer les informations attendues.',
+    scope: 'Document du département de physique, avec une couverture type 2024–2025. L’édition du guide n’est pas datée ; fais confirmer la version applicable à ta promotion.',
+    sourceTitle: 'Modalités de rédaction des Projets de Fin d’Études',
+    sourceUrl: 'https://fsm.univ-tiaret.dz/docs/actualite/Modalites_Memoire_Master_D.Physique.pdf',
+    sourceYear: null,
+    checkedAt: '2026-09-11',
+    guidePath: '/pfe'
+  },
+  {
+    id: 'esc-tunis',
+    name: 'École Supérieure de Commerce de Tunis — Université de La Manouba',
+    shortName: 'ESC Tunis',
+    country: 'TN',
+    city: 'La Manouba',
+    level: 'Licence 3 et mastère professionnel 2',
+    subjects: ['Commerce', 'Gestion', 'PFE', 'Mémoire'],
+    summary: 'Retrouve le guide de préparation du PFE et les pages de garde proposées par l’école. Le document relie choix du sujet, problématique, démarche empirique, références et présentation orale.',
+    scope: 'Guide destiné aux L3 et MP2 de l’ESC Tunis. La version disponible n’est pas datée et évoque des dispositions anciennes ; vérifie les procédures actuelles auprès du service des stages.',
+    sourceTitle: 'Guide d’élaboration de PFE pour les étudiants en L3 et MP2',
+    sourceUrl: 'https://www.esct.rnu.tn/fr/vie-estudiantine/informations-etudiants/memoires-pfe/guide-d-elaboration-de-pfe',
+    sourceYear: null,
+    checkedAt: '2026-09-11',
+    guidePath: '/guides/plan-rapport-de-stage'
+  }
+];

@@ -1,976 +1,173 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
-<title>PFE ISPITS, mémoire et thèse de médecine | Soutenance Pro AI</title>
-<meta name="description" content="Prépare ton PFE ISPITS, mémoire ou thèse de médecine : plan, sources, questionnaire, rédaction et soutenance. Espace gratuit et exports Word et PowerPoint."/>
-<meta property="og:type" content="website"/>
-<meta property="og:locale" content="fr_FR"/>
-<meta property="og:site_name" content="Soutenance Pro AI"/>
-<meta property="og:title" content="PFE ISPITS, mémoire et thèse de médecine | Soutenance Pro AI"/>
-<meta property="og:description" content="Du plan à la soutenance : organise tes sources, prépare ton mémoire et exporte tes documents en Word ou PowerPoint."/>
-<meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:title" content="PFE ISPITS, mémoire et thèse de médecine | Soutenance Pro AI"/>
-<meta name="twitter:description" content="Un espace pour ton plan, tes sources, ton mémoire et ta soutenance."/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PFE, mémoire et soutenance : ton espace de travail | Soutenance Pro</title>
+<meta name="description" content="Prépare ton PFE, mémoire et soutenance dans un même espace : consignes, sources, plan, rédaction et exports Word ou PowerPoint. Essai gratuit et bibliothèque ouverte.">
+<meta name="theme-color" content="#004d35">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Soutenance Pro">
+<meta property="og:title" content="PFE, mémoire et soutenance : ton espace de travail | Soutenance Pro">
+<meta property="og:description" content="Du sujet à la soutenance : rassemble tes consignes, travaille avec tes sources et exporte tes documents. Commence gratuitement, avec une bibliothèque ouverte à tous.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PFE, mémoire et soutenance : ton espace de travail | Soutenance Pro">
+<meta name="twitter:description" content="Ton espace pour le PFE, le mémoire et la soutenance. Plan, sources, rédaction et exports, avec une bibliothèque gratuite pour commencer.">
 <!-- SEO_DEPLOYMENT_META -->
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="/assets/app.css" rel="stylesheet">
+<link href="/assets/home.css" rel="stylesheet">
+<link href="/assets/research.css" rel="stylesheet">
+<link href="/assets/discovery.css" rel="stylesheet">
+<link href="/assets/home-polish.css" rel="stylesheet">
+</head>
+<body class="sp-home">
+<a class="home-skip" href="#contenu">Aller au contenu</a>
+<header class="home-header" id="navbar">
+  <div class="home-container home-nav">
+    <a class="home-brand" href="/" aria-label="Soutenance Pro, accueil"><img class="brand-logo" src="/assets/brand-logo.jpg" width="72" height="72" alt=""><span>Soutenance <strong>Pro</strong><small>Ton projet · Tes ressources</small></span></a>
+    <nav class="home-desktop-links" aria-label="Navigation principale">
+      <a href="/services">Mon projet</a><a href="/bibliotheque">Bibliothèque</a><a href="/outils">Outils</a><a href="/tarifs">Tarifs</a>
+    </nav>
+    <div class="home-nav-actions"><button type="button" class="home-login" onclick="openApp('login')">Se connecter</button><button type="button" class="home-button small" onclick="openApp('signup')">Essai gratuit</button></div>
+    <details class="home-mobile-menu"><summary aria-label="Ouvrir la navigation"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></summary><nav aria-label="Navigation mobile"><button type="button" onclick="openApp('signup')">Créer mon compte</button><a href="/services">Mon projet</a><a href="/bibliotheque">Bibliothèque</a><a href="/outils">Outils</a><a href="/tarifs">Tarifs</a><button type="button" onclick="openApp('login')">Se connecter</button></nav></details>
+  </div>
+</header>
+<main id="contenu">
+  <section class="home-hero" id="hero" aria-labelledby="home-title">
+    <div class="home-container home-hero-grid">
+      <div class="home-hero-copy">
+        <p class="home-eyebrow"><span aria-hidden="true"></span>Du sujet à la soutenance</p>
+        <h1 id="home-title">Ton mémoire.<br>Ton ambition.<br><em>Tout prend forme.</em></h1>
+        <p class="home-intro">Du plan au PowerPoint, donne une direction à ton PFE ou ton mémoire. Tes consignes, tes sources et tes documents réunis dans un même espace.</p>
+        <div class="home-hero-actions"><button type="button" class="home-button home-project-primary" onclick="openApp('signup')">Commencer mon projet <span aria-hidden="true">→</span></button><a href="/bibliotheque" class="home-text-link">Explorer la bibliothèque</a></div>
+        <p class="home-hero-note">Sans carte bancaire · 1 projet gratuit · 3 générations par mois</p>
+        <ul class="home-project-benefits" aria-label="Dans ton espace"><li><strong>Tes consignes</strong><span>Un cadre pour chaque étape</span></li><li><strong>Tes sources</strong><span>Avant de travailler le texte</span></li><li><strong>Word &amp; PowerPoint</strong><span>Des fichiers modifiables</span></li></ul>
+        <a class="home-project-help" href="https://wa.me/212680241471" target="_blank" rel="noopener noreferrer">Besoin d’accompagnement ? Parlons de ton projet <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="home-featured-resource">
+        <figure class="home-product-preview" aria-labelledby="product-preview-caption">
+          <div class="home-preview-topbar"><span class="home-preview-dot" aria-hidden="true"></span><span>TON ESPACE DE TRAVAIL</span><span class="home-preview-label">Aperçu illustratif</span></div>
+          <div class="home-preview-cover"><img src="/assets/library-reading-room.webp" alt="" width="1536" height="1024" fetchpriority="high"><div><span>UNE IDÉE. UN PROJET.</span><h2>Fais place à ton mémoire.</h2></div></div>
+          <div class="home-preview-body">
+            <div class="home-preview-steps" aria-label="Les étapes de ton projet">
+              <div><span aria-hidden="true">01</span><strong>Consignes</strong></div>
+              <div><span aria-hidden="true">02</span><strong>Sources</strong></div>
+              <div class="active"><span aria-hidden="true">03</span><strong>Rédaction</strong></div>
+              <div><span aria-hidden="true">04</span><strong>Soutenance</strong></div>
+            </div>
+            <div class="home-preview-document"><div class="home-document-meta"><span>MON MÉMOIRE</span><span>Exemple de structure</span></div><h3>Une méthode,<br>pour chaque chapitre.</h3><ol><li><span>01</span>Introduction et problématique</li><li><span>02</span>Méthodologie de recherche</li><li><span>03</span>Résultats et discussion</li><li><span>04</span>Conclusion et perspectives</li></ol><div class="home-document-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h6l2 2h8v12H4zM8 12h8M8 15h5"/></svg><p>Tes consignes donnent le cadre.<br><strong>Tes sources nourrissent le travail.</strong></p></div></div>
+          </div>
+          <div class="home-preview-footer"><span>Garde la main sur chaque version</span><div><span>Word</span><span>PowerPoint</span></div></div>
+          <figcaption id="product-preview-caption">Un parcours à adapter à ton sujet et aux attentes de ton encadrant.</figcaption>
+        </figure>
+        <a class="home-preview-callout" href="#features"><span class="home-preview-callout-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg></span><span><strong>Un projet, 9 modules.</strong><small>Le bon outil à chaque étape</small></span><span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="home-container home-regions"><span>Étudiants · Doctorants · Enseignants</span><p>France <i aria-hidden="true">/</i> Maroc <i aria-hidden="true">/</i> Algérie <i aria-hidden="true">/</i> Tunisie</p><a href="/etablissements">Retrouver les consignes d’un établissement <span aria-hidden="true">→</span></a></div>
+    <div class="home-library-entry"><div class="home-container home-library-entry-grid"><div>
+      <form class="home-search" role="search" action="/bibliotheque" method="get">
+        <input type="hidden" name="scope" value="hal">
+        <label for="home-query">Besoin d’une source pour avancer ? Explore la bibliothèque gratuite.</label>
+        <div class="home-search-field"><svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input type="search" name="q" id="home-query" placeholder="Un sujet, un auteur, un titre…" maxlength="160"><button type="submit">Rechercher <span aria-hidden="true">→</span></button></div>
+      </form>
+      <div class="home-search-shortcuts"><span>Les guides utiles :</span><a href="/pfe">PFE &amp; mémoire</a><a href="/rapport-de-stage">Rapport de stage</a><a href="/soutenance">Soutenance</a></div>
+    </div><div class="home-library-entry-info"><p>Des repères pour démarrer.<br><strong>Un espace pour aller plus loin.</strong></p><!-- LIBRARY_METRICS --></div></div></div>
+  </section>
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --g900:#004D35;--g800:#005C3E;--g700:#006847;--g600:#007A52;
-  --g500:#00A86B;--g400:#2DC47E;--g300:#7EDBA8;--g200:#B8EDD3;--g100:#E4F7EE;
-  --parchment:#F5F0E8;--parch2:#EDE6D6;--parch3:#DDD5C0;
-  --ink:#0A0F0D;--ink2:#1C2E25;--ink3:#374C3F;--muted:#5E7A6A;--faint:#8FA89B;
-  --border:#E0EDE7;--white:#FFFFFF;
-  --amber:#D97706;--blue:#2563EB;--red:#DC2626;
-  --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;--r-2xl:28px;--r-full:999px;
-  --shadow-sm:0 2px 8px rgba(0,0,0,.06);
-  --shadow-md:0 8px 28px rgba(0,0,0,.09);
-  --shadow-lg:0 20px 60px rgba(0,0,0,.13);
-  --shadow-green:0 12px 40px rgba(0,168,107,.25);
-  --trans:.2s cubic-bezier(.4,0,.2,1);
-  --max:1180px;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-img{display:block;max-width:100%}
-button{font-family:'Inter',sans-serif;cursor:pointer;border:none;outline:none}
-a{text-decoration:none;color:inherit}
+  <section data-reveal class="home-workspace" id="features" aria-labelledby="workspace-title"><div class="home-container">
+    <div class="home-workspace-heading"><div><p class="home-eyebrow">L’espace personnel · Soutenance Pro</p><h2 id="workspace-title">Du premier plan<br><em>au document que tu présentes.</em></h2></div><p>Rassemble ton sujet, les consignes de ton encadrant et tes sources. L’assistant t’aide à travailler une étape à la fois ; tu relis, corriges et conserves tes versions.</p></div>
+    <div class="home-module-grid"><div><span>01 / ORGANISER</span><h3>Plan &amp; bibliographie</h3><p>Structure ton travail, sélectionne des publications et conserve les extraits consultés.</p></div><div><span>02 / APPROFONDIR</span><h3>Rédaction &amp; révision</h3><p>Développe une section à partir du plan validé et de tes sources. Intègre les remarques reçues.</p></div><div><span>03 / ENQUÊTER</span><h3>Questionnaire &amp; entretien</h3><p>Relie tes questions à tes objectifs et prépare la lecture de tes données réelles.</p></div><div><span>04 / PARTAGER</span><h3>Présentation &amp; oral</h3><p>Prépare tes diapositives, ton discours et des pistes de réponse aux questions du jury.</p></div></div>
+    <div class="home-workspace-bottom"><p>9 modules · Documents enregistrés · Exports Word et PowerPoint</p><button type="button" class="home-button light" onclick="openApp('signup')">Commencer mon projet <span aria-hidden="true">→</span></button></div>
+  </div></section>
 
-/* ── UTILS ── */
-.container{max-width:var(--max);margin:0 auto;padding:0 28px}
-.serif{font-family:'Fraunces',Georgia,serif}
-.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-full);font-size:12px;font-weight:600;letter-spacing:.1px}
-.pill-green{background:var(--g100);color:var(--g700);border:1px solid var(--g200)}
-.pill-amber{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
-.pill-white{background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.2)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:var(--r-md);font-size:15px;font-weight:700;transition:var(--trans);letter-spacing:.1px;cursor:pointer;padding:13px 28px;white-space:nowrap}
-.btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
-.btn-primary{background:linear-gradient(135deg,var(--g700) 0%,var(--g500) 100%);color:white;box-shadow:var(--shadow-green)}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 48px rgba(0,168,107,.35)}
-.btn-primary:active{transform:translateY(0)}
-.btn-outline{background:transparent;border:2px solid rgba(255,255,255,.3);color:white}
-.btn-outline:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
-.btn-dark{background:var(--ink);color:white}
-.btn-dark:hover{background:var(--ink2);transform:translateY(-1px)}
-.btn-ghost-green{background:white;border:2px solid var(--g200);color:var(--g700)}
-.btn-ghost-green:hover{background:var(--g50,var(--g100));border-color:var(--g300)}
-.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--g500);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.section-eyebrow::before{content:'';width:20px;height:2px;background:var(--g400);border-radius:1px}
-.section-title{font-size:clamp(26px,4vw,40px);font-weight:800;color:var(--ink);letter-spacing:-1.2px;line-height:1.15}
-.section-sub{font-size:16px;color:var(--muted);line-height:1.75;margin-top:12px;max-width:560px}
+  <!-- HOME_DISCOVERY -->
 
-/* ─────────────────────────────
-   NAVBAR
-───────────────────────────── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:200;transition:var(--trans)}
-.navbar.scrolled{background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
-.navbar-inner{display:flex;align-items:center;height:64px;gap:20px}
-.nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--g600),var(--g400));border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,168,107,.3)}
-.nav-logo-icon svg{width:17px;height:17px;stroke:white;fill:none;stroke-width:2}
-.nav-logo-name{font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
-.nav-logo-name span{color:var(--g500)}
-.nav-links{display:flex;align-items:center;gap:2px;margin:0 auto}
-.nav-link{padding:8px 14px;border-radius:var(--r-md);font-size:14px;font-weight:500;color:var(--ink3);transition:var(--trans);cursor:pointer}
-.nav-link:hover{background:var(--g100);color:var(--g700)}
-.nav-link.active{color:var(--g600);font-weight:600}
-.nav-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.btn-nav-login{padding:8px 18px;border-radius:var(--r-md);font-size:14px;font-weight:600;color:var(--ink3);border:1.5px solid var(--border);background:white;cursor:pointer;transition:var(--trans)}
-.btn-nav-login:hover{background:var(--g100);border-color:var(--g300);color:var(--g700)}
-.btn-nav-cta{padding:9px 20px;border-radius:var(--r-md);font-size:14px;font-weight:700;background:var(--g900);color:white;cursor:pointer;transition:var(--trans)}
-.btn-nav-cta:hover{background:var(--g700);transform:translateY(-1px)}
+  <section class="home-section" aria-labelledby="topics-title">
+    <div class="home-container">
+      <div data-reveal class="home-section-heading"><div><p class="home-eyebrow">La bibliothèque</p><h2 id="topics-title">Qu’est-ce qui te fait avancer ?</h2></div><a href="/bibliotheque" class="home-text-link">Toutes les ressources <span aria-hidden="true">↗</span></a></div>
+      <div class="home-topic-grid">
+        <a class="home-topic sage" href="/pfe"><span class="home-topic-number">01 / CONSTRUIRE</span><h3>PFE<br>&amp; mémoire</h3><p>Du thème de départ à une question précise et un plan réalisable.</p><span class="home-topic-link">Trouver ma méthode <span aria-hidden="true">↗</span></span></a>
+        <a class="home-topic sand" href="/rapport-de-stage"><span class="home-topic-number">02 / RACONTER</span><h3>Rapport<br>de stage</h3><p>Décrire tes missions réelles, montrer tes acquis et analyser les difficultés.</p><span class="home-topic-link">Structurer mon rapport <span aria-hidden="true">↗</span></span></a>
+        <a class="home-topic pale" href="/soutenance"><span class="home-topic-number">03 / PRÉSENTER</span><h3>Soutenance<br>&amp; oral</h3><p>Choisir le fil conducteur, préparer le support et répéter dans le temps imparti.</p><span class="home-topic-link">Préparer mon passage <span aria-hidden="true">↗</span></span></a>
+        <a class="home-topic forest" href="/guides/recherche-bibliographique-sante"><span class="home-topic-number">04 / ÉTAYER</span><h3>Sources<br>&amp; références</h3><p>Un guide en santé pour chercher, lire, citer et garder des traces utiles.</p><span class="home-topic-link">Organiser mes sources <span aria-hidden="true">↗</span></span></a>
+      </div>
+    </div>
+  </section>
 
-/* ─────────────────────────────
-   HERO
-───────────────────────────── */
-.hero{background:linear-gradient(160deg,var(--g900) 0%,#003528 55%,#001f15 100%);min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:64px}
-.hero-bg-orbs{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(80px)}
-.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,168,107,.18) 0%,transparent 70%);top:-200px;right:-100px}
-.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(0,77,53,.4) 0%,transparent 70%);bottom:-100px;left:-50px}
-.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(45,196,126,.08) 0%,transparent 70%);top:30%;left:30%}
-.hero-inner{display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;padding:80px 0 100px;position:relative;z-index:1}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,168,107,.15);border:1px solid rgba(0,168,107,.35);border-radius:var(--r-full);padding:6px 14px;font-size:12.5px;font-weight:600;color:var(--g300);margin-bottom:24px}
-.hero-badge-dot{width:7px;height:7px;background:var(--g400);border-radius:50%;animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-.hero-h{font-size:clamp(36px,5vw,62px);font-weight:400;color:white;line-height:1.08;letter-spacing:-2px;margin-bottom:20px}
-.hero-h em{font-style:italic;color:var(--g300)}
-.hero-h strong{font-weight:800}
-.hero-sub{font-size:17px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:32px;max-width:480px}
-.hero-sub strong{color:rgba(255,255,255,.85);font-weight:600}
-.hero-ctas{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:40px}
-.hero-stats{display:flex;align-items:center;gap:28px}
-.hs-item{display:flex;flex-direction:column;gap:2px}
-.hs-val{font-size:22px;font-weight:800;color:white;letter-spacing:-.5px}
-.hs-lbl{font-size:11.5px;color:rgba(255,255,255,.4);font-weight:500}
-.hs-div{width:1px;height:32px;background:rgba(255,255,255,.12)}
+  <section class="home-reading home-section" aria-labelledby="reading-title">
+    <div class="home-container home-reading-grid">
+      <div class="home-reading-intro"><p class="home-eyebrow">Une question précise ?</p><h2 id="reading-title">Commence par<br>ce qui bloque.</h2><p>Chaque guide propose une démarche, des exemples commentés et des points à vérifier dans ton propre travail.</p><a href="/guides" class="home-text-link">Suivre le parcours de lecture <span aria-hidden="true">→</span></a></div>
+      <div class="home-reading-list">
+        <a href="/guides/plan-rapport-de-stage"><span class="home-reading-number">01</span><div><span class="home-reading-label">Rapport de stage · Plan</span><h3>Que mettre dans chaque partie de mon rapport ?</h3><p>Une structure commentée, du contexte au bilan.</p></div><span class="home-reading-arrow" aria-hidden="true">↗</span></a>
+        <a href="/guides/introduction-rapport-de-stage"><span class="home-reading-number">02</span><div><span class="home-reading-label">Rapport de stage · Rédaction</span><h3>Comment démarrer mon introduction ?</h3><p>Un exemple expliqué pour éviter les phrases trop générales.</p></div><span class="home-reading-arrow" aria-hidden="true">↗</span></a>
+        <a href="/guides/problematique-pfe-infirmier"><span class="home-reading-number">03</span><div><span class="home-reading-label">PFE infirmier · Problématique</span><h3>Comment passer de mon thème à une question ?</h3><p>Délimiter le terrain et identifier ce que tu peux étudier.</p></div><span class="home-reading-arrow" aria-hidden="true">↗</span></a>
+        <a href="/guides/presentation-soutenance-pfe"><span class="home-reading-number">04</span><div><span class="home-reading-label">Soutenance · PowerPoint</span><h3>Comment présenter l’essentiel en dix minutes ?</h3><p>Un exemple de découpage à adapter à la durée demandée.</p></div><span class="home-reading-arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
 
-/* ── HERO CARD (SIGNATURE) ── */
-.hero-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-2xl);overflow:hidden;backdrop-filter:blur(8px);box-shadow:0 32px 80px rgba(0,0,0,.4)}
-.hc-top{background:rgba(255,255,255,.06);padding:12px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.08)}
-.hc-dots{display:flex;gap:6px}
-.hc-dot{width:11px;height:11px;border-radius:50%}
-.hc-tab-row{display:flex;gap:2px;margin-left:8px}
-.hc-tab{padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.4)}
-.hc-tab.active{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)}
-.hc-meta{margin-left:auto;display:flex;align-items:center;gap:6px}
-.hc-ai-badge{background:rgba(0,168,107,.2);border:1px solid rgba(0,168,107,.35);border-radius:var(--r-full);padding:3px 9px;font-size:10.5px;font-weight:700;color:var(--g300);display:flex;align-items:center;gap:4px}
-.hc-ai-badge::before{content:'';width:5px;height:5px;background:var(--g400);border-radius:50%;animation:pulse 1.5s ease infinite}
-.hc-body{padding:22px 24px;min-height:320px;font-size:13px;line-height:1.9;color:rgba(255,255,255,.7)}
-.hc-body h2{font-size:14px;font-weight:800;color:rgba(255,255,255,.95);margin:12px 0 6px;font-family:'Inter',sans-serif}
-.hc-body h3{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin:10px 0 4px}
-.hc-body p{color:rgba(255,255,255,.6);margin-bottom:6px}
-.typed-cursor{display:inline-block;width:2px;height:1em;background:var(--g400);animation:blink .7s infinite;vertical-align:text-bottom;margin-left:1px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hc-footer{padding:14px 18px;border-top:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between}
-.hc-prog{display:flex;align-items:center;gap:10px;font-size:11.5px;color:rgba(255,255,255,.4)}
-.hc-prog-bar{width:100px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden}
-.hc-prog-fill{height:4px;background:linear-gradient(90deg,var(--g600),var(--g400));border-radius:2px;width:0%;transition:width 0.3s ease}
-.hc-word-count{font-size:11px;color:rgba(255,255,255,.3);font-family:'JetBrains Mono',monospace}
+  <section class="home-section home-downloads" aria-labelledby="downloads-title">
+    <div class="home-container">
+      <div data-reveal class="home-section-heading"><div><p class="home-eyebrow">À télécharger</p><h2 id="downloads-title">Ouvre le document.<br>Fais-en ton outil.</h2></div><p class="home-heading-note">Trois modèles pour commencer.<br><a href="/bibliotheque#modeles">Voir tous les modèles Word gratuits →</a></p></div>
+      <div class="home-download-grid">
+        <article><div class="home-mini-doc" aria-hidden="true"><span>PLAN DE RAPPORT</span><strong>Du contexte<br>au bilan.</strong><div class="home-mini-lines"><i></i><i></i><i></i><i></i></div><small>01 / STRUCTURE</small></div><div class="home-download-info"><span>WORD · 3 PAGES</span><h3>Plan de rapport de stage</h3><p>Une structure commentée et une fiche pour chaque mission.</p><a href="/modeles/plan-rapport-stage.docx" download>Télécharger le modèle <span aria-hidden="true">↓</span></a></div></article>
+        <article><div class="home-mini-doc green" aria-hidden="true"><span>CHECKLIST SOUTENANCE</span><strong>L’essentiel,<br>sans l’oubli.</strong><div class="home-mini-checks"><span>Le message central</span><span>Le temps de parole</span><span>La répétition</span></div><small>02 / PRÉPARATION</small></div><div class="home-download-info"><span>WORD · 2 PAGES</span><h3>Checklist de soutenance</h3><p>Le contenu, les répétitions et le matériel à vérifier.</p><a href="/modeles/checklist-soutenance.docx" download>Télécharger la checklist <span aria-hidden="true">↓</span></a></div></article>
+        <article><div class="home-mini-doc yellow" aria-hidden="true"><span>FICHE DE LECTURE</span><strong>Une source.<br>Une trace utile.</strong><div class="home-mini-lines"><i></i><i></i><i></i><i></i></div><small>03 / BIBLIOGRAPHIE</small></div><div class="home-download-info"><span>WORD · 2 PAGES</span><h3>Fiche de lecture d’une source</h3><p>La référence, les résultats, les limites et ton commentaire.</p><a href="/modeles/fiche-lecture-source.docx" download>Télécharger la fiche <span aria-hidden="true">↓</span></a></div></article>
+      </div>
+      <p class="home-small-note">Les couvertures présentent le contenu des modèles ; elles ne reproduisent pas leur mise en page Word. Les modèles sont indépendants des établissements.</p>
+    </div>
+  </section>
 
-/* ─────────────────────────────
-   PROOF BAR
-───────────────────────────── */
-.proof-bar{background:var(--parchment);border-top:1px solid var(--parch3);border-bottom:1px solid var(--parch3);padding:20px 0}
-.proof-inner{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
-.proof-item{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;color:var(--ink3)}
-.proof-item svg{width:18px;height:18px;stroke:var(--g500);fill:none;stroke-width:2;flex-shrink:0}
-.proof-div{width:1px;height:24px;background:var(--parch3)}
-.proof-logo-row{display:flex;align-items:center;gap:6px}
-.proof-logo-row span{font-size:12px;color:var(--muted);font-style:italic}
-.proof-uni{font-size:13px;font-weight:700;color:var(--ink3);background:white;border:1px solid var(--parch3);border-radius:var(--r-sm);padding:4px 10px}
+  <section class="home-institutions" aria-labelledby="institutions-title"><div class="home-container home-institutions-grid">
+    <div><p class="home-eyebrow">Ton établissement, tes consignes</p><h2 id="institutions-title">La méthode générale.<br>Les règles de ton cursus.</h2><p>Le plan, le format de dépôt ou la durée de l’oral peuvent varier d’une formation à l’autre. Retrouve des liens vers des ressources officielles et vérifie la version applicable à ton année.</p><a class="home-button" href="/etablissements">Consulter les établissements <span aria-hidden="true">↗</span></a></div>
+    <div class="home-institution-note"><span class="home-note-label">LES REPÈRES À VÉRIFIER</span><ol><li><span>01</span><div>La formation et le niveau concernés</div></li><li><span>02</span><div>L’année et la version du document</div></li><li><span>03</span><div>Les consignes de ton encadrant</div></li></ol><p>Soutenance Pro est une bibliothèque indépendante. Les établissements cités ne sont pas présentés comme des partenaires.</p></div>
+  </div></section>
 
-/* ─────────────────────────────
-   FEATURES
-───────────────────────────── */
-.section-features{background:var(--white);padding:100px 0}
-.features-header{text-align:center;margin-bottom:56px}
-.features-header .section-eyebrow{justify-content:center}
-.features-header .section-eyebrow::before{display:none}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden}
-.feat-card{background:var(--white);padding:32px;transition:var(--trans);cursor:default}
-.feat-card:hover{background:var(--g100)}
-.feat-icon{width:48px;height:48px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
-.feat-icon svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8}
-.feat-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;letter-spacing:-.3px}
-.feat-card p{font-size:14px;color:var(--muted);line-height:1.7}
-.feat-tag{display:inline-flex;margin-top:12px;font-size:11px;font-weight:700;color:var(--g600);background:var(--g100);border:1px solid var(--g200);border-radius:var(--r-full);padding:3px 9px}
-
-/* ─────────────────────────────
-   HOW IT WORKS
-───────────────────────────── */
-.section-how{background:var(--parchment);padding:100px 0}
-.how-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.how-steps{display:flex;flex-direction:column;gap:0}
-.how-step{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid var(--parch3);cursor:pointer;transition:var(--trans)}
-.how-step:last-child{border-bottom:none}
-.how-step:hover .hs-num{background:var(--g900);color:white}
-.hs-num{width:36px;height:36px;border-radius:10px;background:var(--parch2);color:var(--muted);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--trans);margin-top:2px}
-.how-step.active-step .hs-num{background:var(--g900);color:white}
-.how-step.active-step .hstep-title{color:var(--g700)}
-.hstep-body h4{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:5px;letter-spacing:-.2px}
-.hstep-body p{font-size:14px;color:var(--muted);line-height:1.65}
-.how-visual{position:sticky;top:100px}
-.how-preview{background:var(--ink);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg)}
-.hp-topbar{background:rgba(255,255,255,.06);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-.hp-dot{width:11px;height:11px;border-radius:50%}
-.hp-title{font-size:12px;color:rgba(255,255,255,.35);margin-left:6px}
-.hp-content{padding:20px 22px}
-.hp-step{display:none}
-.hp-step.active{display:block;animation:fadeSlide .3s ease}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.how-step-tag{font-size:10px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px}
-.how-step-title{font-size:15px;font-weight:800;color:white;margin-bottom:12px}
-.code-block{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-md);padding:14px;font-size:12px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.6);line-height:1.8}
-.code-block .g{color:var(--g300)}
-.code-block .w{color:rgba(255,255,255,.85)}
-.code-block .m{color:#F59E0B}
-
-/* ─────────────────────────────
-   DEMO PREVIEW
-───────────────────────────── */
-.section-demo{background:var(--white);padding:100px 0}
-.demo-header{text-align:center;margin-bottom:48px}
-.demo-window{background:var(--g900);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-lg);border:1px solid rgba(255,255,255,.07)}
-.dw-bar{background:rgba(255,255,255,.05);padding:14px 20px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,.06)}
-.dw-dot{width:12px;height:12px;border-radius:50%}
-.dw-url{background:rgba(255,255,255,.07);border-radius:6px;padding:5px 16px;font-size:12px;color:rgba(255,255,255,.35);margin-left:8px;font-family:'JetBrains Mono',monospace}
-.dw-content{display:grid;grid-template-columns:200px 1fr;min-height:420px}
-.dw-sidebar{background:rgba(0,0,0,.25);padding:16px 10px;border-right:1px solid rgba(255,255,255,.06)}
-.dw-sb-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:12px;color:rgba(255,255,255,.45);font-weight:500;margin-bottom:2px;cursor:pointer}
-.dw-sb-item.active{background:rgba(255,255,255,.1);color:white}
-.dw-sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
-.dw-main{padding:24px;overflow:hidden}
-.dw-tabs{display:flex;gap:4px;margin-bottom:20px;background:rgba(255,255,255,.05);border-radius:var(--r-full);padding:3px;width:fit-content}
-.dw-tab{padding:6px 14px;border-radius:var(--r-full);font-size:11.5px;font-weight:600;color:rgba(255,255,255,.4);cursor:pointer;transition:var(--trans)}
-.dw-tab.active{background:white;color:var(--ink)}
-.plan-row{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:rgba(255,255,255,.04);border-radius:var(--r-md);margin-bottom:6px;border-left:2px solid rgba(255,255,255,.1)}
-.plan-row.highlight{border-left-color:var(--g400);background:rgba(0,168,107,.08)}
-.plan-row-num{font-size:10px;font-weight:700;color:var(--g300);flex-shrink:0;margin-top:2px;font-family:'JetBrains Mono',monospace}
-.plan-row-text{font-size:12px;color:rgba(255,255,255,.7)}
-.plan-row-text strong{color:rgba(255,255,255,.9);font-weight:700}
-.dw-action-bar{display:flex;gap:8px;margin-top:16px}
-.dw-btn{padding:7px 14px;border-radius:var(--r-sm);font-size:11.5px;font-weight:700;cursor:pointer;transition:var(--trans)}
-.dw-btn-p{background:var(--g500);color:white}
-.dw-btn-s{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
-
-/* ─────────────────────────────
-   TESTIMONIALS
-───────────────────────────── */
-.section-testimonials{background:var(--parchment);padding:100px 0}
-.testi-header{text-align:center;margin-bottom:52px}
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.testi-card{background:var(--white);border:1px solid var(--parch3);border-radius:var(--r-xl);padding:28px;transition:var(--trans)}
-.testi-card:hover{box-shadow:var(--shadow-md);border-color:var(--g200);transform:translateY(-3px)}
-.testi-stars{display:flex;gap:3px;margin-bottom:14px}
-.star{color:#F59E0B;font-size:15px}
-.testi-text{font-size:14.5px;color:var(--ink3);line-height:1.75;margin-bottom:18px;font-style:italic}
-.testi-text::before{content:'\201C';font-size:28px;color:var(--g300);font-family:'Fraunces',serif;line-height:.5;display:block;margin-bottom:8px}
-.testi-author{display:flex;align-items:center;gap:12px}
-.testi-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:white;flex-shrink:0}
-.testi-info .name{font-size:13.5px;font-weight:700;color:var(--ink)}
-.testi-info .meta{font-size:12px;color:var(--faint)}
-.testi-tag{display:inline-flex;margin-top:6px;font-size:10.5px;font-weight:600;color:var(--g600);background:var(--g100);border:1px solid var(--g200);border-radius:var(--r-full);padding:2px 8px}
-
-/* ─────────────────────────────
-   PRICING
-───────────────────────────── */
-.section-pricing{background:var(--white);padding:100px 0}
-.pricing-header{text-align:center;margin-bottom:48px}
-.billing-toggle-wrap{display:flex;align-items:center;gap:14px;justify-content:center;margin-top:20px}
-.billing-label{font-size:14px;font-weight:600;color:var(--ink3)}
-.toggle-switch{width:48px;height:28px;background:var(--g500);border-radius:14px;cursor:pointer;position:relative;transition:var(--trans);flex-shrink:0}
-.toggle-knob{width:22px;height:22px;background:white;border-radius:50%;position:absolute;top:3px;right:3px;transition:var(--trans);box-shadow:0 1px 4px rgba(0,0,0,.15)}
-.toggle-switch.off{background:var(--border)}
-.toggle-switch.off .toggle-knob{right:auto;left:3px}
-.save-badge{background:var(--g100);color:var(--g700);border:1px solid var(--g200);border-radius:var(--r-full);font-size:11.5px;font-weight:700;padding:3px 10px}
-.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:start}
-.price-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-xl);padding:28px 24px;transition:var(--trans);position:relative}
-.price-card:hover{border-color:var(--g300);box-shadow:var(--shadow-md);transform:translateY(-4px)}
-.price-card.featured{border-color:var(--g500);background:var(--g900);box-shadow:var(--shadow-green);transform:translateY(-8px)}
-.price-card.featured:hover{transform:translateY(-12px)}
-.pc-ribbon{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--g600),var(--g400));color:white;font-size:11px;font-weight:800;padding:4px 14px;border-radius:var(--r-full);white-space:nowrap;letter-spacing:.2px}
-.pc-plan{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-.price-card .pc-plan{color:var(--faint)}
-.price-card.featured .pc-plan{color:var(--g300)}
-.pc-price{font-size:42px;font-weight:900;letter-spacing:-2.5px;line-height:1;margin-bottom:4px}
-.price-card .pc-price{color:var(--ink)}
-.price-card.featured .pc-price{color:white}
-.pc-price sup{font-size:16px;letter-spacing:0;vertical-align:super;margin-right:2px}
-.pc-per{font-size:13px;margin-bottom:6px}
-.price-card .pc-per{color:var(--faint)}
-.price-card.featured .pc-per{color:rgba(255,255,255,.4)}
-.pc-desc{font-size:13px;line-height:1.6;padding-bottom:18px;border-bottom-width:1px;border-bottom-style:solid;margin-bottom:18px}
-.price-card .pc-desc{color:var(--muted);border-bottom-color:var(--border)}
-.price-card.featured .pc-desc{color:rgba(255,255,255,.5);border-bottom-color:rgba(255,255,255,.1)}
-.pc-features{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
-.pc-feat{display:flex;align-items:flex-start;gap:8px;font-size:13px}
-.price-card .pc-feat{color:var(--ink3)}
-.price-card.featured .pc-feat{color:rgba(255,255,255,.75)}
-.pc-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.price-card .pc-check{background:var(--g100)}
-.price-card.featured .pc-check{background:rgba(0,168,107,.25)}
-.pc-check svg{width:9px;height:9px;stroke-width:3;fill:none}
-.price-card .pc-check svg{stroke:var(--g600)}
-.price-card.featured .pc-check svg{stroke:var(--g300)}
-.pc-x{width:17px;height:17px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.pc-x svg{width:9px;height:9px;stroke:var(--faint);stroke-width:2.5;fill:none}
-.pc-feat.muted .pc-feat-text{color:var(--faint)}
-.pc-btn{width:100%;padding:12px;border-radius:var(--r-md);font-size:14px;font-weight:700;transition:var(--trans);cursor:pointer;letter-spacing:.1px}
-.price-card .pc-btn.outline{background:white;border:1.5px solid var(--border);color:var(--ink3)}
-.price-card .pc-btn.outline:hover{background:var(--g100);border-color:var(--g300);color:var(--g700)}
-.price-card.featured .pc-btn.filled{background:white;color:var(--g900);border:none}
-.price-card.featured .pc-btn.filled:hover{background:var(--g100);transform:translateY(-1px)}
-
-/* ─────────────────────────────
-   FAQ
-───────────────────────────── */
-.section-faq{background:var(--parchment);padding:100px 0}
-.faq-layout{display:grid;grid-template-columns:1fr 600px;gap:80px;align-items:start}
-.faq-left h2{font-size:clamp(26px,4vw,38px);font-weight:800;color:var(--ink);letter-spacing:-1px;line-height:1.15;margin-bottom:12px}
-.faq-left p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:24px}
-.faq-list{display:flex;flex-direction:column;gap:0}
-.faq-item{border-bottom:1px solid var(--parch3);overflow:hidden}
-.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-size:15px;font-weight:700;color:var(--ink);gap:16px;transition:var(--trans)}
-.faq-q:hover{color:var(--g700)}
-.faq-icon{width:22px;height:22px;border-radius:50%;background:var(--parch2);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--trans);font-size:14px;color:var(--muted)}
-.faq-item.open .faq-icon{background:var(--g900);color:white;transform:rotate(45deg)}
-.faq-a{display:none;padding:0 0 18px;font-size:14px;color:var(--muted);line-height:1.75}
-.faq-item.open .faq-a{display:block;animation:fadeIn .2s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
-
-/* ─────────────────────────────
-   FINAL CTA
-───────────────────────────── */
-.section-cta{background:var(--white);padding:100px 0}
-.cta-card{background:linear-gradient(135deg,var(--g900) 0%,var(--g700) 60%,#003d2a 100%);border-radius:var(--r-2xl);padding:72px 60px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
-.cta-card::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(0,168,107,.2),transparent 70%);pointer-events:none}
-.cta-card::after{content:'';position:absolute;bottom:-60px;left:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.04),transparent 70%);pointer-events:none}
-.cta-card h2{font-size:clamp(28px,4vw,48px);font-weight:800;color:white;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px;position:relative}
-.cta-card h2 em{font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--g300)}
-.cta-card p{font-size:17px;color:rgba(255,255,255,.6);margin-bottom:36px;position:relative;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
-.cta-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:28px;position:relative}
-.cta-note{font-size:13px;color:rgba(255,255,255,.35);position:relative}
-.cta-note span{color:rgba(255,255,255,.55)}
-
-/* ─────────────────────────────
-   FOOTER
-───────────────────────────── */
-.footer{background:var(--ink);padding:60px 0 36px}
-.footer-grid{display:grid;grid-template-columns:260px 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.footer-brand p{font-size:13.5px;color:rgba(255,255,255,.35);line-height:1.75;margin-top:12px;margin-bottom:16px}
-.footer-socials{display:flex;gap:8px}
-.fsocial{width:34px;height:34px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--trans);color:rgba(255,255,255,.4)}
-.fsocial:hover{background:var(--g900);border-color:var(--g700);color:var(--g300)}
-.fsocial svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2}
-.footer-col h4{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,.3);margin-bottom:14px}
-.footer-link{display:block;font-size:13.5px;color:rgba(255,255,255,.5);margin-bottom:9px;cursor:pointer;transition:var(--trans)}
-.footer-link:hover{color:rgba(255,255,255,.85)}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
-.footer-bottom span{font-size:13px;color:rgba(255,255,255,.25)}
-.footer-logo{display:flex;align-items:center;gap:8px}
-.footer-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,var(--g600),var(--g400));border-radius:8px;display:flex;align-items:center;justify-content:center}
-.footer-logo-icon svg{width:14px;height:14px;stroke:white;fill:none;stroke-width:2}
-.footer-logo-name{font-size:14px;font-weight:800;color:rgba(255,255,255,.7)}
-
-/* ─────────────────────────────
-   RESPONSIVE
-───────────────────────────── */
-@media(max-width:1024px){
-  .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
-  .hero-h{letter-spacing:-1.5px}
-  .hero-sub{margin-left:auto;margin-right:auto}
-  .hero-ctas{justify-content:center}
-  .hero-stats{justify-content:center}
-  .hero-card{max-width:480px;margin:0 auto}
-  .features-grid{grid-template-columns:1fr 1fr}
-  .how-layout{grid-template-columns:1fr;gap:40px}
-  .how-visual{position:relative;top:0}
-  .testi-grid{grid-template-columns:1fr 1fr}
-  .pricing-grid{grid-template-columns:1fr 1fr;gap:14px}
-  .price-card.featured{transform:none}
-  .faq-layout{grid-template-columns:1fr}
-  .footer-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:640px){
-  .container{padding:0 16px}
-  .features-grid{grid-template-columns:1fr}
-  .testi-grid{grid-template-columns:1fr}
-  .pricing-grid{grid-template-columns:1fr}
-  .proof-inner{gap:24px;flex-direction:column;align-items:flex-start}
-  .nav-links{display:none}
-  .hero-stats{flex-wrap:wrap;gap:18px}
-  .cta-card{padding:48px 24px}
-  .footer-grid{grid-template-columns:1fr}
-  .footer-bottom{flex-direction:column;align-items:flex-start}
-  .dw-content{grid-template-columns:1fr}
-  .dw-sidebar{display:none}
-}
+  <section class="home-section" aria-labelledby="free-tools-title"><div class="home-container"><div data-reveal class="home-section-heading"><div><p class="home-eyebrow">Une tâche, un outil</p><h2 id="free-tools-title">Fais avancer la prochaine étape.</h2></div><a class="home-text-link" href="/outils">Tous les outils gratuits ↗</a></div><div class="home-tools-grid"><a class="home-tool-link" href="/outils/references"><span>01</span><h3>Préparer une référence</h3><p>Un titre, des auteurs, un lien. Exporte les métadonnées vers ton gestionnaire.</p><b>Ouvrir l’outil →</b></a><a class="home-tool-link" href="/recherche"><span>02</span><h3>Trouver des publications</h3><p>Google Scholar, HAL, PubMed et les bons repères pour les utiliser.</p><b>Explorer les moteurs →</b></a><a class="home-tool-link" href="/outils/planning"><span>03</span><h3>Planifier mon mémoire</h3><p>Pose tes jalons et réserve le temps nécessaire aux corrections.</p><b>Préparer mon calendrier →</b></a><a class="home-tool-link" href="/outils/citations"><span>04</span><h3>Vérifier mes citations</h3><p>Une grille de relecture pour garder le lien entre texte et sources.</p><b>Commencer la vérification →</b></a></div></div></section>
+  <section class="home-section" aria-labelledby="audience-title"><div class="home-container"><div data-reveal class="home-section-heading"><div><p class="home-eyebrow">À chaque étape du parcours</p><h2 id="audience-title">Un même lieu. Plusieurs façons d’avancer.</h2></div></div><div class="home-audience-grid"><a href="/pfe"><h3>Étudiants</h3><p>Délimiter le sujet, préparer un rapport ou un mémoire et défendre son travail.</p><span>Le parcours PFE et mémoire →</span></a><a href="/guides/these-doctorat"><h3>Doctorants</h3><p>Organiser les lectures, construire le protocole et garder la trace des choix.</p><span>Les repères pour la thèse →</span></a><a href="/guides/encadrer-memoire"><h3>Enseignants</h3><p>Structurer les attentes, partager une méthode et préparer des retours exploitables.</p><span>Accompagner un mémoire →</span></a></div></div></section>
+  <section class="home-section home-health" aria-labelledby="health-title"><div class="home-container">
+    <div data-reveal class="home-section-heading"><div><p class="home-eyebrow">Un besoin propre à ta filière</p><h2 id="health-title">Les parcours en santé.</h2></div><p class="home-heading-note">Des repères dédiés aux projets infirmiers<br>et aux travaux de médecine.</p></div>
+    <div class="home-health-grid"><a href="/pfe-ispits"><div><span>ISPITS · SOINS INFIRMIERS · TECHNIQUES DE SANTÉ</span><h3>Préparer un PFE en santé</h3><p>Sujet, recueil, méthode et présentation des résultats.</p></div><span aria-hidden="true">↗</span></a><a href="/these-medecine"><div><span>MÉDECINE · TRAVAIL DE THÈSE</span><h3>Organiser une thèse de médecine</h3><p>Protocole, bibliographie, discussion et préparation de l’oral.</p></div><span aria-hidden="true">↗</span></a></div>
+  </div></section>
 
 
-/* ═══════════════ APP OVERLAY ═══════════════ */
-#app-overlay{display:none;position:fixed;inset:0;z-index:9000;background:#F5F0E8;overflow:hidden;flex-direction:column}
-#app-overlay.visible{display:flex}
-.app-fade-in{animation:appFadeIn .4s ease forwards}
-@keyframes appFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-/* ─── SCREEN SYSTEM ─── */
-.app-screen{display:none;width:100%;height:100%;overflow-y:auto}
-.app-screen.active{display:flex}
+  <section class="home-section home-how" id="how" aria-labelledby="how-title"><div class="home-container"><div data-reveal class="home-section-heading"><div><p class="home-eyebrow">Une démarche simple</p><h2 id="how-title">Du guide à ton propre travail.</h2></div></div><ol class="home-step-grid"><li><span>01</span><h3>Trouve un repère</h3><p>Consulte un guide ou télécharge un modèle. La bibliothèque se lit sans compte.</p></li><li><span>02</span><h3>Ajoute ton contexte</h3><p>Dans ton espace, renseigne le sujet, les consignes et les sources de ton projet.</p></li><li><span>03</span><h3>Travaille et vérifie</h3><p>Prépare une étape, relis chaque proposition et confronte-la aux documents consultés.</p></li><li><span>04</span><h3>Garde ta version</h3><p>Modifie le résultat et exporte ton document pour poursuivre ton travail.</p></li></ol></div></section>
 
-/* ─── LOGIN SCREEN ─── */
-#screen-login{background:linear-gradient(135deg,#001a10 0%,#004D35 60%,#006847 100%);align-items:center;justify-content:center;position:relative;overflow:hidden}
-#screen-login::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(0,168,107,.2),transparent 70%);pointer-events:none}
-.login-card{background:rgba(255,255,255,.97);border-radius:20px;padding:44px;width:420px;box-shadow:0 24px 80px rgba(0,0,0,.35);animation:appFadeIn .5s ease}
-.login-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:28px}
-.login-logo img{width:48px;height:48px;object-fit:contain}
-.login-logo-text{font-size:20px;font-weight:800;color:#0A0F0D;letter-spacing:-.5px}
-.login-logo-text span{color:#00A86B}
-.login-h{font-size:22px;font-weight:800;color:#0A0F0D;text-align:center;margin-bottom:6px}
-.login-sub{font-size:13.5px;color:#5E7A6A;text-align:center;margin-bottom:24px}
-.form-field{margin-bottom:14px}
-.form-label{display:block;font-size:11.5px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
-.form-input{width:100%;padding:11px 14px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;transition:.15s;font-family:'Inter',sans-serif;background:white}
-.form-input:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
-.btn-login{width:100%;padding:13px;background:#004D35;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:.15s;font-family:'Inter',sans-serif;margin-top:4px}
-.btn-login:hover{background:#006847;transform:translateY(-1px)}
-.login-divider{display:flex;align-items:center;gap:12px;color:#8FA89B;font-size:12px;margin:18px 0}
-.login-divider::before,.login-divider::after{content:'';flex:1;height:1px;background:#E0EDE7}
-.btn-google{width:100%;padding:11px;border:1.5px solid #E0EDE7;border-radius:10px;font-size:13.5px;font-weight:500;color:#374C3F;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:.15s;font-family:'Inter',sans-serif}
-.btn-google:hover{background:#F5F0E8}
-.login-footer{text-align:center;margin-top:18px;font-size:13px;color:#5E7A6A}
-.login-footer a{color:#00A86B;font-weight:600;cursor:pointer}
+  <section class="home-section home-pricing" id="pricing" aria-labelledby="pricing-title"><div class="home-container">
+    <div data-reveal class="home-section-heading"><div><p class="home-eyebrow">Les offres de l’espace personnel</p><h2 id="pricing-title">Commence librement.<br>Choisis ensuite ton rythme.</h2></div><p class="home-heading-note">La bibliothèque reste gratuite.<br>Les offres concernent les générations de l’assistant.</p></div>
+    <div class="home-pricing-grid">
+      <article class="home-price" aria-labelledby="plan-free"><p class="home-plan-kicker">POUR DÉCOUVRIR</p><h3 id="plan-free">Découverte</h3><p class="home-price-description">Essaie l’assistant sur ton sujet et vérifie si la méthode te convient.</p><p class="home-price-value">0 <span>€</span></p><p class="home-price-period">Gratuit · sans carte bancaire</p><p class="home-price-capacity"><strong>3</strong> générations par mois</p><ul><li>1 projet personnel</li><li>Accès aux 9 modules</li><li>Tes consignes et tes sources réunies</li><li>Contenus modifiables et enregistrés</li><li>Exports Word et PowerPoint¹</li></ul><div class="home-price-bottom"><button type="button" class="home-button outline" onclick="openApp('signup')">Essai gratuit <span aria-hidden="true">→</span></button><p>L’accès gratuit est disponible.</p></div></article>
+      <article class="home-price" aria-labelledby="plan-essential"><p class="home-plan-kicker">POUR AVANCER</p><h3 id="plan-essential">Essentiel</h3><p class="home-price-description">Un volume pour construire ton travail et reprendre tes premières versions.</p><p class="home-price-value">19 <span>€</span></p><p class="home-price-period">par mois · paiement sur Stripe</p><p class="home-price-capacity"><strong>60</strong> générations par mois</p><ul><li>Jusqu’à 5 projets</li><li>Accès aux 9 modules</li><li>Plan, sources et rédaction par section</li><li>Questionnaires, corrections et oral</li><li>Exports Word et PowerPoint¹</li></ul><div class="home-price-bottom"><a class="home-button outline" href="/?offre=offre#inscription">Choisir Essentiel <span aria-hidden="true">↗</span></a><p>Ton compte, puis le paiement sur Stripe</p></div></article>
+      <article class="home-price recommended" aria-labelledby="plan-signature"><span class="home-plan-badge">Recommandé</span><p class="home-plan-kicker">POUR APPROFONDIR</p><h3 id="plan-signature">Signature</h3><p class="home-price-description">Plus de versions pour intégrer les remarques et préparer ta soutenance.</p><p class="home-price-value">29 <span>€</span></p><p class="home-price-period">par mois · paiement sur Stripe</p><p class="home-price-capacity"><strong>150</strong> générations par mois</p><ul><li>Jusqu’à 20 projets</li><li>Tous les modules d’Essentiel</li><li>90 générations de plus qu’Essentiel</li><li>Plus de révisions et de répétitions</li><li>Exports Word et PowerPoint¹</li></ul><div class="home-price-bottom"><a class="home-button light" href="/?offre=max#inscription">Choisir Signature <span aria-hidden="true">↗</span></a><p>Ton compte, puis le paiement sur Stripe</p></div></article>
+    </div>
+    <p class="home-pricing-footnote">Prix affichés en euros (EUR). Connecte-toi ou crée ton compte pour choisir une offre ; les modalités d’activation sont précisées avant le paiement. Une génération correspond à un résultat produit par un module. Le quota gratuit se renouvelle chaque mois civil, à 00 h UTC. Avec le paiement intégré, le quota de l’abonnement se renouvelle à chaque nouvelle période mensuelle payée.</p><p class="home-pricing-footnote">¹ Word pour les documents et PowerPoint pour les présentations. L’impression permet aussi d’enregistrer un PDF. Quand ton quota est atteint, tes documents restent consultables, modifiables et exportables.</p>
+  </div></section>
 
-/* ─── ONBOARDING SCREEN ─── */
-#screen-onboarding{background:#F5F0E8;flex-direction:column;align-items:center;justify-content:flex-start;padding:40px 20px 60px;overflow-y:auto}
-.onb-container{width:100%;max-width:680px;margin:0 auto}
-.onb-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:30px}
-.onb-logo img{width:42px;height:42px;object-fit:contain}
-.onb-logo-text{font-size:18px;font-weight:800;color:#0A0F0D}
-.onb-logo-text span{color:#00A86B}
-.onb-progress-bar{height:4px;background:#E0EDE7;border-radius:2px;margin-bottom:8px;overflow:hidden}
-.onb-progress-fill{height:4px;background:linear-gradient(90deg,#004D35,#00A86B);border-radius:2px;transition:.4s ease}
-.onb-step-label{font-size:12px;color:#8FA89B;text-align:center;margin-bottom:28px;font-weight:600}
-.onb-card{background:white;border-radius:18px;padding:32px;box-shadow:0 4px 20px rgba(0,77,53,.08);margin-bottom:24px;border:1px solid #E0EDE7}
-.onb-card-title{font-size:18px;font-weight:800;color:#0A0F0D;margin-bottom:4px;display:flex;align-items:center;gap:8px}
-.onb-card-sub{font-size:13.5px;color:#5E7A6A;margin-bottom:22px;line-height:1.6}
-.onb-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.onb-grid.cols1{grid-template-columns:1fr}
-.onb-field{display:flex;flex-direction:column;gap:5px}
-.onb-field.full{grid-column:1/-1}
-.onb-label{font-size:11px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px}
-.onb-input,.onb-select,.onb-textarea{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;transition:.15s;font-family:'Inter',sans-serif;background:white}
-.onb-input:focus,.onb-select:focus,.onb-textarea:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
-.onb-textarea{resize:vertical;min-height:72px}
-.onb-nav{display:flex;align-items:center;justify-content:space-between}
-.btn-onb-back{padding:11px 24px;background:white;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;font-weight:600;color:#5E7A6A;cursor:pointer;font-family:'Inter',sans-serif;transition:.15s}
-.btn-onb-back:hover{background:#F5F0E8;border-color:#8FA89B}
-.btn-onb-next{padding:12px 28px;background:#004D35;color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;transition:.15s}
-.btn-onb-next:hover{background:#006847;transform:translateY(-1px)}
-.onb-review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.onb-review-item{background:#F5F0E8;border:1px solid #E0EDE7;border-radius:10px;padding:11px 13px}
-.onb-review-key{font-size:10px;font-weight:700;color:#8FA89B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
-.onb-review-val{font-size:13px;font-weight:700;color:#0A0F0D}
+  <section class="home-section home-faq" id="faq" aria-labelledby="faq-title"><div class="home-container home-faq-grid"><div><p class="home-eyebrow">Les réponses utiles</p><h2 id="faq-title">Avant de<br>commencer.</h2><p>Un autre point à éclaircir ?</p><a href="https://wa.me/212680241471" target="_blank" rel="noopener noreferrer" class="home-text-link">Écris-nous sur WhatsApp <span aria-hidden="true">↗</span></a></div><div class="home-faq-list">
+    <details><summary>Est-ce que la bibliothèque est gratuite ?</summary><p>Oui. Les guides, les exemples commentés et les modèles Word sont accessibles sans inscription. Le compte sert à enregistrer ton propre projet et à utiliser les modules de l’assistant.</p></details>
+    <details><summary>Est-ce adapté à mon pays et à mon établissement ?</summary><p>La bibliothèque s’adresse aux étudiants francophones, notamment en France, au Maroc, en Algérie et en Tunisie. Les méthodes générales doivent être adaptées à ton cursus. Les pages d’établissements renvoient vers leurs ressources officielles ; vérifie l’année, le niveau et les consignes de ton encadrant.</p></details>
+    <details><summary>Que se passe-t-il après mes trois générations gratuites ?</summary><p>Tu peux toujours consulter, modifier et exporter tes documents. Les nouvelles générations attendent le renouvellement mensuel du quota ou l’activation d’une offre payante disponible. Tu peux choisir Essentiel ou Signature dans ton espace. L’offre et son quota sont mis à jour après confirmation du paiement ; les modalités d’activation sont affichées avant de payer.</p></details>
+    <details><summary>Comment utiliser les sources avant la rédaction ?</summary><p>Recherche des publications, sélectionne celles qui sont pertinentes, puis ajoute des extraits que tu as réellement consultés. Le module de rédaction utilise ces éléments après validation de ton plan. Une notice ou un DOI retrouvé ne confirme pas chaque affirmation du texte.</p></details>
+    <details><summary>Où sont enregistrés mes projets ?</summary><p>Les projets et documents sont enregistrés dans ton compte. Le texte nécessaire à une génération est transmis au prestataire IA. Tu peux modifier tes documents et exporter tes propres versions depuis ton espace.</p></details>
+  </div></div></section>
 
-/* ─── APP MAIN SCREEN ─── */
-#screen-app{flex-direction:row;overflow:hidden;height:100%}
-.app-sidebar{width:230px;background:#0A0F0D;display:flex;flex-direction:column;flex-shrink:0;height:100%;overflow-y:auto}
-.app-sidebar::-webkit-scrollbar{width:3px}
-.app-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
-.sb-header{padding:18px 14px 14px;border-bottom:1px solid rgba(255,255,255,.07)}
-.sb-header-logo{display:flex;align-items:center;gap:9px}
-.sb-header-logo img{width:30px;height:30px;object-fit:contain}
-.sb-header-logo-text{font-size:13px;font-weight:800;color:white}
-.sb-project-chip{margin:10px 10px 0;background:rgba(0,168,107,.12);border:1px solid rgba(0,168,107,.22);border-radius:8px;padding:8px 10px}
-.sb-project-type{font-size:9.5px;font-weight:700;color:#7EDBA8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
-.sb-project-title{font-size:11.5px;font-weight:600;color:rgba(255,255,255,.85);line-height:1.3}
-.sb-nav{flex:1;padding:10px 8px}
-.sb-section{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1px;padding:10px 10px 4px}
-.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,.45);font-size:13px;font-weight:500;transition:.15s;margin-bottom:1px;user-select:none}
-.sb-item:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8)}
-.sb-item.active{background:rgba(255,255,255,.1);color:white}
-.sb-item.active{box-shadow:inset 3px 0 0 #00A86B}
-.sb-item svg{width:15px;height:15px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8}
-.sb-footer{padding:10px 8px;border-top:1px solid rgba(255,255,255,.07)}
-.sb-user{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s}
-.sb-user:hover{background:rgba(255,255,255,.06)}
-.sb-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00A86B,#7EDBA8);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;flex-shrink:0}
-.sb-user-name{font-size:12.5px;font-weight:700;color:white}
-.sb-user-info{font-size:10.5px;color:rgba(255,255,255,.3)}
-
-/* ─── APP MAIN AREA ─── */
-.app-main{flex:1;display:flex;flex-direction:column;overflow:hidden;height:100%}
-.app-topbar{height:58px;background:white;border-bottom:1px solid #E0EDE7;display:flex;align-items:center;padding:0 22px;gap:12px;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
-.app-topbar-title{font-size:15px;font-weight:800;color:#0A0F0D}
-.app-topbar-badge{margin-left:10px;font-size:11px;font-weight:700;background:#E4F7EE;color:#007A52;border:1px solid #B8EDD3;border-radius:999px;padding:3px 10px;display:flex;align-items:center;gap:5px}
-.app-topbar-badge::before{content:'';width:5px;height:5px;background:#00A86B;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.app-topbar-right{margin-left:auto;display:flex;gap:8px;align-items:center}
-.tb-btn{width:32px;height:32px;border-radius:8px;background:white;border:1.5px solid #E0EDE7;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#5E7A6A;transition:.15s}
-.tb-btn:hover{background:#F5F0E8;color:#374C3F}
-.tb-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
-.app-content{flex:1;overflow-y:auto;padding:22px}
-.app-content::-webkit-scrollbar{width:5px}
-.app-content::-webkit-scrollbar-thumb{background:#C8DDD5;border-radius:3px}
-
-/* ─── PAGE HEADER ─── */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
-.page-header h1{font-size:22px;font-weight:800;color:#0A0F0D;letter-spacing:-.4px}
-.page-header p{font-size:13.5px;color:#5E7A6A;margin-top:3px}
-.ph-actions{display:flex;gap:8px;align-items:center;flex-shrink:0}
-
-/* ─── CONTEXT BANNER ─── */
-.ctx-banner{background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;padding:11px 16px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
-.ctx-item{display:flex;flex-direction:column;gap:1px}
-.ctx-key{font-size:9.5px;font-weight:700;color:#007A52;text-transform:uppercase;letter-spacing:.4px}
-.ctx-val{font-size:13px;font-weight:700;color:#1C2E25}
-.ctx-divider{width:1px;height:28px;background:#B8EDD3}
-
-/* ─── CARDS ─── */
-.card{background:white;border:1px solid #E0EDE7;border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.card-header{padding:14px 18px;border-bottom:1px solid #E0EDE7;display:flex;align-items:center;justify-content:space-between}
-.card-header h3{font-size:14px;font-weight:800;color:#0A0F0D}
-.card-body{padding:18px}
-
-/* ─── BUTTONS ─── */
-.btn-app{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:700;cursor:pointer;transition:.15s;border:none;font-family:'Inter',sans-serif;white-space:nowrap}
-.btn-app svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0}
-.btn-primary-app{background:#004D35;color:white}
-.btn-primary-app:hover{background:#006847;transform:translateY(-1px)}
-.btn-secondary-app{background:white;border:1.5px solid #C8DDD5;color:#374C3F}
-.btn-secondary-app:hover{background:#F5F0E8}
-.btn-sm-app{padding:7px 14px;font-size:12.5px}
-
-/* ─── AI AREA ─── */
-.ai-prompt-area{background:#F5F0E8;border:1px solid #E0EDE7;border-radius:12px;padding:16px;margin-bottom:16px}
-.ai-prompt-label{font-size:11.5px;font-weight:700;color:#374C3F;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px}
-.ai-field{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
-.ai-input{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;transition:.15s}
-.ai-input:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
-.ai-textarea{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;resize:vertical;min-height:80px;transition:.15s}
-.ai-textarea:focus{border-color:#00A86B;box-shadow:0 0 0 3px rgba(0,168,107,.1)}
-.ai-select{width:100%;padding:10px 13px;border:1.5px solid #C8DDD5;border-radius:10px;font-size:14px;color:#0A0F0D;outline:none;background:white;font-family:'Inter',sans-serif;cursor:pointer}
-
-/* ─── AI RESULT ─── */
-.ai-result-box{background:white;border:1px solid #E0EDE7;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-top:16px}
-.ai-result-header{background:#004D35;padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
-.ai-result-header h3{font-size:14px;font-weight:800;color:white;margin:0}
-.ai-result-header p{font-size:11.5px;color:rgba(255,255,255,.5);margin:0}
-.ai-result-body{padding:20px;font-size:14px;line-height:1.8;color:#374C3F;max-height:480px;overflow-y:auto;white-space:pre-wrap;word-break:break-word}
-.ai-result-body::-webkit-scrollbar{width:4px}
-.ai-result-body::-webkit-scrollbar-thumb{background:#C8DDD5;border-radius:2px}
-.ai-result-body h1,.ai-result-body h2,.ai-result-body h3,.ai-result-body h4{color:#0A0F0D;font-weight:800;margin:16px 0 8px;letter-spacing:-.3px}
-.ai-result-body h2{font-size:17px}.ai-result-body h3{font-size:15px}.ai-result-body h4{font-size:14px}
-.ai-result-body strong{color:#0A0F0D;font-weight:700}
-.ai-result-body em{color:#007A52}
-.ai-result-body ul,.ai-result-body ol{padding-left:20px;margin:8px 0}
-.ai-result-body li{margin-bottom:4px}
-.ai-result-body p{margin-bottom:10px}
-
-/* ─── AI LOADING ─── */
-.ai-loading{display:flex;align-items:center;gap:10px;padding:20px;background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;font-size:13.5px;color:#007A52;font-weight:600}
-.ai-loading-dots{display:flex;gap:4px}
-.ai-dot{width:7px;height:7px;background:#00A86B;border-radius:50%;animation:aiDot 1.2s ease infinite}
-.ai-dot:nth-child(2){animation-delay:.2s}
-.ai-dot:nth-child(3){animation-delay:.4s}
-@keyframes aiDot{0%,60%,100%{transform:scale(1);opacity:.4}30%{transform:scale(1.5);opacity:1}}
-
-/* ─── EXPORT BAR ─── */
-.export-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#F0FAF5;border:1px solid #B8EDD3;border-radius:12px;margin-top:14px;flex-wrap:wrap}
-.export-label{font-size:12px;font-weight:700;color:#007A52;white-space:nowrap}
-.export-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s;border:none;font-family:'Inter',sans-serif}
-.export-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:2;flex-shrink:0}
-.eb-save{background:#004D35;color:white}
-.eb-save:hover{background:#006847}
-.eb-word{background:white;color:#2563EB;border:1.5px solid #BFDBFE}
-.eb-word:hover{background:#EFF6FF}
-.eb-pdf{background:white;color:#DC2626;border:1.5px solid #FECACA}
-.eb-pdf:hover{background:#FEF2F2}
-
-/* ─── STAT CARDS ─── */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:18px}
-.stat-card{background:white;border:1px solid #E0EDE7;border-radius:12px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.stat-val{font-size:26px;font-weight:900;color:#0A0F0D;line-height:1;letter-spacing:-1px}
-.stat-lbl{font-size:10.5px;font-weight:700;color:#8FA89B;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.stat-sub{font-size:12px;color:#5E7A6A;margin-top:4px}
-
-/* ─── MODULE TABS ─── */
-.module-tabs{display:flex;gap:2px;background:white;border:1px solid #E0EDE7;border-radius:999px;padding:3px;width:fit-content;margin-bottom:18px;flex-wrap:wrap}
-.m-tab{padding:7px 16px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;color:#5E7A6A;transition:.15s;font-family:'Inter',sans-serif}
-.m-tab:hover{color:#374C3F}
-.m-tab.active{background:#004D35;color:white}
-.m-tab-panel{display:none}
-.m-tab-panel.active{display:block;animation:appFadeIn .2s ease}
-
-/* ─── DASHBOARD ─── */
-.dashboard-grid{display:grid;grid-template-columns:1fr 280px;gap:16px;align-items:start}
-.dash-next-step{background:#004D35;border-radius:14px;padding:20px;display:flex;gap:16px;align-items:center;margin-bottom:16px}
-.dns-num{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:white;flex-shrink:0}
-.dns-text{flex:1}
-.dns-label{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px}
-.dns-title{font-size:15px;font-weight:800;color:white;margin-bottom:4px}
-.dns-sub{font-size:13px;color:rgba(255,255,255,.6)}
-.dns-btn{padding:9px 18px;background:white;color:#004D35;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;flex-shrink:0;transition:.15s}
-.dns-btn:hover{background:#F0FAF5}
-
-/* ─── PROGRESS STEPS ─── */
-.progress-steps{display:flex;flex-direction:column;gap:4px}
-.ps-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;transition:.15s;cursor:pointer}
-.ps-item:hover{background:#F5F0E8}
-.ps-item.done{opacity:.7}
-.ps-item.active{background:#F0FAF5}
-.ps-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex-shrink:0;transition:.15s}
-.ps-icon.done-icon{background:#00A86B;color:white}
-.ps-icon.active-icon{background:#004D35;color:white;box-shadow:0 0 0 3px rgba(0,77,53,.15)}
-.ps-icon.todo-icon{background:#E0EDE7;color:#8FA89B}
-.ps-title{font-size:13px;font-weight:600;color:#374C3F}
-.ps-item.active .ps-title{color:#004D35;font-weight:700}
-.ps-connector{width:1px;height:12px;background:#E0EDE7;margin-left:22px}
-
-/* ─── APP PAGES ─── */
-.app-page{display:none}
-.app-page.active{display:block;animation:appFadeIn .2s ease}
-
-/* ─── TOAST ─── */
-.app-toast-wrap{position:fixed;bottom:22px;right:22px;z-index:99999;display:flex;flex-direction:column;gap:8px}
-.app-toast{background:#0A0F0D;color:white;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);display:flex;align-items:center;gap:9px;animation:appFadeIn .3s ease;max-width:320px;font-family:'Inter',sans-serif}
-.app-toast.ok{background:#004D35}
-.app-toast.err{background:#991B1B}
-
-/* ─── MODULE SELECT GRIDS ─── */
-.module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
-.module-card{background:white;border:1.5px solid #E0EDE7;border-radius:14px;padding:20px;cursor:pointer;transition:.15s}
-.module-card:hover{border-color:#00A86B;box-shadow:0 4px 16px rgba(0,77,53,.1);transform:translateY(-2px)}
-.module-card.active{border-color:#004D35;background:#F0FAF5}
-.module-card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;font-size:20px}
-.module-card-title{font-size:14px;font-weight:800;color:#0A0F0D;margin-bottom:4px}
-.module-card-sub{font-size:12.5px;color:#5E7A6A;line-height:1.5}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:768px){
-  .dashboard-grid{grid-template-columns:1fr}
-  .app-sidebar{width:200px}
-  .onb-grid{grid-template-columns:1fr}
-  .onb-review-grid{grid-template-columns:1fr 1fr}
-  .ctx-banner{gap:10px}
-}
-@media(max-width:600px){
-  .app-sidebar{display:none}
-  .login-card{width:95%;padding:28px}
-}
-
-</style>
-<link href="/assets/app.css" rel="stylesheet"/></head>
-<body>
-<!-- ══════════════ NAVBAR ══════════════ -->
-<nav class="navbar" id="navbar">
-<div class="container">
-<div class="navbar-inner">
-<a class="nav-logo" href="#">
-<div class="nav-logo-icon"><svg viewbox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"></path></svg></div>
-<div class="nav-logo-name">Soutenance<span> Pro</span> AI</div>
-</a>
-<div class="nav-links">
-<a class="nav-link active" href="#features">Fonctionnalités</a>
-<a class="nav-link" href="#how">Comment ça marche</a>
-<a class="nav-link" href="/guides">Guides santé</a>
-<a class="nav-link" href="#pricing">Tarifs</a>
-<a class="nav-link" href="#faq">FAQ</a>
-</div>
-<div class="nav-right">
-<button class="btn-nav-login" onclick="openApp('login')">Se connecter</button>
-<button class="btn-nav-cta" onclick="openApp('signup')">Essai gratuit →</button>
-</div>
-</div>
-</div>
-</nav>
-<!-- ══════════════ HERO ══════════════ -->
-<section class="hero" id="hero">
-<div class="hero-bg-orbs">
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-<div class="orb orb3"></div>
-</div>
-<div class="container">
-<div class="hero-inner">
-<!-- LEFT -->
-<div>
-<div class="hero-badge">
-<span class="hero-badge-dot"></span>
-          PFE ISPITS · Médecine · Mémoires en santé
-        </div>
-<h1 class="hero-h serif">
-          Ton <em>PFE</em>, ton mémoire.<br/>
-<strong>Une méthode claire</strong><br/>
-          jusqu’à la soutenance.
-        </h1>
-<p class="hero-sub">
-          Étudiant en ISPITS, en médecine ou dans une autre filière ? Rassemble tes consignes, construis ton plan et travaille tes chapitres avec des sources consultées. <strong>Ton projet reste organisé, du premier brouillon au PowerPoint.</strong>
-        </p>
-<div class="hero-ctas">
-<button class="btn btn-primary" onclick="openApp('signup')" style="font-size:16px;padding:15px 32px">
-<svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Commencer gratuitement
-          </button>
-<button class="btn btn-outline" onclick="scrollTo('how')">
-            Voir comment ça marche
-          </button>
-</div>
-<div class="hero-stats"><div><strong>9 modules</strong><br/>Pour ton projet</div><div><strong>Word · PPT</strong><br/>Fichiers modifiables</div><div><strong>Sources</strong><br/>Avant la rédaction</div></div>
-</div>
-<!-- RIGHT: ANIMATED CARD -->
-<div class="hero-card">
-<div class="hc-top">
-<div class="hc-dots">
-<div class="hc-dot" style="background:#FF5F57"></div>
-<div class="hc-dot" style="background:#FEBC2E"></div>
-<div class="hc-dot" style="background:#28C840"></div>
-</div>
-<div class="hc-tab-row">
-<div class="hc-tab">Plan</div>
-<div class="hc-tab active">Rédaction</div>
-<div class="hc-tab">PPT</div>
-</div>
-<div class="hc-meta">
-<div class="hc-ai-badge">Aperçu illustratif</div>
-</div>
-</div>
-<div class="hc-body" id="hc-body">
-<div style="margin-bottom:8px;font-size:11px;color:rgba(255,255,255,.25);font-family:'JetBrains Mono',monospace">PFE · Chapitre 1 · Section 1.2</div>
-<span id="hero-typed"></span><span class="typed-cursor" id="hero-cursor"></span>
-</div>
-<div class="hc-footer">
-<div class="hc-prog">
-<span>Rédaction</span>
-<div class="hc-prog-bar"><div class="hc-prog-fill" id="hero-prog-fill"></div></div>
-<span id="hero-prog-pct">0%</span>
-</div>
-<div class="hc-word-count" id="hero-word-count">0 mots</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ══════════════ PROOF BAR ══════════════ -->
-<section class="health-pathways" aria-labelledby="parcours-title"><div class="container">
-<div class="section-eyebrow">Commence par ton parcours</div><h2 class="section-title" id="parcours-title">Un projet en santé, des besoins précis.</h2>
-<p class="section-sub">Choisis ton point de départ. Les consignes de ton établissement et de ton encadrant guident la suite.</p>
-<div class="health-grid"><a class="health-card" href="/pfe-ispits"><span class="health-label">ISPITS · Soins infirmiers · Techniques de santé</span><h3>Préparer mon PFE</h3><p>Délimiter le sujet, préparer le recueil et présenter les résultats.</p><span class="health-link">Découvrir le parcours ISPITS →</span></a>
-<a class="health-card" href="/these-medecine"><span class="health-label">Médecine · Travail de thèse</span><h3>Organiser ma thèse</h3><p>Relier le protocole, la bibliographie, la discussion et la soutenance.</p><span class="health-link">Découvrir le parcours médecine →</span></a></div>
-<p class="health-note">Les autres filières peuvent aussi utiliser la plateforme. Soutenance Pro est un service indépendant des établissements cités.</p></div></section>
-<!-- ══════════════ FEATURES ══════════════ -->
-<section class="section-features" id="features">
-<div class="container">
-<div class="features-header">
-<div class="section-eyebrow">Ce que tu peux faire</div>
-<h2 class="section-title">Tout ce dont tu as besoin,<br/>dans un seul espace.</h2>
-<p class="section-sub" style="margin:14px auto 0">Neuf modules qui couvrent chaque étape, du premier brouillon jusqu'à la dernière diapositive de ta soutenance.</p>
-</div>
-<div class="features-grid">
-<div class="feat-card">
-<div class="feat-icon" style="background:#E4F7EE;color:var(--g600)"><svg viewbox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg></div>
-<h3>Génération de plan</h3>
-<p>Structure un plan adapté à ton sujet, ton niveau et aux consignes de ton établissement.</p>
-<span class="feat-tag"> PFE · Mémoire · Rapport</span>
-</div>
-<div class="feat-card">
-<div class="feat-icon" style="background:#EFF6FF;color:#2563EB"><svg viewbox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></div>
-<h3>Rédaction de chapitres</h3>
-<p>Génère du contenu académique en style français soutenu — références intégrées, transitions naturelles, niveau master respecté.</p>
-<span class="feat-tag"> Style académique</span>
-</div>
-<div class="feat-card">
-<div class="feat-icon" style="background:#FEF3C7;color:#D97706"><svg viewbox="0 0 24 24"><path d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg></div>
-<h3>PPT de soutenance</h3>
-<p>Génère un diaporama complet avec un design professionnel — couverture, sommaire, slides de contenu, conclusion — prêt à présenter.</p>
-<span class="feat-tag"> Export .pptx</span>
-</div>
-<div class="feat-card">
-<div class="feat-icon" style="background:#F5F3FF;color:#7C3AED"><svg viewbox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-<h3>Correction et révision</h3>
-<p>Améliore la langue, la clarté et les citations en tenant compte des remarques de ton encadrant.</p>
-<span class="feat-tag">Révision du texte</span>
-</div>
-<div class="feat-card">
-<div class="feat-icon" style="background:#ECFDF5;color:#059669"><svg viewbox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg></div>
-<h3>Références APA / IEEE</h3>
-<p>Recherche des publications via Crossref, conserve les extraits consultés et formate tes références.</p>
-<span class="feat-tag"> APA · IEEE · Chicago · Harvard</span>
-</div>
-<div class="feat-card">
-<div class="feat-icon" style="background:#FFF7ED;color:#EA580C"><svg viewbox="0 0 24 24"><path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M9 11l2 2 4-4"></path></svg></div>
-<h3>Préparation soutenance</h3>
-<p>Discours d'introduction, questions probables du jury avec réponses suggérées, minutage et conseils personnalisés selon ton sujet.</p>
-<span class="feat-tag"> Préparation jury personnalisée</span>
-</div>
-</div>
-</div>
-</section>
-<!-- ══════════════ HOW IT WORKS ══════════════ -->
-<section class="section-how" id="how">
-<div class="container">
-<div class="how-layout">
-<div>
-<div class="section-eyebrow">Comment ça marche</div>
-<h2 class="section-title">Du sujet vide à la<br/>soutenance réussie.</h2>
-<p class="section-sub">Cinq étapes. Toutes guidées par ton assistant. Aucune connaissance technique requise.</p>
-<div class="how-steps" style="margin-top:36px">
-<div class="how-step active-step" data-step="0" onclick="selectStep(0)">
-<div class="hs-num">1</div>
-<div class="hstep-body">
-<h4>Crée ton projet</h4>
-<p>Renseigne ton sujet, ton établissement et les instructions de ton encadrant.</p>
-</div>
-</div>
-<div class="how-step" data-step="1" onclick="selectStep(1)">
-<div class="hs-num">2</div>
-<div class="hstep-body">
-<h4>Construis et valide le plan</h4>
-<p>Génère une structure adaptée, relis-la et valide-la.</p>
-</div>
-</div>
-<div class="how-step" data-step="2" onclick="selectStep(2)">
-<div class="hs-num">3</div>
-<div class="hstep-body">
-<h4>Recherche et consulte tes sources</h4>
-<p>Sélectionne des publications et conserve les extraits qui appuieront ta rédaction.</p>
-</div>
-</div>
-<div class="how-step" data-step="3" onclick="selectStep(3)">
-<div class="hs-num">4</div>
-<div class="hstep-body">
-<h4>Rédige et révise</h4>
-<p>Travaille section par section à partir de ton plan et de tes extraits.</p>
-</div>
-</div>
-<div class="how-step" data-step="4" onclick="selectStep(4)">
-<div class="hs-num">5</div>
-<div class="hstep-body">
-<h4>Prépare ta soutenance</h4>
-<p>Crée ta présentation, prépare le discours et entraîne-toi aux questions du jury.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="how-visual">
-<div class="how-preview">
-<div class="hp-topbar">
-<div class="hp-dot" style="background:#FF5F57"></div>
-<div class="hp-dot" style="background:#FEBC2E"></div>
-<div class="hp-dot" style="background:#28C840"></div>
-<span class="hp-title">Soutenance Pro · aperçu</span>
-</div>
-<div class="hp-content" id="how-preview-content">
-<div class="hp-step active" id="hp-step-0"><div style="padding:30px"><span style="color:#486750;font-size:14px">Aperçu du parcours · étape 1</span><h3 style="margin:20px 0;font-size:25px">Crée ton projet</h3><p style="font-size:16px;line-height:1.8">Renseigne ton sujet, ton établissement et les instructions de ton encadrant.</p></div></div>
-<div class="hp-step" id="hp-step-1"><div style="padding:30px"><span style="color:#486750;font-size:14px">Aperçu du parcours · étape 2</span><h3 style="margin:20px 0;font-size:25px">Construis et valide le plan</h3><p style="font-size:16px;line-height:1.8">Génère une structure adaptée, relis-la et valide-la.</p></div></div>
-<div class="hp-step" id="hp-step-2"><div style="padding:30px"><span style="color:#486750;font-size:14px">Aperçu du parcours · étape 3</span><h3 style="margin:20px 0;font-size:25px">Recherche et consulte tes sources</h3><p style="font-size:16px;line-height:1.8">Sélectionne des publications et conserve les extraits qui appuieront ta rédaction.</p></div></div>
-<div class="hp-step" id="hp-step-3"><div style="padding:30px"><span style="color:#486750;font-size:14px">Aperçu du parcours · étape 4</span><h3 style="margin:20px 0;font-size:25px">Rédige et révise</h3><p style="font-size:16px;line-height:1.8">Travaille section par section à partir de ton plan et de tes extraits.</p></div></div>
-<div class="hp-step" id="hp-step-4"><div style="padding:30px"><span style="color:#486750;font-size:14px">Aperçu du parcours · étape 5</span><h3 style="margin:20px 0;font-size:25px">Prépare ta soutenance</h3><p style="font-size:16px;line-height:1.8">Crée ta présentation, prépare le discours et entraîne-toi aux questions du jury.</p></div></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- ══════════════ DEMO PREVIEW ══════════════ -->
-<section class="section-demo" id="demo">
-<div class="container">
-<div class="demo-header">
-<div class="section-eyebrow" style="justify-content:center">
-<span>La plateforme</span>
-</div>
-<h2 class="section-title" style="text-align:center">Un espace de travail pensé<br/>pour chaque étudiant francophone.</h2>
-<p class="section-sub" style="text-align:center;margin:12px auto 0">Interface épurée, modules clairs, résultats immédiats. Pas besoin de guide.</p>
-</div>
-<div class="demo-window">
-<div class="dw-bar">
-<div class="dw-dot" style="background:#FF5F57"></div>
-<div class="dw-dot" style="background:#FEBC2E"></div>
-<div class="dw-dot" style="background:#28C840"></div>
-<div class="dw-url">app.Soutenance Pro · aperçu</div>
-<div style="margin-left:auto;display:flex;gap:8px">
-<div style="padding:3px 10px;background:rgba(0,168,107,.15);border:1px solid rgba(0,168,107,.25);border-radius:4px;font-size:10.5px;font-weight:700;color:var(--g300);display:flex;align-items:center;gap:5px"><span style="width:5px;height:5px;background:var(--g400);border-radius:50%;display:inline-block;animation:pulse 1.5s infinite"></span>Aperçu illustratif</div>
-</div>
-</div>
-<div class="dw-content">
-<div class="dw-sidebar">
-<div style="display:flex;align-items:center;gap:8px;padding:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:14px">
-<div style="width:28px;height:28px;background:linear-gradient(135deg,var(--g500),var(--g300));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white">SP</div>
-<div style="font-size:11px;font-weight:800;color:rgba(255,255,255,.8)">Soutenance Pro</div>
-</div>
-<div class="dw-sb-item active"><svg viewbox="0 0 24 24"><rect height="7" rx="1" width="7" x="3" y="3"></rect><rect height="7" rx="1" width="7" x="14" y="3"></rect><rect height="7" rx="1" width="7" x="3" y="14"></rect><rect height="7" rx="1" width="7" x="14" y="14"></rect></svg>Dashboard</div>
-<div class="dw-sb-item"><svg viewbox="0 0 24 24"><path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>Mes Projets</div>
-<div class="dw-sb-item"><svg viewbox="0 0 24 24"><path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"></path></svg>Espace travail</div>
-<div class="dw-sb-item"><svg viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>Documents</div>
-<div style="height:1px;background:rgba(255,255,255,.06);margin:12px 0"></div>
-<div class="dw-sb-item"><svg viewbox="0 0 24 24"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1"></path><circle cx="12" cy="12" r="10"></circle></svg>Abonnement</div>
-</div>
-<div class="dw-main">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
-<div><div style="font-size:16px;font-weight:800;color:white">PFE — Sécurité IoT</div><div style="font-size:11.5px;color:rgba(255,255,255,.35);margin-top:2px">Ingénierie Informatique · 2025</div></div>
-<div style="display:flex;gap:6px">
-<div class="dw-btn dw-btn-s" style="font-size:11px;padding:5px 10px">⬇ Word</div>
-<div class="dw-btn dw-btn-p" style="font-size:11px;padding:5px 10px">⬇ PDF</div>
-</div>
-</div>
-<div class="dw-tabs">
-<div class="dw-tab active"> Plan</div>
-<div class="dw-tab"> Rédaction</div>
-<div class="dw-tab"> PPT</div>
-<div class="dw-tab"> Correction</div>
-</div>
-<div>
-<div class="plan-row highlight"><span class="plan-row-num">Intro</span><div class="plan-row-text"><strong>Introduction Générale</strong></div></div>
-<div class="plan-row"><span class="plan-row-num">Ch.1</span><div class="plan-row-text"><strong>État de l'art</strong> — L'écosystème IoT, protocoles, attaques</div></div>
-<div class="plan-row"><span class="plan-row-num">Ch.2</span><div class="plan-row-text"><strong>Analyse des besoins</strong> — Modèle STRIDE, exigences</div></div>
-<div class="plan-row"><span class="plan-row-num">Ch.3</span><div class="plan-row-text"><strong>Conception</strong> — Architecture Zero-Trust, TLS 1.3</div></div>
-<div class="plan-row"><span class="plan-row-num">Ch.4</span><div class="plan-row-text"><strong>Implémentation</strong> — Développement, tests</div></div>
-<div class="plan-row"><span class="plan-row-num">Ch.5</span><div class="plan-row-text"><strong>Résultats</strong> — Validation, benchmarks</div></div>
-<div class="plan-row"><span class="plan-row-num">Conc.</span><div class="plan-row-text"><strong>Conclusion</strong> — Contributions, perspectives</div></div>
-</div>
-<div style="margin-top:14px;padding:10px 12px;background:rgba(0,168,107,.08);border:1px solid rgba(0,168,107,.2);border-radius:var(--r-md);display:flex;align-items:center;justify-content:space-between">
-<div style="font-size:11.5px;color:var(--g300)"> Plan sauvegardé · 7 chapitres · 27 sous-sections</div>
-<div style="font-size:11px;color:var(--g400);font-weight:700">Plan à relire et à valider</div>
-</div>
-</div>
-</div>
-</div>
-<div style="text-align:center;margin-top:28px">
-<button class="btn btn-primary" onclick="openApp('signup')" style="font-size:15px">
-<svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-        Créer mon compte gratuit
-      </button>
-<p style="font-size:13px;color:var(--faint);margin-top:10px">Aucune carte bancaire requise · Confirmation de l’email</p>
-</div>
-</div>
-</section>
-<!-- ══════════════ TESTIMONIALS ══════════════ -->
-
-<!-- ══════════════ PRICING ══════════════ -->
-<section class="section-pricing" id="pricing"><div class="container"><div class="pricing-header"><div class="section-eyebrow">Tarifs</div><h2 class="section-title">Une offre adaptée à ton projet.</h2><p class="section-sub" style="margin:14px auto">Commence par l’accès gratuit. Les offres payantes sont en préparation ; aucun paiement n’est effectué sur cette page.</p></div><div class="pricing-grid"><article class="price-card"><h3 class="plan-name">Gratuit</h3><div class="plan-price">0 <span style="font-size:18px">MAD</span></div><p>Sans carte bancaire</p><p style="margin:20px 0;line-height:2">1 projet(s)<br/>3 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Créer mon compte</button></article><article class="price-card"><h3 class="plan-name">Offre</h3><div class="plan-price">199 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">5 projet(s)<br/>60 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Découvrir la plateforme</button></article><article class="price-card"><h3 class="plan-name">Max</h3><div class="plan-price">399 <span style="font-size:18px">MAD</span></div><p>par mois · bientôt disponible</p><p style="margin:20px 0;line-height:2">20 projet(s)<br/>150 générations par mois<br/>Sources et extraits de lecture<br/>Édition et sauvegarde<br/>Word, impression PDF et PowerPoint</p><button class="btn btn-primary" onclick="openApp('signup')">Découvrir la plateforme</button></article></div></div></section>
-<!-- ══════════════ FAQ ══════════════ -->
-<section class="health-pathways health-guides" aria-labelledby="guides-title"><div class="container"><div class="section-eyebrow">Des repères pour avancer</div><h2 class="section-title" id="guides-title">Bloqué sur une étape ? Commence ici.</h2><div class="health-resource-grid">
-<a href="/guides/problematique-pfe-infirmier"><span>01 · Sujet</span><h3>Formuler une problématique</h3><p>Un exemple commenté pour passer du thème à la question.</p></a>
-<a href="/guides/questionnaire-recherche-sante"><span>02 · Recueil</span><h3>Préparer un questionnaire</h3><p>Relier chaque question à un objectif et prévoir son exploitation.</p></a>
-<a href="/guides/analyse-spss-pfe-sante"><span>03 · Analyse</span><h3>Organiser l’analyse SPSS</h3><p>Préparer les variables et lire les résultats avec leurs limites.</p></a>
-<a href="/guides/presentation-soutenance-pfe"><span>04 · Oral</span><h3>Structurer le PowerPoint</h3><p>Un découpage pour présenter un travail en dix minutes.</p></a>
-</div><a class="health-all-guides" href="/guides">Tous les guides, dont la recherche bibliographique →</a></div></section>
-<section class="section-faq" id="faq"><div class="container"><h2 class="section-title">Questions fréquentes</h2><div style="margin-top:30px"><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Comment utiliser les sources avant la rédaction ?<span>+</span></button><div class="faq-a"><p>Recherche des publications, sélectionne les sources pertinentes puis ajoute des extraits consultés ou des notes attribuées. La rédaction utilise ces éléments après validation du plan. Un DOI retrouvé confirme une notice, pas la validité de chaque affirmation.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Le module correction fournit-il un score de plagiat ?<span>+</span></button><div class="faq-a"><p>Non. Il aide à améliorer le texte et les citations. Il ne compare pas ton document à une base exhaustive et ne délivre pas de certificat de plagiat.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quels formats puis-je exporter ?<span>+</span></button><div class="faq-a"><p>Chaque document peut être téléchargé en Word. Le bouton Imprimer / PDF ouvre l’impression pour enregistrer un PDF. Les présentations peuvent être téléchargées en PowerPoint modifiable.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Où sont enregistrés mes projets ?<span>+</span></button><div class="faq-a"><p>Tes projets et documents sont enregistrés dans ton compte. Le texte nécessaire à une génération est transmis au prestataire IA. Relis les contenus et vérifie les sources avant tout dépôt universitaire.</p></div></div><div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Puis-je modifier le résultat ?<span>+</span></button><div class="faq-a"><p>Oui. Le texte est modifiable dans ton espace et les changements sont enregistrés automatiquement. Tu peux créer plusieurs versions en lançant une nouvelle génération.</p></div></div></div></div></section>
-<!-- ══════════════ FINAL CTA ══════════════ -->
-<section class="section-cta">
-<div class="container">
-<div class="cta-card">
-<h2>Commence ton <em>mémoire</em><br/>aujourd'hui.</h2>
-<p>Crée ton espace personnel, ajoute tes consignes et commence par une première étape bien définie.</p>
-<div class="cta-btns">
-<button class="btn" onclick="openApp('signup')" style="background:white;color:var(--g900);font-size:16px;padding:15px 32px;box-shadow:0 4px 20px rgba(0,0,0,.2)">
-<svg viewbox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-          Créer mon compte gratuit
-        </button>
-<button class="btn btn-outline" onclick="scrollTo('pricing')" style="font-size:15px;padding:14px 28px">Voir les tarifs</button>
-</div>
-<p class="cta-note">Aucune carte bancaire · <span>1 projet gratuit</span> · 3 générations par mois</p>
-</div>
-</div>
-</section>
-<!-- ══════════════ FOOTER ══════════════ -->
-<footer class="footer">
-<div class="container">
-<div class="footer-grid">
-<div>
-<div class="footer-logo">
-<div class="footer-logo-icon"><svg viewbox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5M2 17l10 5 10-5M2 12l10 5 10-5"></path></svg></div>
-<span class="footer-logo-name">Soutenance Pro AI</span>
-</div>
-<p>La plateforme académique intelligente pour les étudiants francophones. Du plan à la soutenance, on t'accompagne.</p>
-
-</div>
-<div class="footer-col">
-<h4>Produit</h4>
-<a class="footer-link" href="#features">Fonctionnalités</a>
-<a class="footer-link" href="#pricing">Tarifs</a>
-<a class="footer-link" href="#how">Comment ça marche</a>
-<a class="footer-link" href="#workspace" onclick="openApp('login');return false">Connexion</a>
-<a class="footer-link" href="#workspace" onclick="openApp('signup');return false">S'inscrire</a>
-</div>
-<div class="footer-col"><h4>Parcours santé</h4><a class="footer-link" href="/pfe-ispits">PFE ISPITS</a><a class="footer-link" href="/these-medecine">Thèse de médecine</a><a class="footer-link" href="/guides">Guides de méthode</a><a class="footer-link" href="/guides/recherche-bibliographique-sante">Sources en santé</a></div>
-</div>
-<div class="footer-bottom">
-<span>© 2026 Soutenance Pro AI · Tous droits réservés</span>
-<span> Maroc · Étudiants francophones</span>
-</div>
-</div>
-</footer>
-<!-- TOAST -->
-<div id="toast-container" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px"></div>
-<!-- ════════════════════════════════════════
-     APP OVERLAY — replaces landing on CTA click
-════════════════════════════════════════ -->
-<!-- /app-overlay -->
-
-<div hidden="" id="workspace"></div><div aria-live="polite" class="sp-notice" hidden="" id="sp-notice" role="status"></div><script src="/assets/app.js" type="module"></script></body>
+  <section data-reveal class="home-final"><div class="home-container home-final-inner"><div><p class="home-eyebrow">Ta prochaine étape commence ici</p><h2>Fais avancer ton projet aujourd’hui.</h2><p>Ajoute ton sujet et tes consignes. Essaie une première étape, puis choisis l’offre adaptée à ton travail.</p><p class="home-final-note">Sans carte bancaire · 1 projet gratuit · 3 générations par mois</p></div><div><button type="button" class="home-button" onclick="openApp('signup')">Commencer mon projet <span aria-hidden="true">→</span></button><a class="home-text-link" href="#pricing">Comparer les offres</a></div></div></section>
+</main>
+<footer class="home-footer"><div class="home-container">
+  <div class="home-footer-grid"><div class="home-footer-brand"><a class="home-brand" href="/"><img class="brand-logo" src="/assets/brand-logo.jpg" width="72" height="72" alt=""><span>Soutenance <strong>Pro</strong><small>Ton projet · Tes ressources</small></span></a><p>Des ressources pour comprendre la méthode.<br>Un espace pour construire ton travail.</p><div class="home-footer-contact"><strong>Questions & collaborations</strong><a href="mailto:contact@soutenancepro.com">contact@soutenancepro.com</a><a href="https://wa.me/212680241471" target="_blank" rel="noopener noreferrer">WhatsApp · +212 680 241 471</a><a href="https://www.instagram.com/soutenancepro.co/" target="_blank" rel="noopener noreferrer">Instagram · @soutenancepro.co</a></div></div>
+  <nav aria-label="Bibliothèque de pied de page"><h2>Explorer</h2><a href="/bibliotheque">Toute la bibliothèque</a><a href="/pfe">PFE et mémoire</a><a href="/rapport-de-stage">Rapport de stage</a><a href="/soutenance">Soutenance</a><a href="/etablissements">Établissements</a></nav>
+  <nav aria-label="Spécialités de pied de page"><h2>Approfondir</h2><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/guides/analyse-spss-pfe-sante">Analyse SPSS</a><a href="/guides/questionnaire-recherche-sante">Questionnaire en santé</a><a href="/guides">Parcours de lecture</a></nav>
+  <nav aria-label="Espace personnel de pied de page"><h2>Ton espace</h2><a href="#features">Les modules</a><a href="#pricing">Offres et limites</a><a href="#connexion" onclick="openApp('login');return false">Connexion</a><a href="#inscription" onclick="openApp('signup');return false">S'inscrire</a><a href="/methode-editoriale">À propos et méthode</a></nav></div>
+  <div class="home-footer-bottom"><span>© 2026 Soutenance Pro</span><p>Bibliothèque indépendante · Aucune affiliation universitaire revendiquée</p></div>
+</div></footer>
+<div hidden id="workspace"></div>
+<div aria-live="polite" class="sp-notice" hidden id="sp-notice" role="status"></div>
+<script src="/assets/app.js" type="module"></script>
+<script src="/assets/public-motion.js" type="module"></script>
+</body>
 </html>

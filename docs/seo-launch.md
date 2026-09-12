@@ -1,6 +1,6 @@
-# Lancement SEO — Soutenance Pro AI
+# Lancement SEO — Soutenance Pro
 
-Origine retenue : https://soutenancepro.com. Cible initiale : étudiants francophones au Maroc, particulièrement ISPITS, médecine et filières de santé.
+Origine retenue : https://soutenancepro.com. Cible : étudiants, doctorants et enseignants francophones en France, au Maroc, en Algérie et en Tunisie. Les parcours ISPITS et médecine restent des spécialisations de la bibliothèque générale.
 
 ## Pages et intentions
 
@@ -8,10 +8,15 @@ Les expressions ci-dessous sont des cibles éditoriales. Aucun outil de volume d
 
 | Page | Intention principale | Prochaine action proposée |
 | --- | --- | --- |
-| `/` | Assistant PFE, mémoire et soutenance | Choisir son parcours |
+| `/` | Bibliothèque et espace de travail PFE, mémoire, stage et soutenance | Trouver une ressource ou ouvrir son projet |
+| `/bibliotheque` | Documents, guides et modèles | Chercher par sujet, auteur, discipline, type et année |
+| `/recherche`, `/outils` | Moteurs académiques et outils pratiques | Lire une source, préparer une référence ou un calendrier |
+| `/services`, `/tarifs` | Modules et offres de l’espace | Choisir une tâche et ouvrir son projet |
+| `/etablissements` | Consignes de travaux universitaires | Retrouver la source de sa formation |
+| `/pfe`, `/rapport-de-stage`, `/soutenance` | Dossiers de méthode | Choisir une étape concrète |
 | `/pfe-ispits` | PFE ISPITS au Maroc, plan PFE ISPITS | Créer son projet PFE |
 | `/these-medecine` | Méthode de thèse de médecine au Maroc | Créer son projet de thèse |
-| `/guides` | Guides de méthode pour les travaux en santé | Trouver une étape |
+| `/guides` | Parcours de lecture pour PFE, stage et soutenance | Trouver une étape |
 | `/guides/problematique-pfe-infirmier` | Problématique PFE infirmier, exemple commenté | Délimiter sa question |
 | `/guides/questionnaire-recherche-sante` | Questionnaire PFE santé, construction et prétest | Préparer un outil cohérent |
 | `/guides/recherche-bibliographique-sante` | Recherche bibliographique en santé | Préparer sa requête et ses sources |
@@ -23,10 +28,10 @@ Le contenu décrit les fonctions présentes : recherche Crossref, travail à par
 ## Avant la mise en production
 
 1. Vérifier les variables Production dans Vercel, distinctes des variables Preview : `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ANTHROPIC_API_KEY`. L'origine `SITE_URL`, si elle est définie, doit être `https://soutenancepro.com`.
-2. Vérifier Site URL et Redirect URLs dans Supabase pour le domaine public. Tester une inscription, la réception de l'email, la confirmation, la connexion et la récupération du mot de passe. La présence de `ready: true` ne suffit pas à prouver ces parcours.
+2. Tester l'inscription directe et la connexion par mot de passe. Ce parcours ne demande plus de confirmation email. Pour la récupération de mot de passe, vérifier séparément Site URL, Redirect URLs, l'expéditeur et la réception du message. La présence de `ready: true` ne suffit pas à prouver ces parcours.
 3. Vérifier un projet, un plan validé, une source consultée, une rédaction enregistrée, le rechargement et les exports. Utiliser du contenu de démonstration sans dossier médical identifiable.
 4. Publier par un nouveau build Production. Un artefact construit en Preview contient volontairement `noindex`.
-5. Vérifier que les neuf URLs répondent en HTTP 200, qu'une URL inexistante répond en 404, que les pages publiques ont `index,follow` et le bon canonical, et que le sitemap est accessible. Vérifier mobile, liens et formulaire.
+5. Vérifier les 1 102 URL publiques : HTTP 200, vrai 404 pour une URL inexistante, canoniques et sitemap. Les 83 pages éditoriales et de collection destinées au référencement ont `index,follow`. Les 1 000 notices de catalogue et les 19 pages secondaires de pagination restent en `noindex,follow`. Vérifier mobile, liens et formulaire.
 6. Ajouter `www.soutenancepro.com` au projet Vercel si ce n'est pas fait, suivre ses valeurs DNS et vérifier sa redirection permanente vers le domaine principal.
 
 Le build Production vérifie désormais la présence des quatre variables et le type des clés avant de produire les fichiers. Si ce contrôle échoue, corriger les noms signalés dans l'environnement Production puis redéployer le commit de `main`. Les logs du contrôle n'affichent aucune valeur privée. Ce contrôle ne prouve ni la délivrabilité des emails ni la validité des clés auprès des fournisseurs.
@@ -37,7 +42,7 @@ Le build Production vérifie désormais la présence des quatre variables et le 
 | --- | --- | --- |
 | Semaine 1 | Finir les vérifications ci-dessus ; ajouter une propriété Domaine à Google Search Console ; publier son TXT de vérification chez Hostinger ; soumettre `https://soutenancepro.com/sitemap.xml` | Domaine vérifié, sitemap lu, absence de blocage d'indexation |
 | Semaine 2 | Contrôler l'inspection d'URL pour l'accueil, ISPITS et médecine ; corriger les erreurs signalées ; faire relire les guides par un encadrant si possible | Pages découvertes/indexées ; erreurs de parcours signalées |
-| Semaine 3 | Examiner les requêtes et pages ayant des impressions ; préciser les passages qui répondent mal aux questions observées | Impressions, clics et CTR, filtre pays Maroc et pages santé |
+| Semaine 3 | Examiner les requêtes et pages ayant des impressions ; préciser les passages qui répondent mal aux questions observées | Impressions, clics et CTR, pays France/Maroc/Algérie/Tunisie séparés et groupes de pages |
 | Semaine 4 | Comparer les semaines, améliorer les pages déjà visibles et les liens entre guides ; recueillir les retours de vrais utilisateurs | Tendances par requête/page ; inscriptions et premiers projets si leur source est mesurée |
 
 Google Search Console est nécessaire pour connaître la visibilité réelle. Les clics de recherche ne prouvent pas à eux seuls les inscriptions : une mesure de conversion et de source adaptée reste à configurer. Aucun outil de suivi, cookie analytique ou collecte d'événements supplémentaire n'a été ajouté dans cette version.
