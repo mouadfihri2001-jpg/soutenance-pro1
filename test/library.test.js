@@ -89,6 +89,20 @@ test('institution discovery combines names, domains and levels with country and 
   assert.ok(matchesInstitution({text:'École supérieure de commerce Licence 3',country:'TN'},'ecole licence','TN'));
 });
 
+test('country pathways open the matching institution selection and reject unknown country parameters',()=>{
+  const records=institutions.map(item=>({country:item.country,search:item.name}));
+  for(const country of ['FR','MA','DZ','TN']){
+    const f=fixture({prefix:'institutions',choices:['country'],records,search:'?country='+country});
+    setupInstitutions(f.doc);
+    assert.equal(f.controls.country.value,country);
+    assert.equal(f.items.filter(item=>!item.hidden).length,records.filter(item=>item.country===country).length);
+    f.form.listeners.reset({preventDefault(){}});
+    assert.ok(f.items.every(item=>!item.hidden));
+  }
+  const bad=fixture({prefix:'institutions',choices:['country'],records,search:'?country=%3Cscript%3E'});
+  setupInstitutions(bad.doc);assert.equal(bad.controls.country.value,'all');assert.ok(bad.items.every(item=>!item.hidden));
+});
+
 test('catalog pages expose all resources without JavaScript and keep canonical URLs independent of search', () => {
   const context={origin:'https://soutenancepro.com',production:true};
   const library=renderLibrary(context),directory=renderInstitutions(context);

@@ -31,9 +31,14 @@ function setupSearch(doc, { prefix, itemSelector, groupSelector, choices, matche
   const items = [...doc.querySelectorAll(itemSelector)];
   const groups = groupSelector ? [...doc.querySelectorAll(groupSelector)] : [];
 
-  // Homepage GET searches have one bounded, plain-text query; facets stay local.
-  const initial = new URLSearchParams(doc.defaultView?.location?.search || '').get('q');
+  // Country guides may link into an allowlisted institutional selection.
+  const params = new URLSearchParams(doc.defaultView?.location?.search || '');
+  const initial = params.get('q');
   if (initial !== null) query.value = initial.slice(0, QUERY_LIMIT);
+  if(prefix==='institutions'){
+    const country=params.get('country');
+    if(['FR','MA','DZ','TN'].includes(country))controls[choices.indexOf('country')].value=country;
+  }
 
   const filter = () => {
     let count = 0;

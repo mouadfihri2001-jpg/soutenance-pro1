@@ -1,4 +1,4 @@
-# Soutenance Pro AI — mise à niveau 0.2
+# Soutenance Pro — bibliothèque et espace académique
 
 Cette version améliore le projet Vercel existant. Le site conserve son identité verte ; son espace de travail utilise une authentification et un stockage Supabase. La version publique dépend du dernier build Production réussi, pas uniquement de la présence du code sur `main`.
 
@@ -12,7 +12,9 @@ Cette version améliore le projet Vercel existant. Le site conserve son identit�
 - Fichiers Word et PowerPoint modifiables. Pour le PDF : bouton **Imprimer / PDF**, puis **Enregistrer au format PDF** dans le navigateur.
 - Authentification obligatoire des appels aux données étudiant et à l'IA, modèle et prompts choisis côté serveur, contexte borné, quotas atomiques dans PostgreSQL. L'inscription publique possède sa propre limitation des tentatives. Les échecs de génération traités libèrent leur réservation ; une interruption brutale du serveur peut laisser une réservation à examiner.
 - Les scores de plagiat, partenariats et témoignages non vérifiés ont été retirés. Le module Correction est présenté comme une aide à la révision.
-- Une bibliothèque francophone avec douze guides et dossiers, trois modèles Word, deux parcours spécialisés ISPITS et médecine, et un répertoire de consignes institutionnelles. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable.
+- Une bibliothèque francophone avec 45 guides et parcours, huit modèles Word, 1 000 références sélectionnées et une recherche étendue dans HAL. Les parcours France, Maroc, Algérie et Tunisie relient les méthodes à des ressources institutionnelles vérifiées. Le catalogue distingue les documents, guides et modèles, avec des filtres adaptés à chaque format.
+- Fiches de lecture personnelles et liste des 100 dernières références enregistrées sur cet appareil, réouverture dans la bibliothèque et exports TXT/RIS/BibTeX. Les PDF restent chez leurs éditeurs ou dépôts d'origine ; les notes locales ne sont pas synchronisées avec le compte.
+- Parcours spécialisés ISPITS et médecine, répertoire de consignes institutionnelles et outils gratuits de recherche. Les liens de création de compte ouvrent directement l'inscription ; le parcours choisi propose un profil de projet modifiable. Le détail des livrables et limites figure dans `docs/research-library-release.md`.
 
 ## Configuration requise avant publication
 

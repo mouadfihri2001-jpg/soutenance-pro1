@@ -1,6 +1,6 @@
 import { LIBRARY_SCOPE } from '../shared/library-scope.js';
 import { referenceRIS, referenceBib } from '../shared/reference-format.js';
-import { mountLibraryNotes } from './library-notes.js';
+import { mountLibraryNotes, readSavedReadings, removeSavedReading, findSavedReading, normalizeReadingReference } from './library-notes.js';
 
 const types = {ART:'Article', THESE:'Thèse', MEM:'Mémoire', REPORT:'Rapport de recherche', HDR:'Habilitation'};
 const currentYear = () => LIBRARY_SCOPE.maxYear;
@@ -91,6 +91,17 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
   const status = extended.querySelector('[data-extended-status]'), results = extended.querySelector('[data-extended-results]');
   const pagination = extended.querySelector('[data-extended-pagination]'), limitation = extended.querySelector('[data-extended-limitation]');
   const previous = pagination.querySelector('[data-direction="previous"]'), next = pagination.querySelector('[data-direction="next"]');
+  let storage;
+  try { storage = doc.defaultView.localStorage; } catch { storage = null; }
+  const savedSection = node(doc,'section','saved-library-readings');
+  const savedDetails = node(doc,'details');
+  const savedSummary = node(doc,'summary','','Mes lectures sur cet appareil');
+  const savedHelp = node(doc,'p','fine','Retrouve les références de tes fiches enregistrées dans ce navigateur, sans compte. Cette liste conserve les 100 dernières lectures enregistrées. Retirer une référence de la liste n’efface pas ses notes.');
+  const savedStatus = node(doc,'p','saved-library-status');
+  savedStatus.setAttribute('role','status'); savedStatus.setAttribute('aria-live','polite');
+  const savedList = node(doc,'ul','saved-library-list');
+  savedDetails.append(savedSummary,savedHelp,savedStatus,savedList); savedSection.append(savedDetails);
+  form.before(savedSection);
   const workspace = node(doc, 'section', 'library-workspace');
   workspace.id = 'library-reading-workspace'; workspace.hidden = true;
   workspace.setAttribute('aria-labelledby', 'library-reading-title');
@@ -105,10 +116,11 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
     captureDraft(); workspace.hidden = true; results.hidden = false;
     pagination.hidden = paginationWasHidden;
     currentRecord = null; readDraft = null;
-    if (restoreFocus && workspaceTrigger?.isConnected) workspaceTrigger.focus();
+    if (restoreFocus) (workspaceTrigger?.isConnected ? workspaceTrigger : savedSummary).focus();
   };
-  const openWorkspace = (record, trigger) => {
-    if (results.getAttribute('aria-busy') === 'true') return;
+  const openWorkspace = (record, trigger, fromSaved = false) => {
+    if (!safeExtendedRecord(record) || (fromSaved && !normalizeReadingReference(record))) return;
+    if (!fromSaved && results.getAttribute('aria-busy') === 'true') return;
     captureDraft();
     if (workspace.hidden) paginationWasHidden = pagination.hidden;
     currentRecord = record; workspaceTrigger = trigger;
@@ -140,13 +152,40 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
     const noteContainer = node(doc, 'div', 'library-workspace-worksheet');
     const worksheet = mountLibraryNotes(noteContainer,record,{
       initialNotes:drafts.get(record.id),
-      onChange:notes => drafts.set(record.id,notes)
+      onChange:notes => drafts.set(record.id,notes),
+      onSaved:() => renderSavedReadings()
     });
     readDraft = worksheet.getNotes;
     grid.append(reference,noteContainer); workspace.replaceChildren(top,title,meta,grid);
     workspace.hidden = false; results.hidden = true; pagination.hidden = true;
     title.focus(); workspace.scrollIntoView({block:'start',behavior:'auto'});
   };
+  const renderSavedReadings = (message = '') => {
+    const saved = readSavedReadings(storage);
+    savedSummary.textContent = `Mes lectures sur cet appareil · ${saved.records.length}`;
+    savedStatus.textContent = message || (['invalid','unavailable','partial'].includes(saved.status) ? 'Certaines références locales ne peuvent pas être lues. Les notes ne sont pas effacées ; tu peux toujours exporter les fiches déjà ouvertes.' : saved.records.length ? 'Ouvre une lecture pour reprendre tes notes ici.' : 'Enregistre une fiche de lecture pour la retrouver ici.');
+    savedList.replaceChildren(...saved.records.map(record => {
+      const item = node(doc,'li','saved-library-entry');
+      const title = node(doc,'button','saved-library-title',record.title);
+      title.type = 'button'; title.setAttribute('aria-controls','library-reading-workspace');
+      title.addEventListener('click',() => openWorkspace(record,title,true));
+      const meta = node(doc,'p','fine',`${types[record.type]} · ${record.year} · ${record.id}`);
+      const actions = node(doc,'div','saved-library-actions');
+      const open = node(doc,'button','','Reprendre ma lecture'); open.type = 'button';
+      open.setAttribute('aria-controls','library-reading-workspace');
+      open.addEventListener('click',() => openWorkspace(record,open,true));
+      const remove = node(doc,'button','','Retirer de la liste'); remove.type = 'button';
+      remove.setAttribute('aria-label',`Retirer de la liste : ${record.title}`);
+      remove.addEventListener('click',() => {
+        if (removeSavedReading(storage,record.id)) {
+          renderSavedReadings('Référence retirée de la liste. Ses notes restent enregistrées sur cet appareil.');
+          savedSummary.focus();
+        } else savedStatus.textContent = 'Le stockage local ne permet pas de modifier la liste pour le moment. Rien n’a été effacé.';
+      });
+      actions.append(open,remove); item.append(title,meta,actions); return item;
+    }));
+  };
+  renderSavedReadings();
   doc.addEventListener('keydown', event => {
     if (event.key === 'Escape' && !workspace.hidden) { event.preventDefault(); closeWorkspace(); }
   });
@@ -179,12 +218,13 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
       limitation.hidden = !limited;
       limitation.textContent = limited ? 'Pour explorer d’autres résultats, précise un sujet, une discipline, un type de publication ou une année.' : '';
       pagination.querySelector('[data-extended-page]').textContent = `Page ${page} / ${maxPage}`;
-      pagination.hidden = data.total <= 24;
+      paginationWasHidden = data.total <= 24;
+      pagination.hidden = !workspace.hidden || paginationWasHidden;
       previous.disabled = page <= 1; next.disabled = !data.hasMore || page >= maxPage;
       if (data.total && !data.records.length) status.textContent += '. Les liens de cette page n’ont pas pu être validés ; essaie la page suivante ou consulte HAL directement.';
     } catch {
       if (token !== request) return;
-      results.replaceChildren(); pagination.hidden = true; limitation.hidden = true;
+      results.replaceChildren(); paginationWasHidden = true; pagination.hidden = true; limitation.hidden = true;
       status.textContent = 'HAL ne répond pas pour le moment. Réessaie, ou ouvre « Guides & sélection » pour consulter les ressources déjà disponibles.';
     } finally {
       clearTimeout(timer);
@@ -195,12 +235,13 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
     }
   };
 
-  const mode = name => {
+  const mode = (name, skipSearch = false) => {
     closeWorkspace(false);
     const isExtended = name === 'hal';
     local.hidden = isExtended; extended.hidden = !isExtended;
     for (const button of modeNav.querySelectorAll('[data-scope]')) button.setAttribute('aria-pressed', String(button.dataset.scope === name));
-    if (isExtended && !loaded) search(Object.fromEntries(new FormData(form)));
+    if (isExtended) renderSavedReadings();
+    if (isExtended && !loaded && !skipSearch) search(Object.fromEntries(new FormData(form)));
   };
   modeNav.addEventListener('click', event => {
     const name = event.target.closest('[data-scope]')?.dataset.scope;
@@ -215,5 +256,14 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
     status.scrollIntoView({block:'start', behavior:'auto'});
   });
   modeNav.hidden = false;
-  mode(query.get('scope') === 'hal' ? 'hal' : 'local');
+  const requestedReading = query.get('reading');
+  const savedReading = findSavedReading(storage,requestedReading);
+  mode(savedReading || query.get('scope') === 'hal' ? 'hal' : 'local',Boolean(savedReading));
+  if (savedReading) {
+    status.textContent = 'Lecture enregistrée ouverte. Tu peux aussi lancer une nouvelle recherche.';
+    openWorkspace(savedReading,savedSummary,true);
+  } else if (requestedReading) {
+    savedDetails.open = true;
+    savedStatus.textContent = 'Cette lecture n’est pas dans la liste de ce navigateur. Recherche à nouveau le document pour retrouver ses notes éventuelles, ou ouvre une lecture enregistrée ci-dessous.';
+  }
 }

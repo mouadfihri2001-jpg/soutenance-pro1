@@ -2,7 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {documents,snapshot} from '../content/documents.mjs';
 import {disciplines} from '../content/disciplines.mjs';
-import {pages} from '../content/catalog.mjs';
+import {pages,templateResources} from '../content/catalog.mjs';
 import {normalizeHal,workIdentity} from '../scripts/import-hal.mjs';
 import {searchEntries} from '../scripts/documents.mjs';
 import {matchCatalogue,safeRecord} from '../src/catalogue.js';
@@ -12,10 +12,10 @@ import {referenceRIS,referenceBib} from '../shared/reference-format.js';
 test('the catalogue contains 1000 distinct source-backed records and search covers every record',()=>{
  assert.equal(documents.length,1000);assert.equal(snapshot.count,1000);assert.equal(new Set(documents.map(d=>d.id)).size,1000);
  assert.equal(new Set(documents.map(workIdentity)).size,1000,'same title and authors cannot count as two works');
- assert.equal(disciplines.length,20);assert.equal(pages.length,41);
+ assert.equal(disciplines.length,20);assert.equal(pages.length,45);
  for(const d of documents){assert.ok(d.authors.length&&d.title&&d.year&&d.url&&d.file);assert.equal(d.verification,'provider-file-metadata');assert.ok(disciplines.some(s=>s.id===d.discipline));assert.equal(new URL(d.file).protocol,'https:');assert.equal(Object.hasOwn(d,'abstract'),false,'no copied abstracts');assert.ok(normalizeHal({halId_s:d.id,title_s:[d.title],authFullName_s:d.authors,producedDateY_i:d.year,docType_s:d.type,uri_s:d.url,fileMain_s:d.file},d.discipline,d.checkedAt));}
  for(const s of disciplines)assert.equal(documents.filter(d=>d.discipline===s.id).length,50);
- const entries=searchEntries();assert.equal(entries.length,1044);assert.ok(entries.every(safeRecord));
+ const entries=searchEntries();assert.equal(entries.length,documents.length+pages.length+templateResources.length);assert.ok(entries.every(safeRecord));
  for(const d of documents){const entry=entries.find(x=>x.id===d.id);assert.ok(matchCatalogue(entry,{q:d.title,discipline:d.discipline,format:'document',type:d.type,year:String(d.year)}));}
 });
 test('HAL ingestion rejects non-deposit file destinations and malformed metadata',()=>{
@@ -30,6 +30,15 @@ test('catalogue filters combine accents, author, type, year and local reading se
  assert.equal(matchCatalogue(record,{q:'education',type:'THESE'}),false);assert.equal(matchCatalogue(record,{saved:true}),false);
  assert.ok(matchCatalogue(record,{saved:true},new Set(['hal-123'])));
  assert.equal(safeRecord({...record,path:'javascript:alert(1)'}),false);assert.equal(safeRecord({...record,path:'//evil.test'}),false);
+});
+
+test('health guides and Word templates remain discoverable without inherited document-only facets',()=>{
+ const entries=searchEntries(),health=entries.find(r=>r.id==='these-medecine'),template=entries.find(r=>r.format==='template');
+ assert.ok(matchCatalogue(health,{discipline:'medecine',format:'guide',type:'ART',year:'2020'}));
+ assert.equal(matchCatalogue(health,{discipline:'physique',format:'guide'}),false);
+ assert.ok(matchCatalogue(template,{format:'template',type:'THESE',year:'2020'}));
+ assert.ok(entries.filter(r=>r.path.startsWith('/bibliotheque/')&&r.format==='guide').every(safeRecord));
+ assert.equal(safeRecord({...health,path:'/bibliotheque/../api/config'}),false);
 });
 test('reference exports keep user text as data and reject unsafe or invalid source URLs',()=>{
  const values={title:'Titre {test}',authors:'Auteure Une\nAuteur Deux',year:'2025',url:'https://hal.science/hal-123',doi:'https://doi.org/10.1234/example',type:'ART'};

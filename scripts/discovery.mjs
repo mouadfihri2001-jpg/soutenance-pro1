@@ -14,6 +14,6 @@ export function renderHomeDiscovery() {
       const discipline = disciplines.find(d => d.id === id), records = documents.filter(d => d.discipline === id);
       return `<a class="discovery-collection" data-tone="${tones[i]}" href="/bibliotheque/discipline/${id}"><span class="discovery-icon" aria-hidden="true">${labels[i]}</span><h3>${e(discipline.label)}</h3><p>${e(discipline.readingTitle)}</p><span class="discovery-count">${records.length} références dans la sélection <span aria-hidden="true">↗</span></span></a>`;
     }).join('')}</div>
-    <div class="discovery-sourcebar"><p><strong>${coverage.totalDeposits.toLocaleString('fr-FR')}</strong> dépôts dans HAL<br><small>Fichier déclaré · relevé du 12 septembre 2026</small></p><a href="/bibliotheque?scope=hal">Chercher dans HAL ↗</a><a href="/recherche">Google Scholar, PubMed et les autres moteurs →</a></div>
+    <div class="discovery-sourcebar"><p><strong>${coverage.totalDeposits.toLocaleString('fr-FR')}</strong> dépôts dans HAL<br><small>Fichier déclaré · relevé du 12 septembre 2026</small></p><a href="/bibliotheque?scope=hal">Explorer les archives dans la bibliothèque →</a><a href="/recherche">Google Scholar, PubMed et les autres moteurs →</a></div>
   </div></section>`;
 }

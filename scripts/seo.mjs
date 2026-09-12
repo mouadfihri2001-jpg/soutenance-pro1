@@ -40,6 +40,25 @@ ${content}
 
 const card = p => `<a class="guide-card" href="/${p.slug}"><span class="eyebrow">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.heading)}</h3><p>${escapeHtml(p.lead)}</p><span class="card-link">Lire le guide <span aria-hidden="true">→</span></span></a>`;
 
+function renderGuideDirectory() {
+  const sections=[
+    ['projet','Choisir et cadrer son projet'],
+    ['sources','Rechercher, lire et citer'],
+    ['methode','Préparer sa méthode et ses données'],
+    ['redaction','Analyser, rédiger et réviser'],
+    ['oral','Préparer la soutenance'],
+    ['avance','Doctorat et encadrement'],
+    ['pays','Ressources dans ton pays']
+  ];
+  const group=p=>p.slug.startsWith('bibliotheque/')?'pays'
+    : /these-doctorat|encadrer-memoire|reproductibilite/.test(p.slug)?'avance'
+    : /soutenance|repondre-jury/.test(p.slug)?'oral'
+    : /recherche-|lire-article|fiche-lecture|revue-|zotero|citer-|citations-|corpus-/.test(p.slug)?'sources'
+    : /questionnaire|guide-entretien|question-recherche|protocole|etude-de-cas|problematique/.test(p.slug)?'methode'
+    : /^(pfe|memoire|rapport-de-stage|these-medecine)$|pfe-ispits|planification/.test(p.slug)?'projet':'redaction';
+  return `<section id="tous-les-guides" class="library-content guide-directory"><div class="library-section-title"><div><p class="eyebrow">Tout le fonds de méthode</p><h2>${pages.length} guides et parcours à lire ici</h2></div><p>Les étapes proposées plus haut donnent un point de départ. Retrouve aussi les guides spécialisés, sans avoir à deviner les bons mots-clés.</p></div><nav class="guide-directory-nav" aria-label="Domaines des guides">${sections.map(([id,label])=>`<a href="#guides-${id}">${label}</a>`).join('')}<a href="/bibliotheque#modeles">Modèles Word</a></nav>${sections.map(([id,label])=>`<section id="guides-${id}" class="guide-directory-section"><h2>${label}</h2><div class="guide-grid">${pages.filter(p=>group(p)===id).map(card).join('')}</div></section>`).join('')}</section>`;
+}
+
 export function renderPage(page, context) {
   let headingIndex=0; const headings=[];
   const renderer = new marked.Renderer();
@@ -74,7 +93,7 @@ export function renderGuides(context) {
     ['Interpréter ce qui a été observé', 'Distingue les résultats disponibles, leur interprétation et les limites. Pour un travail quantitatif, vérifie les variables et le traitement retenu avant de commenter un tableau.', 'guides/analyse-spss-pfe-sante', 'Préparer la lecture de résultats'],
     ['Préparer le passage à l’oral', 'Sélectionne un fil conducteur, choisis les éléments qui le montrent et répète avec un chronomètre. Le dossier soutenance aide à adapter ce travail au temps donné par ton établissement.', 'soutenance', 'Préparer ma soutenance']
   ];
-  return layout({title,description,meta:metadata({...context,path:'/guides',title,description,breadcrumbs:[{name:'Accueil',path:'/'},{name:'Parcours de lecture',path:'/guides'}]}),content:`<main id="contenu"><section class="article-hero"><div class="article-hero-inner"><span class="eyebrow">Une étape à la fois</span><h1>Choisis ce qui fera avancer ton travail aujourd’hui.</h1><p class="article-lead">Tu n’as pas besoin de tout lire dans l’ordre. Repère le point qui bloque ton PFE, ton rapport ou ton oral, puis termine une étape concrète.</p><a class="site-button light" href="/bibliotheque">Chercher dans la bibliothèque</a></div></section><article class="method-page article-body">${steps.map(([heading,text,slug,label],i)=>`<section><h2>${i+1}. ${heading}</h2><p>${text}</p><p><a href="/${slug}">${label} →</a></p></section>`).join('')}<div class="article-end"><h2>Des besoins propres à ta filière ?</h2><p>Les parcours <a href="/pfe-ispits">PFE ISPITS</a> et <a href="/these-medecine">thèse de médecine</a> détaillent les points de méthode en santé. Pour un stage d’observation ou une mission en entreprise, consulte le <a href="/rapport-de-stage">dossier rapport de stage</a>.</p></div></article></main>`});
+  return layout({title,description,meta:metadata({...context,path:'/guides',title,description,breadcrumbs:[{name:'Accueil',path:'/'},{name:'Parcours de lecture',path:'/guides'}]}),content:`<main id="contenu"><section class="article-hero"><div class="article-hero-inner"><span class="eyebrow">Une étape à la fois</span><h1>Choisis ce qui fera avancer ton travail aujourd’hui.</h1><p class="article-lead">Tu n’as pas besoin de tout lire dans l’ordre. Repère le point qui bloque ton PFE, ton rapport ou ton oral, puis termine une étape concrète.</p><div class="hero-actions"><a class="site-button light" href="#tous-les-guides">Explorer tous les guides</a><a class="text-link" href="/bibliotheque#modeles">Télécharger un modèle Word</a></div></div></section><article class="method-page article-body">${steps.map(([heading,text,slug,label],i)=>`<section><h2>${i+1}. ${heading}</h2><p>${text}</p><p><a href="/${slug}">${label} →</a></p></section>`).join('')}<div class="article-end"><h2>Des besoins propres à ta filière ?</h2><p>Les parcours <a href="/pfe-ispits">PFE ISPITS</a> et <a href="/these-medecine">thèse de médecine</a> détaillent les points de méthode en santé. Pour un stage d’observation ou une mission en entreprise, consulte le <a href="/rapport-de-stage">dossier rapport de stage</a>.</p></div></article>${renderGuideDirectory()}</main>`});
 }
 
 export function renderNotFound(context) {

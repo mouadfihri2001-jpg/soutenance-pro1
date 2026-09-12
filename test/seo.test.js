@@ -12,7 +12,7 @@ import { pages,templateResources } from '../content/catalog.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const expected=[...publicPaths,...documentPublicPaths,...toolsPublicPaths];
 const indexable=[...publicPaths,...documentIndexPaths,...toolsPublicPaths];
-const templates = ['/modeles/plan-rapport-stage.docx','/modeles/checklist-soutenance.docx','/modeles/fiche-lecture-source.docx'];
+const templates = templateResources.map(resource=>resource.path);
 const file = path => root + 'dist/' + (path === '/' ? 'index.html' : path.slice(1) + '.html');
 const read = path => readFileSync(root + 'dist/' + path, 'utf8');
 // Nonfunctional fixtures for offline builds. These are not service credentials.
@@ -79,6 +79,10 @@ test('preview builds stay out of search; production exposes the library and all 
   assert.match(read('memoire.html'), /Situation entièrement fictive/);
   assert.match(library, /id="ressources-soutenance-pro"/,'original reading pathways are available without JavaScript');
   assert.match(library, /href="\/memoire"/);
+  assert.ok(library.indexOf('id="modeles"')>library.indexOf('</noscript>'),'template shelf stays outside the search fallback hidden by JavaScript');
+  const guideDirectory=read('guides.html').split('id="tous-les-guides"')[1];
+  assert.ok(guideDirectory,'a complete guide directory supplements suggested steps');
+  for(const page of pages)assert.ok(guideDirectory.includes(`href="/${page.slug}"`),'guide is discoverable: '+page.slug);
   assert.doesNotMatch(read('sitemap.xml'), /bibliotheque\/document\//,'metadata notices are not promoted into search landing pages');
   const recordPage=readFileSync(file(documentPublicPaths.find(path=>path.startsWith('/bibliotheque/document/'))),'utf8');
   assert.match(recordPage,/href="#mes-notes"/,'a document offers an on-site working step');

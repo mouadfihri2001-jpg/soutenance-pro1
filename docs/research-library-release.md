@@ -1,6 +1,6 @@
 # Soutenance Pro — bibliothèque académique
 
-Version préparée le 11 septembre 2026. Publication sur le domaine de production et paiements non confirmés par ce document.
+Version initiale préparée le 11 septembre 2026, enrichie le 12 septembre. La section « Extension des parcours et de la bibliothèque » décrit les comptes actuels ; les sections datées antérieures conservent l'historique. Publication sur le domaine de production et paiements non confirmés par ce document.
 
 ## Mise à jour du 12 septembre 2026
 
@@ -76,3 +76,21 @@ The library now contains an always-visible original reading section linking PFE,
 Validation: 59 automated tests passed across the suite and the rerun of the catalogue count check after adding the guide. Production/preview metadata and internal-link tests passed. The final output was rebuilt for preview. Browser visual verification remains unperformed because that access is unavailable.
 
 SEO basis: Google recommends useful original information and substantial additional value when drawing on other sources, and warns against scaled unoriginal content produced to manipulate rankings. See https://developers.google.com/search/docs/fundamentals/creating-helpful-content and https://developers.google.com/search/docs/essentials/spam-policies . Neither hosted document count nor a larger sitemap guarantees indexing or ranking.
+
+## 12 septembre 2026 — Extension des parcours et de la bibliothèque
+
+La bibliothèque propose maintenant **45 guides et parcours, huit modèles Word et 1 000 notices sélectionnées**, soit 1 053 entrées recherchables dans le catalogue local. La recherche étendue HAL conserve le périmètre et les limites documentés ci-dessus ; son volume ne correspond pas à un nombre de fichiers hébergés par Soutenance Pro.
+
+Quatre nouveaux parcours apportent des méthodes distinctes pour la France, le Maroc, l'Algérie et la Tunisie. Ils expliquent les fonctions et limites de DUMAS, theses.fr, Sudoc, Toubkal, HCP, PRSM, PNST, ASJP, SNDL, BIRUNI et CNUDST, avec sources institutionnelles et exemples explicitement fictifs. Ils ne prétendent pas imposer un format national universel ni couvrir toutes les écoles. Les liens vers l'annuaire ouvrent le pays choisi ; les établissements renvoient au parcours correspondant.
+
+Le répertoire `/guides` rend les 45 parcours accessibles par sept familles. La bibliothèque expose les parcours par pays et conserve les modèles Word à l'écran, même après activation de la recherche ou passage aux archives. Les filtres d'année et de type de publication s'appliquent aux documents de recherche : ils ne font plus disparaître les modèles ou les guides. Les guides de santé sont également trouvables avec les disciplines Médecine et Santé publique.
+
+Les cinq nouveaux documents modifiables sont une fiche de cadrage du mémoire, une matrice de revue de littérature, un journal de stage, un suivi des corrections de l'encadrant et un plan de présentation de soutenance. Ils complètent le plan de rapport de stage, la checklist de soutenance et la fiche de lecture. Chaque fichier comprend le logo fourni et des champs, tableaux ou listes réellement éditables. Les huit fichiers ont été rendus et leurs 22 pages inspectées : pas de texte coupé, de tableaux cassés, de glyphes manquants ni de pages blanches ajoutées.
+
+Enregistrer une fiche de lecture ajoute sa référence à « Mes lectures sur cet appareil », limitée aux 100 dernières références. La réouverture fonctionne depuis le panneau et un lien local de bibliothèque, sans retrouver le résultat dans HAL. Le retrait d'une référence de la liste conserve ses notes. L'index contient uniquement des métadonnées validées ; les notes ne quittent pas le navigateur et un stockage bloqué ou plein laisse la fiche exportable.
+
+Le build produit **1 107 routes HTML publiques et une page 404**. Le sitemap Production prévoit **88 URL indexables** ; les 1 000 notices de métadonnées et les pages secondaires de pagination restent en `noindex,follow`. Le dernier build local est un Preview : toutes les pages portent `noindex` et son sitemap est vide. Aucun rang Google, trafic, indexation effective ou statut de « plus grande bibliothèque » n'est revendiqué.
+
+Validation : **64 tests automatisés réussis**, couvrant notamment les liens internes, canoniques et règles d'indexation Production/Preview, les filtres et liens de pays, le stockage des lectures, les exports et la structure des huit fichiers Word. Les contrôles existants d'inscription, d'isolation des comptes et de quotas passent également. La vérification graphique du site dans un navigateur et la recette authentifiée sur le domaine de production restent à effectuer avec l'accès approprié. La mise en ligne de cette révision, les paiements et Search Console doivent être vérifiés séparément ; ce document n'atteste pas leur activation.
+
+Contact public ajouté à la demande du propriétaire : `contact@soutenancepro.com`, accessible depuis le pied de page de l’accueil, les pages publiques, l’authentification et la méthode éditoriale, pour les questions, collaborations et corrections. Les liens `mailto:` ouvrent la messagerie de la personne ; ils ne configurent pas le SMTP ni l’expéditeur des emails transactionnels.

@@ -4,12 +4,14 @@ import { normalizeSearch } from './library.js';
 const KEY='soutenance-pro:reading-list:v1',PAGE_SIZE=24;
 export function matchCatalogue(record,{q='',discipline='all',format='all',type='all',year='all',saved=false},selected=new Set()){
   if(saved&&!selected.has(record.id))return false;
-  if(discipline!=='all'&&record.discipline!==discipline||format!=='all'&&record.format!==format||type!=='all'&&record.type!==type||year!=='all'&&String(record.year)!==String(year))return false;
+  if(discipline!=='all'&&record.discipline!==discipline&&!record.disciplines?.includes(discipline))return false;
+  if(format!=='all'&&record.format!==format)return false;
+  if(record.format==='document'&&(type!=='all'&&record.type!==type||year!=='all'&&String(record.year)!==String(year)))return false;
   const words=normalizeSearch(String(q).slice(0,240)).split(/\s+/).filter(Boolean);
   const text=normalizeSearch([record.title,...record.authors||[],record.keywords,record.description,record.doi,record.label].join(' '));
   return words.every(word=>text.includes(word));
 }
-export function safeRecord(record){return record&&typeof record.id==='string'&&typeof record.title==='string'&&typeof record.path==='string'&&/^\/(?:guides\/|bibliotheque\/document\/|modeles\/)?[a-z0-9-]+(?:\.docx)?$/.test(record.path)&&Array.isArray(record.authors)&&record.authors.every(a=>typeof a==='string');}
+export function safeRecord(record){return record&&typeof record.id==='string'&&typeof record.title==='string'&&typeof record.path==='string'&&/^\/(?:(?:guides\/|bibliotheque\/document\/|modeles\/)?[a-z0-9-]+(?:\.docx)?|bibliotheque\/(?:france|maroc|algerie|tunisie))$/.test(record.path)&&Array.isArray(record.authors)&&record.authors.every(a=>typeof a==='string')&&(!record.disciplines||Array.isArray(record.disciplines)&&record.disciplines.every(d=>typeof d==='string'));}
 function readSaved(){try{const values=JSON.parse(localStorage.getItem(KEY)||'[]');return new Set(Array.isArray(values)?values.filter(x=>typeof x==='string'&&/^[a-z0-9/-]{1,150}$/.test(x)).slice(0,1000):[]);}catch{return new Set();}}
 function setSaved(id,button){const saved=readSaved(),on=!saved.has(id);if(on)saved.add(id);else saved.delete(id);try{localStorage.setItem(KEY,JSON.stringify([...saved].slice(-1000)));button.setAttribute('aria-pressed',String(on));button.textContent=on?'Dans ma sélection ✓':'Garder dans ma sélection';}catch{button.textContent='Sélection indisponible sur cet appareil';}}
 const element=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;};
