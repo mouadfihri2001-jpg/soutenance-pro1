@@ -1,7 +1,7 @@
 import { build } from 'esbuild';
 import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
-import { pages } from '../content/catalog.mjs';
+import { pages, templateResources } from '../content/catalog.mjs';
 import { metadata, renderPage, renderGuides, renderNotFound, publicPaths, escapeHtml } from './seo.mjs';
 import { renderLibrary, renderEditorialMethod, renderInstitutions } from './library.mjs';
 import { buildTemplates } from './templates.mjs';
@@ -28,7 +28,9 @@ const seo=metadata({...context,title,description});
 if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadata insertion point is missing.');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
-await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- LIBRARY_METRICS -->',`<div class="home-collection-metrics"><div class="home-metric-primary"><strong>100&nbsp;000+</strong><span>documents à explorer via HAL</span></div><div><strong>${disciplines.length}</strong><span>disciplines dans notre sélection</span></div><div><strong>${pages.length}</strong><span>guides et parcours</span></div></div><p class="home-metrics-context">${documents.length.toLocaleString('fr-FR')} références sélectionnées sur Soutenance Pro. <a href="/methode-editoriale">Notre bibliothèque en détail →</a></p>`));
+// CCSD confirms over one million open-access documents: https://www.ccsd.cnrs.fr/hal/
+// This is HAL's searchable corpus; the local selection and owned resources are counted separately.
+await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- LIBRARY_METRICS -->',`<div class="home-collection-metrics"><div class="home-metric-primary"><strong>1&nbsp;000&nbsp;000+</strong><span>documents scientifiques en libre accès à explorer via HAL</span></div><div><strong>${documents.length.toLocaleString('fr-FR')}</strong><span>références sélectionnées sur Soutenance Pro</span></div><div><strong>${pages.length + templateResources.length}</strong><span>guides, parcours et modèles</span></div></div><p class="home-metrics-context">Notre sélection couvre ${disciplines.length} disciplines, avec ${pages.length} guides et parcours et ${templateResources.length} modèles Word. <a href="/methode-editoriale">Notre bibliothèque en détail →</a></p>`));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
 await writeFile('dist/bibliotheque.html',renderLibrary(context));
