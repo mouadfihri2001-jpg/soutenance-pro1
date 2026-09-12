@@ -1,5 +1,6 @@
 import { LIBRARY_SCOPE } from '../shared/library-scope.js';
 import { referenceRIS, referenceBib } from '../shared/reference-format.js';
+import { mountLibraryNotes } from './library-notes.js';
 
 const types = {ART:'Article', THESE:'Thèse', MEM:'Mémoire', REPORT:'Rapport de recherche', HDR:'Habilitation'};
 const currentYear = () => LIBRARY_SCOPE.maxYear;
@@ -39,31 +40,42 @@ function node(doc, tag, className, text) {
   return el;
 }
 
-function exportReference(record, format) {
-  const reference = {...record, url:record.sourceUrl};
-  const content = format === 'ris' ? referenceRIS(reference) : referenceBib(reference);
+function exportText(doc, content, filename) {
   const url = URL.createObjectURL(new Blob([content], {type:'text/plain;charset=utf-8'}));
-  const anchor = document.createElement('a');
-  anchor.href = url; anchor.download = record.id + '.' + format; anchor.click();
+  const anchor = doc.createElement('a');
+  anchor.href = url; anchor.download = filename; anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function resultCard(doc, record) {
+function exportReference(doc, record, format) {
+  const reference = {...record, url:record.sourceUrl};
+  exportText(doc, format === 'ris' ? referenceRIS(reference) : referenceBib(reference), record.id + '.' + format);
+}
+
+function sourceLink(doc, href, label) {
+  const link = node(doc, 'a', '', label);
+  link.href = href; link.target = '_blank'; link.rel = 'noopener noreferrer';
+  return link;
+}
+
+function resultCard(doc, record, openWorkspace) {
   const article = node(doc, 'article', 'search-result extended-result');
   article.append(node(doc, 'p', 'resource-type', `${types[record.type]} · ${record.year} · Français`));
   const heading = node(doc, 'h3');
-  const title = node(doc, 'a', '', record.title);
-  title.href = record.sourceUrl; title.target = '_blank'; title.rel = 'noopener noreferrer';
+  const title = node(doc, 'button', 'extended-open-title', record.title);
+  title.type = 'button'; title.setAttribute('aria-controls', 'library-reading-workspace');
+  title.addEventListener('click', () => openWorkspace(record, title));
   heading.append(title); article.append(heading);
   article.append(node(doc, 'p', 'document-authors', record.authors.slice(0, 4).join(', ') + (record.authors.length > 4 ? ' et al.' : '')));
   article.append(node(doc, 'p', 'document-origin', `HAL · ${record.id} · Fichier déclaré par le dépôt`));
   const actions = node(doc, 'div', 'search-result-actions');
-  const open = node(doc, 'a', '', 'Ouvrir le document ↗');
-  open.href = record.fileUrl; open.target = '_blank'; open.rel = 'noopener noreferrer';
+  const open = node(doc, 'button', 'open-library-workspace', 'Étudier cette source');
+  open.type = 'button'; open.setAttribute('aria-controls', 'library-reading-workspace');
+  open.addEventListener('click', () => openWorkspace(record, open));
   actions.append(open);
   for (const [format, label] of [['ris', 'Zotero · RIS'], ['bib', 'BibTeX']]) {
     const button = node(doc, 'button', 'save-reference', label);
-    button.type = 'button'; button.addEventListener('click', () => exportReference(record, format));
+    button.type = 'button'; button.addEventListener('click', () => exportReference(doc, record, format));
     actions.append(button);
   }
   article.append(actions); return article;
@@ -79,11 +91,71 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
   const status = extended.querySelector('[data-extended-status]'), results = extended.querySelector('[data-extended-results]');
   const pagination = extended.querySelector('[data-extended-pagination]'), limitation = extended.querySelector('[data-extended-limitation]');
   const previous = pagination.querySelector('[data-direction="previous"]'), next = pagination.querySelector('[data-direction="next"]');
+  const workspace = node(doc, 'section', 'library-workspace');
+  workspace.id = 'library-reading-workspace'; workspace.hidden = true;
+  workspace.setAttribute('aria-labelledby', 'library-reading-title');
+  results.before(workspace);
+  const drafts = new Map();
+  let currentRecord, workspaceTrigger, readDraft, paginationWasHidden = true;
+  const captureDraft = () => {
+    if (currentRecord && readDraft) drafts.set(currentRecord.id, readDraft());
+  };
+  const closeWorkspace = (restoreFocus = true) => {
+    if (workspace.hidden) return;
+    captureDraft(); workspace.hidden = true; results.hidden = false;
+    pagination.hidden = paginationWasHidden;
+    currentRecord = null; readDraft = null;
+    if (restoreFocus && workspaceTrigger?.isConnected) workspaceTrigger.focus();
+  };
+  const openWorkspace = (record, trigger) => {
+    if (results.getAttribute('aria-busy') === 'true') return;
+    captureDraft();
+    if (workspace.hidden) paginationWasHidden = pagination.hidden;
+    currentRecord = record; workspaceTrigger = trigger;
+    const top = node(doc, 'div', 'library-workspace-top');
+    const back = node(doc, 'button', 'library-workspace-back', '← Retour aux résultats');
+    back.type = 'button'; back.addEventListener('click', () => closeWorkspace());
+    top.append(back, node(doc, 'span', 'eyebrow', 'Mon espace de lecture'));
+    const title = node(doc, 'h2', 'library-workspace-title', record.title);
+    title.id = 'library-reading-title'; title.tabIndex = -1;
+    const meta = node(doc, 'p', 'library-workspace-meta', `${types[record.type]} · ${record.year} · Français · HAL ${record.id}`);
+    const grid = node(doc, 'div', 'library-workspace-grid');
+    const reference = node(doc, 'div', 'library-workspace-reference');
+    reference.append(node(doc, 'h3', '', 'La référence'));
+    reference.append(node(doc, 'p', 'document-authors', record.authors.join(', ') || 'Auteur non renseigné dans la notice.'));
+    reference.append(node(doc, 'p', 'fine', 'Métadonnées transmises par HAL. Consulte le document original pour vérifier la méthode, les résultats et les pages citées.'));
+    const sourceActions = node(doc, 'div', 'library-source-actions');
+    sourceActions.append(sourceLink(doc, record.fileUrl, 'Texte intégral chez HAL ↗'), sourceLink(doc, record.sourceUrl, 'Notice d’origine ↗'));
+    reference.append(sourceActions);
+    const exports = node(doc, 'div', 'search-result-actions');
+    for (const [format,label] of [['ris','Exporter RIS · Zotero'],['bib','Exporter BibTeX']]) {
+      const button = node(doc, 'button', 'save-reference', label);
+      button.type = 'button'; button.addEventListener('click', () => exportReference(doc, record, format));
+      exports.append(button);
+    }
+    reference.append(exports);
+    reference.append(node(doc, 'p', 'library-workspace-help', 'La fiche et tes notes restent ici. Le texte intégral s’ouvre dans un nouvel onglet chez son hébergeur ; son accès et ses droits dépendent du dépôt.'));
+    const guide = node(doc, 'a', 'library-workspace-help', 'Comment lire un article et vérifier ses sources →');
+    guide.href = '/guides/recherche-hal'; reference.append(guide);
+    const noteContainer = node(doc, 'div', 'library-workspace-worksheet');
+    const worksheet = mountLibraryNotes(noteContainer,record,{
+      initialNotes:drafts.get(record.id),
+      onChange:notes => drafts.set(record.id,notes)
+    });
+    readDraft = worksheet.getNotes;
+    grid.append(reference,noteContainer); workspace.replaceChildren(top,title,meta,grid);
+    workspace.hidden = false; results.hidden = true; pagination.hidden = true;
+    title.focus(); workspace.scrollIntoView({block:'start',behavior:'auto'});
+  };
+  doc.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !workspace.hidden) { event.preventDefault(); closeWorkspace(); }
+  });
   const query = new URLSearchParams(doc.defaultView.location.search);
   form.elements.q.value = (query.get('q') || '').slice(0, LIBRARY_SCOPE.queryLength);
   let request = 0, controller, loaded = false, active = {}, page = 1, maxPage = 1;
 
   const search = async (values, targetPage = 1) => {
+    closeWorkspace(false);
     const token = ++request;
     controller?.abort(); controller = new AbortController();
     const requestController = controller;
@@ -101,7 +173,7 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
       if (!Array.isArray(data.records) || data.records.length > 24 || !data.records.every(safeExtendedRecord) || !Number.isInteger(data.total) || data.total < 0 || !Number.isInteger(data.page) || data.page < 1 || data.page > 100 || data.pageSize !== 24) throw new Error('invalid-response');
       page = data.page; maxPage = Math.min(100, Math.max(1, Math.ceil(data.total / 24)));
       loaded = true;
-      results.replaceChildren(...data.records.map(record => resultCard(doc, record)));
+      results.replaceChildren(...data.records.map(record => resultCard(doc, record, openWorkspace)));
       status.textContent = data.total ? `${data.total.toLocaleString('fr-FR')} dépôts trouvés dans HAL · ${data.records.length} références affichées sur cette page` : 'Aucun dépôt trouvé. Essaie un terme plus large ou une autre discipline.';
       const limited = page >= maxPage && data.total > maxPage * 24;
       limitation.hidden = !limited;
@@ -124,6 +196,7 @@ export function setupExtendedCatalogue(doc = document, fetcher = fetch) {
   };
 
   const mode = name => {
+    closeWorkspace(false);
     const isExtended = name === 'hal';
     local.hidden = isExtended; extended.hidden = !isExtended;
     for (const button of modeNav.querySelectorAll('[data-scope]')) button.setAttribute('aria-pressed', String(button.dataset.scope === name));

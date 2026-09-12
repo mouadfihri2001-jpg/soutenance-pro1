@@ -12,10 +12,10 @@ import {referenceRIS,referenceBib} from '../shared/reference-format.js';
 test('the catalogue contains 1000 distinct source-backed records and search covers every record',()=>{
  assert.equal(documents.length,1000);assert.equal(snapshot.count,1000);assert.equal(new Set(documents.map(d=>d.id)).size,1000);
  assert.equal(new Set(documents.map(workIdentity)).size,1000,'same title and authors cannot count as two works');
- assert.equal(disciplines.length,20);assert.equal(pages.length,40);
+ assert.equal(disciplines.length,20);assert.equal(pages.length,41);
  for(const d of documents){assert.ok(d.authors.length&&d.title&&d.year&&d.url&&d.file);assert.equal(d.verification,'provider-file-metadata');assert.ok(disciplines.some(s=>s.id===d.discipline));assert.equal(new URL(d.file).protocol,'https:');assert.equal(Object.hasOwn(d,'abstract'),false,'no copied abstracts');assert.ok(normalizeHal({halId_s:d.id,title_s:[d.title],authFullName_s:d.authors,producedDateY_i:d.year,docType_s:d.type,uri_s:d.url,fileMain_s:d.file},d.discipline,d.checkedAt));}
  for(const s of disciplines)assert.equal(documents.filter(d=>d.discipline===s.id).length,50);
- const entries=searchEntries();assert.equal(entries.length,1043);assert.ok(entries.every(safeRecord));
+ const entries=searchEntries();assert.equal(entries.length,1044);assert.ok(entries.every(safeRecord));
  for(const d of documents){const entry=entries.find(x=>x.id===d.id);assert.ok(matchCatalogue(entry,{q:d.title,discipline:d.discipline,format:'document',type:d.type,year:String(d.year)}));}
 });
 test('HAL ingestion rejects non-deposit file destinations and malformed metadata',()=>{

@@ -75,6 +75,15 @@ test('preview builds stay out of search; production exposes the library and all 
   assert.match(library,/"@type":"ItemList"/);
   assert.match(library,/src="\/assets\/catalogue.js"/);
   assert.ok(existsSync(root+'dist/assets/catalogue.js'));
+  assert.ok(indexable.includes('/memoire'),'the complete memoir guide is a canonical editorial page');
+  assert.match(read('memoire.html'), /Situation entièrement fictive/);
+  assert.match(library, /id="ressources-soutenance-pro"/,'original reading pathways are available without JavaScript');
+  assert.match(library, /href="\/memoire"/);
+  assert.doesNotMatch(read('sitemap.xml'), /bibliotheque\/document\//,'metadata notices are not promoted into search landing pages');
+  const recordPage=readFileSync(file(documentPublicPaths.find(path=>path.startsWith('/bibliotheque/document/'))),'utf8');
+  assert.match(recordPage,/href="#mes-notes"/,'a document offers an on-site working step');
+  const noteData=JSON.parse(recordPage.match(/<script type="application\/json" data-library-note-record>(.*?)<\/script>/s)[1]);
+  assert.ok(noteData.id && noteData.title && noteData.sourceUrl,'the worksheet has bibliographic context');
   for(const template of templates) assert.ok(library.includes(`href="${template}" download`),template);
   for(const location of locations) assert.doesNotMatch(location,/modeles|\?|#/,'only canonical HTML routes enter the sitemap');
   assert.doesNotMatch(library,/adsbygoogle|ca-pub-/,'no invented publisher setup');

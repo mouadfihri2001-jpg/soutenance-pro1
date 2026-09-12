@@ -2,8 +2,9 @@ import { pages as healthPages } from './pages.mjs';
 import { libraryPages } from './library-pages.mjs';
 import { researchGuides } from './research-guides.mjs';
 import { advancedGuides } from './advanced-guides.mjs';
+import { memoirePage } from './memoire-page.mjs';
 
-export const pages = [...healthPages, ...libraryPages, ...researchGuides, ...advancedGuides];
+export const pages = [...healthPages, ...libraryPages, memoirePage, ...researchGuides, ...advancedGuides];
 export const templateResources = [
   { title: 'Plan commenté de rapport de stage', description: 'Une structure Word à compléter avec ton organisme, tes missions réelles et ton analyse.', path: '/modeles/plan-rapport-stage.docx', guide: '/guides/plan-rapport-de-stage', topic: 'stage', keywords: 'rapport stage plan sommaire entreprise missions word docx modèle' },
   { title: 'Checklist de soutenance', description: 'Prépare ton fil conducteur, règle ton temps et vérifie ton support avant le passage.', path: '/modeles/checklist-soutenance.docx', guide: '/soutenance', topic: 'oral', keywords: 'soutenance oral jury présentation powerpoint chronométrage word docx modèle' },

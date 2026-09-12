@@ -63,3 +63,16 @@ Le contrôle externe de similitudes n’est pas connecté. La grille de relectur
 - [Stripe : événements des abonnements](https://docs.stripe.com/billing/subscriptions/webhooks)
 
 Les Ads et AdSense sont laissés de côté conformément à la demande. Aucun budget, identifiant publicitaire ou achat de backlinks n’est ajouté.
+
+
+## 12 September 2026 — on-site reading and substantive editorial content
+
+The extended archive search is now a route into an on-site reading workspace: title and primary action open a reference panel in the library, preserving search results, filters, pagination and keyboard focus. Full-text HAL links are secondary and open separately. The app does not copy or claim ownership of authors’ PDFs.
+
+A reusable worksheet on extended results and all 1,000 curated document pages records the reader’s question, method, useful passage, page and limits. Notes stay in the browser, are explicitly saved locally and can be exported as text. Blocked or full browser storage leaves editing and export available. These are personal notes, not generated or reviewed summaries of publications.
+
+The library now contains an always-visible original reading section linking PFE, memoir, stage and defense methods. The new complete `/memoire` guide contains a working table, a clearly fictional commented example and sources for reference organization. There are 41 guides/parcours, 1,103 public HTML routes plus the 404, and 84 canonical pages eligible for indexing in a Production build. Metadata-only notices remain noindex; HAL query results are not turned into hundreds of thousands of search landing pages.
+
+Validation: 59 automated tests passed across the suite and the rerun of the catalogue count check after adding the guide. Production/preview metadata and internal-link tests passed. The final output was rebuilt for preview. Browser visual verification remains unperformed because that access is unavailable.
+
+SEO basis: Google recommends useful original information and substantial additional value when drawing on other sources, and warns against scaled unoriginal content produced to manipulate rankings. See https://developers.google.com/search/docs/fundamentals/creating-helpful-content and https://developers.google.com/search/docs/essentials/spam-policies . Neither hosted document count nor a larger sitemap guarantees indexing or ranking.
