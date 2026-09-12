@@ -54,12 +54,15 @@ await copyFile('src/site.css','dist/assets/site.css');
 await copyFile('src/home.css','dist/assets/home.css');
 await copyFile('src/research.css','dist/assets/research.css');
 await copyFile('src/discovery.css','dist/assets/discovery.css');
+await copyFile('src/public-polish.css','dist/assets/public-polish.css');
+await copyFile('src/library-polish.css','dist/assets/library-polish.css');
+await copyFile('src/home-polish.css','dist/assets/home-polish.css');
 await copyFile('public/brand-logo.jpg','dist/assets/brand-logo.jpg');
 await copyFile('public/library-reading-room.webp','dist/assets/library-reading-room.webp');
 await copyFile('public/favicon.svg','dist/assets/favicon.svg');
 await copyFile('public/share.png','dist/assets/share.png');
 await build({
-  entryPoints: { app: 'src/app.js', library: 'src/library.js',catalogue:'src/catalogue.js','research-tools':'src/research-tools.js' }, outdir: 'dist/assets', bundle: true,
+  entryPoints: { app: 'src/app.js', library: 'src/library.js',catalogue:'src/catalogue.js','research-tools':'src/research-tools.js','public-motion':'src/public-motion.js' }, outdir: 'dist/assets', bundle: true,
   minify: true, splitting: true, format: 'esm', platform: 'browser',
   target: ['es2022'], entryNames: '[name]', chunkNames: 'chunk-[hash]',
   legalComments: 'eof'
