@@ -1,5 +1,7 @@
 # Bibliothèque Soutenance Pro : publication et mesure
 
+> État vérifié le 13 septembre 2026 : propriété Search Console connectée, sitemap accepté avec 88 URL et premières pages indexées confirmées. Voir le [point de contrôle SEO](seo-checkpoint-2026-09-13.md) pour les résultats et leurs limites. Les mentions de connexion ou d'envoi encore à faire dans les sections historiques ci-dessous sont remplacées par ce point de contrôle.
+
 Objectif : devenir une ressource utile pour les étudiants francophones de France, du Maroc, d’Algérie et de Tunisie, puis convertir une partie des lecteurs en utilisateurs de l’espace. Une position Top 1 ou Top 3 ne peut pas être promise. Ce document décrit le travail préparé et la méthode de suivi, pas des résultats de trafic constatés.
 
 ## Première version préparée — remplacée par la bibliothèque étendue

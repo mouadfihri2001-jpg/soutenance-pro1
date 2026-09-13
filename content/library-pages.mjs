@@ -182,6 +182,11 @@ Prévois une copie PDF du support et garde les fichiers nécessaires à une dém
     keywords: ['plan rapport de stage', 'sommaire', 'Word', 'structure', 'annexes'],
     checklist: ['Les rubriques imposées par la formation', 'Les missions à analyser en priorité', 'Les éléments disponibles pour chaque partie', 'Les annexes appelées dans le texte'],
     related: ['rapport-de-stage', 'guides/introduction-rapport-de-stage', 'soutenance'],
+    projectAction: {
+      module: 'plan', service: 'plan-memoire', label: 'Construire le plan de mon rapport',
+      heading: 'Adapte la structure à tes missions.',
+      description: 'Renseigne « Rapport de stage » dans ton projet et ajoute tes missions réelles et les consignes de ta formation pour préparer une proposition de plan.'
+    },
     body: `
 ## Commence par une structure de travail
 
@@ -217,7 +222,7 @@ Décris leur utilité pour la mission. Une liste de noms de logiciels ne montre 
 
 ### 2.2 Le déroulement des missions principales
 
-Pour chaque mission, relie l’objectif, les étapes, les difficultés et les solutions essayées. L’ordre peut être chronologique lorsqu’une étape conditionne la suivante ; il peut être thématique si plusieurs activités indépendantes doivent être analysées.
+Pour chaque mission, relie l’objectif, les étapes, les difficultés et les solutions essayées. L’ordre peut être chronologique lorsqu’une étape conditionne la suivante ; il peut être thématique si plusieurs activités indépendantes doivent être analysées. Le [journal de stage et de compétences en Word](/modeles/journal-stage.docx), gratuit sans inscription, t’aide à rassembler ces éléments avant de rédiger.
 
 ### 2.3 Les livrables et observations
 
@@ -242,6 +247,8 @@ Présente des propositions reliées à l’analyse. Une recommandation doit rép
 La conclusion reprend la réponse au fil directeur et l’apport du stage. La bibliographie rassemble les sources citées. Les annexes accueillent les éléments complémentaires auxquels le texte renvoie : chaque annexe possède un titre et une fonction identifiable.
 
 Pour un stage d’observation, donne plus de place à la compréhension argumentée des pratiques. Pour une mission de conception, développe la justification des choix et les essais. [Télécharge le plan modifiable en Word](/modeles/plan-rapport-stage.docx), supprime les rubriques inutiles et remplace les indications par tes éléments réels avant de faire valider la structure.
+
+Pour travailler cette structure dans ton espace personnel, découvre les informations à fournir au [module Plan](/services/plan-memoire). Précise qu’il s’agit d’un rapport de stage et ajoute les rubriques imposées par ta formation.
 `
   },
   {
