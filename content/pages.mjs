@@ -119,6 +119,11 @@ Note progressivement les questions qui pourraient être posées : pourquoi ce ch
     lead: 'Un thème donne une direction. Une problématique explique ce qui pose question, pourquoi et dans quel contexte.',
     checklist: ['Un problème décrit sans jugement', 'Une population et un terrain précis', 'Des sources pour situer la question', 'Un objectif auquel la méthode peut répondre'],
     related: ['pfe-ispits', 'guides/questionnaire-recherche-sante', 'guides/recherche-bibliographique-sante'],
+    projectAction: {
+      module: 'plan', service: 'plan-memoire', label: 'Construire mon plan',
+      heading: 'Passe de ta question à un plan de travail.',
+      description: 'Renseigne ta problématique, tes objectifs et les consignes de ton institut pour préparer une structure à discuter avec ton encadrant.'
+    },
     body: `
 ## 1. Distingue le constat, le thème et la question
 
@@ -130,7 +135,7 @@ Le thème pourrait être « les transmissions infirmières ». La question de re
 
 Repère les définitions utilisées, les méthodes des études proches et leurs limites. Pour chaque source, garde une note : contexte, objectif, méthode, résultat utile et limite. Une référence sert à appuyer une idée précise ; elle ne remplace pas ton raisonnement.
 
-Tu peux commencer par [PubMed](https://pubmed.ncbi.nlm.nih.gov/) pour les publications en santé et utiliser les références des articles pertinents pour élargir la recherche. Distingue ce qu'une source montre de ce que tu en déduis. S'il manque des données sur ton terrain, présente cette absence comme une question à explorer, sans inventer de chiffre local.
+Tu peux commencer par [PubMed](https://pubmed.ncbi.nlm.nih.gov/) pour les publications en santé et utiliser les références des articles pertinents pour élargir la recherche. Le [guide de recherche bibliographique en santé](/guides/recherche-bibliographique-sante) t'aide à organiser cette étape. Distingue ce qu'une source montre de ce que tu en déduis. S'il manque des données sur ton terrain, présente cette absence comme une question à explorer, sans inventer de chiffre local.
 
 ## 3. Exemple pédagogique : du thème à la question
 
@@ -160,7 +165,9 @@ La méthode doit rester cohérente avec les mots choisis. Explorer des expérien
 
 Ta question peut-elle recevoir une réponse grâce aux données que tu peux recueillir ? Les concepts importants sont-ils définis ? Les objectifs sont-ils formulés avec des verbes précis ? Le terrain et les autorisations sont-ils compatibles avec ton calendrier ?
 
-Dans ton espace Soutenance Pro, renseigne cette version dans le champ Problématique puis ajoute les remarques de ton encadrant. Demande un plan à partir de ces éléments. La validation du plan dans la plateforme est une action de suivi ; elle ne constitue pas une validation par ton institut.
+Tu peux d'abord [télécharger la fiche de cadrage en Word](/modeles/fiche-cadrage-memoire.docx) pour rassembler ta question, tes objectifs et ta méthode. Elle est gratuite, sans inscription.
+
+Dans ton espace Soutenance Pro, renseigne cette version dans le champ Problématique puis ajoute les remarques de ton encadrant. Le [module Plan](/services/plan-memoire) utilise ces éléments pour proposer une structure. La validation du plan dans la plateforme est une action de suivi ; elle ne constitue pas une validation par ton institut.
 `
   },
   {
@@ -171,12 +178,17 @@ Dans ton espace Soutenance Pro, renseigne cette version dans le champ Problémat
     lead: 'Commence par ce que tu veux étudier. Le nombre de questions vient ensuite.',
     checklist: ['Une question rattachée à un objectif', 'Une seule idée par formulation', 'Des choix de réponse cohérents', 'Un prétest et un codage prévus'],
     related: ['guides/problematique-pfe-infirmier', 'guides/analyse-spss-pfe-sante', 'pfe-ispits'],
+    projectAction: {
+      module: 'questionnaire', service: 'questionnaire', label: 'Préparer mon questionnaire',
+      heading: 'Prépare les questions de ton propre projet.',
+      description: 'Ajoute ta population, tes objectifs et les dimensions étudiées pour obtenir une proposition de questionnaire à relire et à tester.'
+    },
     body: `
 ## Pars d'une grille, avant le formulaire
 
 Un questionnaire devient difficile à exploiter quand ses questions ont été ajoutées au fil des idées. Prépare d'abord une grille avec quatre colonnes : objectif, information nécessaire, question prévue et traitement envisagé. Si une question ne correspond à aucun objectif, examine son utilité avant de la conserver.
 
-Le public visé compte également. Le vocabulaire, le support et le temps de réponse doivent convenir aux participants. Un questionnaire destiné aux étudiants ne se formule pas nécessairement comme un questionnaire destiné aux professionnels ou aux patients.
+Le public visé compte également. Le vocabulaire, le support et le temps de réponse doivent convenir aux participants. Un questionnaire destiné aux étudiants ne se formule pas nécessairement comme un questionnaire destiné aux professionnels ou aux patients. Si ton objectif est d'explorer une expérience en profondeur, consulte aussi le [guide de préparation des entretiens](/guides/guide-entretien) avant de choisir le mode de recueil.
 
 ## Exemple de grille de préparation
 
@@ -204,13 +216,13 @@ Avant la diffusion, fais un prétest dans les conditions prévues. Repère les f
 
 ## Prévois le codage et les données manquantes
 
-Donne un nom court à chaque variable et conserve le libellé complet dans un dictionnaire. Définis la correspondance entre les catégories et les codes. Ne confonds pas une absence de réponse avec une réponse « non » ou une valeur zéro.
+Donne un nom court à chaque variable et conserve le libellé complet dans un dictionnaire. Définis la correspondance entre les catégories et les codes. Ne confonds pas une absence de réponse avec une réponse « non » ou une valeur zéro. Le [guide de préparation d'une analyse SPSS](/guides/analyse-spss-pfe-sante) explique comment vérifier ce fichier avant les traitements.
 
 Pour une question à choix multiples, précise comment les réponses seront enregistrées et quel dénominateur sera utilisé dans les tableaux. Les pourcentages peuvent dépasser 100 % lorsqu'une personne peut choisir plusieurs réponses : le lecteur doit le comprendre dans le titre ou la note du tableau.
 
 ## Ce que le module Questionnaire peut faire
 
-Renseigne ton objectif, la population et les dimensions étudiées dans ton projet. Le module prépare une proposition modifiable en Word, que tu peux relire et présenter à ton encadrant. Il ne transforme pas une proposition en échelle validée. Pour utiliser un instrument existant, consulte sa publication d'origine, les conditions d'utilisation et les éléments de validation adaptés à ton contexte.
+Renseigne ton objectif, la population et les dimensions étudiées dans ton projet. Le [module Questionnaire](/services/questionnaire) prépare une proposition modifiable en Word, que tu peux relire et présenter à ton encadrant. Il ne transforme pas une proposition en échelle validée. Pour utiliser un instrument existant, consulte sa publication d'origine, les conditions d'utilisation et les éléments de validation adaptés à ton contexte.
 `
   },
   {
@@ -221,6 +233,11 @@ Renseigne ton objectif, la population et les dimensions étudiées dans ton proj
     lead: 'Un tableau clair commence par des données cohérentes, une question précise et un choix d’analyse justifié.',
     checklist: ['Le fichier original conservé', 'Un dictionnaire des variables', 'Les valeurs manquantes identifiées', 'Les objectifs et le plan d’analyse'],
     related: ['guides/questionnaire-recherche-sante', 'these-medecine', 'guides/presentation-soutenance-pfe'],
+    projectAction: {
+      module: 'dataanalysis', service: 'analyse-donnees', label: 'Interpréter mes résultats',
+      heading: 'Prépare l’interprétation de tes sorties.',
+      description: 'Apporte tes tableaux réels, leurs unités et ta question de recherche pour travailler leur lecture. Les calculs restent à exécuter et à vérifier dans ton logiciel.'
+    },
     body: `
 ## 1. Garde l'original et prépare une copie de travail
 
@@ -239,13 +256,13 @@ Dans un fichier simple, chaque ligne représente une observation et chaque colon
 | Valeurs manquantes | Absence de réponse identifiée séparément |
 | Contrôle | Valeur compatible avec la définition et le contexte |
 
-Dans SPSS, vérifie les propriétés des variables importées et les étiquettes des catégories. Un code numérique ne suffit pas à faire d'une catégorie une mesure quantitative. Par exemple, coder plusieurs filières par des nombres ne donne aucun sens à la moyenne de ces codes.
+Dans SPSS, vérifie les propriétés des variables importées et les étiquettes des catégories. Un code numérique ne suffit pas à faire d'une catégorie une mesure quantitative. Par exemple, coder plusieurs filières par des nombres ne donne aucun sens à la moyenne de ces codes. Si les données viennent d'un formulaire, reprends la [grille de codage du questionnaire](/guides/questionnaire-recherche-sante) pour retrouver le sens de chaque réponse.
 
 ## 3. Commence par décrire les données
 
 Contrôle les effectifs, les valeurs inattendues et les réponses manquantes. Une valeur extrême n'est pas automatiquement une erreur : retourne à sa définition et, lorsque c'est possible, à la source autorisée. Documente ta décision.
 
-Pour une variable qualitative, présente les effectifs et les proportions avec leur dénominateur. Pour une variable quantitative, choisis des résumés et des représentations qui permettent de comprendre sa distribution. La moyenne seule ne montre ni la dispersion ni la présence de valeurs particulières.
+Pour une variable qualitative, présente les effectifs et les proportions avec leur dénominateur. Pour une variable quantitative, choisis des résumés et des représentations qui permettent de comprendre sa distribution. La moyenne seule ne montre ni la dispersion ni la présence de valeurs particulières. Le [guide des données quantitatives](/guides/donnees-quantitatives) complète cette préparation.
 
 ## 4. Choisis l'analyse à partir de la question
 
@@ -263,7 +280,7 @@ Dans le texte, réponds à l'objectif au lieu de recopier chaque ligne du tablea
 
 ## La place de Soutenance Pro
 
-Le module Analyse aide à préparer une démarche et à commenter les sorties que tu lui fournis. Il ne lance pas SPSS et ne produit pas automatiquement un fichier natif SPSS .sav ou .spv. Les calculs doivent être exécutés et vérifiés dans ton logiciel d'analyse. N'utilise pas des valeurs proposées par l'IA comme résultats réels et retire les identifiants personnels avant de partager un extrait.
+Le [module Analyse](/services/analyse-donnees) aide à préparer une démarche et à commenter les sorties que tu lui fournis. Il ne lance pas SPSS et ne produit pas automatiquement un fichier natif SPSS .sav ou .spv. Les calculs doivent être exécutés et vérifiés dans ton logiciel d'analyse. N'utilise pas des valeurs proposées par l'IA comme résultats réels et retire les identifiants personnels avant de partager un extrait.
 `
   },
   {
@@ -274,12 +291,17 @@ Le module Analyse aide à préparer une démarche et à commenter les sorties qu
     lead: 'Ton diaporama guide l’oral. Il aide le jury à comprendre ta question, ta méthode et ce que ton travail apporte.',
     checklist: ['La durée imposée par le jury', 'Une idée principale par diapositive', 'Des tableaux lisibles', 'Une répétition chronométrée'],
     related: ['pfe-ispits', 'these-medecine', 'guides/analyse-spss-pfe-sante'],
+    projectAction: {
+      module: 'ppt', service: 'presentation', label: 'Préparer mes diapositives',
+      heading: 'Transforme ton fil conducteur en présentation.',
+      description: 'Rassemble ta question, ta méthode, tes résultats et la durée imposée pour préparer un PowerPoint modifiable avec des notes orales.'
+    },
     body: `
 ## Construis le fil avant le design
 
 Commence par écrire en quelques phrases ce que le jury doit retenir : le problème étudié, l'objectif, la méthode, les principaux résultats et la conclusion. Ce fil t'aide à décider ce qui mérite une diapositive. Le mémoire complet reste disponible pour les détails.
 
-Le nombre de diapositives dépend du contenu et des consignes. Dix minutes ne signifient pas automatiquement dix diapositives. Un graphique simple et une méthode complexe ne demandent pas le même temps d'explication.
+Le nombre de diapositives dépend du contenu et des consignes. Dix minutes ne signifient pas automatiquement dix diapositives. Un graphique simple et une méthode complexe ne demandent pas le même temps d'explication. Utilise le [plan de présentation à compléter en Word](/modeles/plan-presentation-soutenance.docx) pour préparer le message et la preuve de chaque diapositive ; le téléchargement est gratuit, sans inscription.
 
 ## Un exemple de répartition pour dix minutes
 
@@ -304,17 +326,17 @@ Pour un résultat qualitatif, un thème expliqué et un extrait attribué selon 
 
 Les diapositives n'ont pas besoin de contenir toutes tes phrases. Dans tes notes, prévois une explication courte et une transition : « Pour répondre à cette question, nous avons… », puis « Cette méthode nous a permis d'observer… ». Remplace ces formulations par des phrases naturelles qui correspondent exactement à ton étude.
 
-Pendant la répétition, note les passages où tu accélères ou où tu dois expliquer un terme. Réduis les détails secondaires avant de réduire la taille des caractères. Teste le fichier sur l'écran ou le vidéoprojecteur disponible, et garde une copie PDF si les consignes et ton matériel le permettent.
+Pendant la répétition, note les passages où tu accélères ou où tu dois expliquer un terme. Réduis les détails secondaires avant de réduire la taille des caractères. Teste le fichier sur l'écran ou le vidéoprojecteur disponible, et garde une copie PDF si les consignes et ton matériel le permettent. La [checklist de soutenance gratuite](/modeles/checklist-soutenance.docx) permet de garder une trace des derniers points à vérifier.
 
 ## Anticipe les questions du jury
 
 Prépare une réponse aux choix les plus importants : pourquoi ce terrain ? Pourquoi cet outil de recueil ? Comment as-tu traité les données manquantes ? Quelle est la principale limite ? Que ferais-tu autrement pour poursuivre ce travail ?
 
-Une réponse peut reconnaître une limite sans affaiblir tout le projet. Explique ce que tes données permettent d'affirmer et ce qui reste incertain. Si tu ne connais pas la réponse, dis-le clairement et précise comment tu chercherais à la vérifier.
+Une réponse peut reconnaître une limite sans affaiblir tout le projet. Explique ce que tes données permettent d'affirmer et ce qui reste incertain. Si tu ne connais pas la réponse, dis-le clairement et précise comment tu chercherais à la vérifier. Poursuis l'entraînement avec le [guide pour répondre aux questions du jury](/guides/repondre-jury).
 
 ## Utiliser le module Présentation
 
-Dans Soutenance Pro, renseigne le sujet et les consignes, puis fournis les éléments utiles au module Présentation. Exporte le résultat en PowerPoint modifiable et contrôle chaque chiffre, référence et titre. Le module Préparation à la soutenance peut ensuite proposer des questions à travailler. Le support généré reste un brouillon à adapter à ta durée, à tes données et aux attentes du jury.
+Dans Soutenance Pro, renseigne le sujet et les consignes, puis fournis les éléments utiles au [module Présentation](/services/presentation). Exporte le résultat en PowerPoint modifiable et contrôle chaque chiffre, référence et titre. Le module Préparation à la soutenance peut ensuite proposer des questions à travailler. Le support généré reste un brouillon à adapter à ta durée, à tes données et aux attentes du jury.
 `
   },
   {
