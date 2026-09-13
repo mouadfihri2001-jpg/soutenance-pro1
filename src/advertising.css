@@ -1,0 +1,15 @@
+.guide-ad {
+  margin: 3rem 0;
+  padding: 1.5rem 0;
+  border-block: 1px solid #d5e1d8;
+  clear: both;
+}
+.guide-ad-label {
+  display: block;
+  margin-bottom: .75rem;
+  color: #53675d;
+  font: 400 .75rem/1.5 system-ui, sans-serif;
+  text-align: center;
+}
+.guide-ad .adsbygoogle { min-height: 250px; }
+.guide-ad:has(.adsbygoogle[data-ad-status="unfilled"]) { display: none; }

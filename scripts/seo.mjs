@@ -1,13 +1,14 @@
 import { marked } from 'marked';
 import { pages } from '../content/catalog.mjs';
 import { contactStyles, renderInstagramContact } from '../src/contact.js';
+import { guideAdvertising } from './advertising.mjs';
 
 export const escapeHtml = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const json = value => JSON.stringify(value).replace(/</g, '\\u003c');
 const brand = 'Soutenance Pro';
 const logo = '<img class="brand-logo" src="/assets/brand-logo.jpg" width="76" height="76" alt=""><span>Soutenance <strong>Pro</strong></span>';
 const signup = intent => ['ispits','medecine'].includes(intent) ? `/?parcours=${intent}#inscription` : '/#inscription';
-export const publicPaths = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/etablissements', ...pages.map(p => '/' + p.slug)];
+export const publicPaths = ['/', '/guides', '/bibliotheque', '/methode-editoriale', '/confidentialite', '/etablissements', ...pages.map(p => '/' + p.slug)];
 
 export function metadata({ origin, production, path = '/', title, description, article = false, breadcrumbs = [], updatedAt, collection }) {
   const url = origin + path;
@@ -25,17 +26,17 @@ export function metadata({ origin, production, path = '/', title, description, a
 <script type="application/ld+json">${json({'@context':'https://schema.org','@graph':graph})}</script>`;
 }
 
-export function layout({title, description, meta, content, intent='general', article=false}) {
+export function layout({title, description, meta, content, intent='general', article=false, advertisingHead=''}) {
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escapeHtml(title)} | Soutenance Pro</title><meta name="description" content="${escapeHtml(description)}">
 <meta name="theme-color" content="#004d35"><meta property="og:type" content="${article?'article':'website'}"><meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${brand}"><meta property="og:title" content="${escapeHtml(title)}"><meta property="og:description" content="${escapeHtml(description)}">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escapeHtml(title)}"><meta name="twitter:description" content="${escapeHtml(description)}">
-${meta}<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/research.css"><link rel="stylesheet" href="/assets/discovery.css"><link rel="stylesheet" href="/assets/public-polish.css"><link rel="stylesheet" href="/assets/library-polish.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
+${meta}${advertisingHead}<link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/research.css"><link rel="stylesheet" href="/assets/discovery.css"><link rel="stylesheet" href="/assets/public-polish.css"><link rel="stylesheet" href="/assets/library-polish.css"><style id="sp-contact-styles">${contactStyles}</style></head><body class="editorial">
 <a class="skip-link" href="#contenu">Aller au contenu</a>
 <header class="site-header"><a class="site-brand" href="/" aria-label="Soutenance Pro, accueil">${logo}</a><nav aria-label="Navigation principale"><a href="/bibliotheque">Bibliothèque</a><a href="/guides">Guides</a><a href="/outils">Outils</a><a href="/services">Mon projet</a><a href="/etablissements">Établissements</a><a href="/tarifs">Tarifs</a></nav><a class="site-button compact" href="${signup(intent)}">Essai gratuit</a></header>
 ${content}
-<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec une école ou une université.</p>${renderInstagramContact()}</div><nav aria-label="Navigation de pied de page"><a href="/bibliotheque">Bibliothèque gratuite</a><a href="/etablissements">Consignes des établissements</a><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/memoire">Préparer un mémoire</a><a href="/guides">Par où commencer ?</a><a href="/recherche">Moteurs de recherche</a><a href="/outils">Outils gratuits</a><a href="/services">Modules et services</a><a href="/methode-editoriale">À propos et méthode</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro</p></footer>${renderInstagramContact({floating:true})}<script src="/assets/public-motion.js" type="module"></script></body></html>`;
+<footer class="site-footer"><div><a class="site-brand" href="/">${logo}</a><p>Un espace pour ton projet, tes sources et ta soutenance.</p><p class="fine">Un service indépendant, sans affiliation revendiquée avec une école ou une université.</p>${renderInstagramContact()}</div><nav aria-label="Navigation de pied de page"><a href="/bibliotheque">Bibliothèque gratuite</a><a href="/etablissements">Consignes des établissements</a><a href="/pfe-ispits">PFE ISPITS</a><a href="/these-medecine">Thèse de médecine</a><a href="/memoire">Préparer un mémoire</a><a href="/guides">Par où commencer ?</a><a href="/recherche">Moteurs de recherche</a><a href="/outils">Outils gratuits</a><a href="/services">Modules et services</a><a href="/methode-editoriale">À propos et méthode</a><a href="/confidentialite">Confidentialité et cookies</a><a href="/#pricing">Offres et limites</a><a href="/#connexion">Se connecter</a></nav><p class="fine">© 2026 Soutenance Pro</p></footer>${renderInstagramContact({floating:true})}<script src="/assets/public-motion.js" type="module"></script></body></html>`;
 }
 
 const card = p => `<a class="guide-card" href="/${p.slug}"><span class="eyebrow">${escapeHtml(p.category)}</span><h3>${escapeHtml(p.heading)}</h3><p>${escapeHtml(p.lead)}</p><span class="card-link">Lire le guide <span aria-hidden="true">→</span></span></a>`;
@@ -60,6 +61,7 @@ function renderGuideDirectory() {
 }
 
 export function renderPage(page, context) {
+  const advertising=guideAdvertising(page,context);
   let headingIndex=0; const headings=[];
   const renderer = new marked.Renderer();
   renderer.heading = ({depth,text,tokens}) => {
@@ -80,10 +82,10 @@ export function renderPage(page, context) {
   const projectUrl=action ? `/?${actionQuery}#inscription` : signup(page.intent);
   const content=`<main id="contenu"><section class="article-hero"><div class="article-hero-inner"><nav class="breadcrumbs" aria-label="Fil d’Ariane">${crumbs.map((b,i)=>i===crumbs.length-1?`<span aria-current="page">${escapeHtml(b.name)}</span>`:`<a href="${b.path}">${escapeHtml(b.name)}</a><span aria-hidden="true">/</span>`).join('')}</nav>
 <span class="eyebrow">${escapeHtml(page.category)} · ${page.kind==='guide'?'Guide pratique':'Parcours étudiant'}</span><h1>${escapeHtml(page.heading)}</h1><p class="article-lead">${escapeHtml(page.lead)}</p><div class="hero-actions"><a class="site-button light" href="${escapeHtml(projectUrl)}">${action ? escapeHtml(action.label) : 'Préparer mon projet gratuitement'}</a><a class="text-link" href="#article">Lire le guide</a></div><p class="fine">Publication : <a class="text-link" href="/methode-editoriale">Soutenance Pro</a> · ${minutes} min de lecture${page.updatedAt ? ` · Mis à jour le <time datetime="${escapeHtml(page.updatedAt)}">${escapeHtml(new Date(page.updatedAt+'T12:00:00Z').toLocaleDateString('fr-FR',{timeZone:'UTC'}))}</time>` : ''} · À adapter aux consignes de ton établissement</p></div></section>
-<div class="article-layout"><aside class="article-aside"><div class="aside-card"><span class="eyebrow">Avant de commencer</span><ul class="checklist">${page.checklist.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div><nav class="contents" aria-label="Sommaire"><h2>Dans ce guide</h2>${headings.map(h=>`<a href="#${h.id}">${escapeHtml(h.label)}</a>`).join('')}</nav></aside><article id="article" class="article-body">${body}<div class="article-end"><p>Ce guide propose une méthode de travail académique. Vérifie les consignes de ton encadrant, les références utilisées et les résultats avant tout dépôt.</p><a href="/guides">Explorer les autres guides</a></div></article></div>
+<div class="article-layout"><aside class="article-aside"><div class="aside-card"><span class="eyebrow">Avant de commencer</span><ul class="checklist">${page.checklist.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div><nav class="contents" aria-label="Sommaire"><h2>Dans ce guide</h2>${headings.map(h=>`<a href="#${h.id}">${escapeHtml(h.label)}</a>`).join('')}</nav></aside><article id="article" class="article-body">${body}<div class="article-end"><p>Ce guide propose une méthode de travail académique. Vérifie les consignes de ton encadrant, les références utilisées et les résultats avant tout dépôt.</p><a href="/guides">Explorer les autres guides</a></div>${advertising.body}</article></div>
 <section class="related-section"><div class="section-heading"><span class="eyebrow">La prochaine étape</span><h2>Continue ton projet.</h2></div><div class="guide-grid">${related.map(card).join('')}</div></section>
 <section class="bottom-cta"><div><span class="eyebrow">Ton espace personnel</span><h2>${action ? escapeHtml(action.heading) : 'Du guide à ton propre projet.'}</h2><p>${action ? escapeHtml(action.description) : 'Rassemble tes consignes, prépare ton plan et garde tes sources.'} Un projet et trois générations par mois avec l’offre gratuite.</p></div><div class="library-project-actions"><a class="site-button" href="${escapeHtml(projectUrl)}">${action ? escapeHtml(action.label) : 'Commencer mon projet gratuitement'}</a>${action ? `<a href="/services/${escapeHtml(action.service)}">Voir ce que prépare ce module</a>` : ''}<a href="/tarifs">Comparer les offres</a></div></section></main>`;
-  return layout({title:page.title,description:page.description,intent:page.intent,article:page.kind==='guide',meta:metadata({...context,path:'/'+page.slug,title:page.title,description:page.description,article:page.kind==='guide',breadcrumbs:crumbs,updatedAt:page.updatedAt}),content});
+  return layout({title:page.title,description:page.description,intent:page.intent,article:page.kind==='guide',advertisingHead:advertising.head,meta:metadata({...context,path:'/'+page.slug,title:page.title,description:page.description,article:page.kind==='guide',breadcrumbs:crumbs,updatedAt:page.updatedAt}),content});
 }
 
 export function renderGuides(context) {
