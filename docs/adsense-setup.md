@@ -1,21 +1,21 @@
 # AdSense : préparation et activation
 
-État au 13 septembre 2026 : intégration préparée, **désactivée**. Aucun identifiant éditeur n’a été fourni, aucun compte AdSense connecté et aucune approbation ou recette publicitaire constatée. Cette configuration ne change ni les offres ni les accès des clients.
+État au 13 septembre 2026 : le propriétaire a fourni `ca-pub-6206473587564742` depuis son écran AdSense. La configuration publique `config/advertising.mjs` utilise cet identifiant en mode **vérification uniquement**. La validation dans AdSense et l’approbation du site restent à effectuer ; aucune annonce ni recette publicitaire n’est constatée. Cette configuration ne change ni les offres ni les accès des clients.
 
 ## 1. Connecter le vrai compte et demander l’examen
 
 Dans le compte du propriétaire sur [Google AdSense](https://adsense.google.com/start/), ajouter `soutenancepro.com` à **Sites** et compléter les informations demandées par Google. Copier le véritable identifiant `ca-pub-…` depuis le code fourni pour ce site. Cet identifiant est public ; aucun mot de passe Google n’est nécessaire pour modifier le site.
 
-Définir en environnement **Production** :
+Le build Production utilise les valeurs du fichier de configuration public. Les variables d’environnement suivantes peuvent les remplacer explicitement :
 
 ```dotenv
 ADSENSE_MODE=verify
-ADSENSE_CLIENT_ID=
+ADSENSE_CLIENT_ID=ca-pub-6206473587564742
 ```
 
-Remplir la deuxième valeur avec l’identifiant exact du compte, puis faire un nouveau build Production. Le build ajoute la balise `google-adsense-account` à l’accueil et crée `/ads.txt` avec le même numéro éditeur. Il ne charge aucun script publicitaire. Le mode `verify` permet donc la vérification sans activer d’annonces.
+Un nouveau build Production ajoute la balise `google-adsense-account` à l’accueil et crée `/ads.txt` avec le même numéro éditeur. Il ne charge aucun script publicitaire. Un éventuel réglage explicite `ADSENSE_MODE=off` reste prioritaire : le retirer ou le remplacer par `verify` avant la validation. Les Preview restent désactivées dans tous les cas.
 
-Dans AdSense, confirmer la vérification puis demander l’examen du site. Conserver les enregistrements Search Console existants : ils concernent un autre service. Une validation Search Console ne vaut pas approbation AdSense.
+Dans l’écran AdSense fourni par le propriétaire, sélectionner **Balise Meta** (le code de script n’est pas la méthode installée), cocher la confirmation puis cliquer sur **Valider**. Demander ensuite l’examen du site lorsque Google le propose. Conserver les enregistrements Search Console existants : ils concernent un autre service. Une validation Search Console ne vaut pas approbation AdSense.
 
 ## 2. Vérifier l’offre réelle et les informations publiques
 
@@ -46,7 +46,7 @@ Le script AdSense sert aussi le message européen publié depuis AdSense ; aucun
 - Un emplacement « Publicité » en fin d’article sur les **35 guides originaux**, après le contenu et séparé des boutons du service. Les règles et décisions de Google restent applicables à chacun.
 - Aucun chargement publicitaire sur l’accueil qui héberge aussi l’inscription, l’espace personnel et les retours de paiement ; aucun sur les tarifs, outils, notices HAL, annuaires, recherche, page de confidentialité ou page 404.
 - Ni annonce, ni balise de propriété, ni `ads.txt` dans les builds Preview, même s’ils héritent des variables de Production.
-- Sans configuration, aucun appel publicitaire, aucun emplacement vide et aucun faux `ads.txt`.
+- En mode `verify`, aucun appel publicitaire ni emplacement vide. Le fichier `ads.txt` utilise uniquement l’identifiant fourni par le propriétaire.
 - Les réglages ne nécessitent aucun nouveau fournisseur IA, aucune génération et aucune dépendance supplémentaire.
 - Le serveur sert le fichier `ads.txt` comme texte ; il ne renvoie pas la page de l’application à cette adresse.
 
