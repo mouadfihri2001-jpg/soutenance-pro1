@@ -1,18 +1,20 @@
+import { advertisingDefaults } from '../config/advertising.mjs';
+
 // Publisher identifiers are public, but must come from the owner's AdSense account.
 // Preview builds never verify ownership or request ads, even with inherited settings.
 export function advertisingConfiguration(env = process.env) {
   const off = { mode: 'off', clientId: '', slotId: '' };
   if (env.VERCEL_ENV !== 'production') return off;
-  const mode = env.ADSENSE_MODE?.trim() || 'off';
+  const mode = env.ADSENSE_MODE?.trim() || advertisingDefaults.mode;
   if (!['off', 'verify', 'ads'].includes(mode)) {
     throw new Error('ADSENSE_MODE must be off, verify or ads.');
   }
   if (mode === 'off') return off;
-  const clientId = env.ADSENSE_CLIENT_ID?.trim() || '';
+  const clientId = (env.ADSENSE_CLIENT_ID ?? advertisingDefaults.clientId).trim();
   if (!/^ca-pub-\d{16}$/.test(clientId)) {
     throw new Error('ADSENSE_CLIENT_ID must be the publisher ID supplied by AdSense.');
   }
-  const slotId = mode === 'ads' ? env.ADSENSE_GUIDE_SLOT_ID?.trim() || '' : '';
+  const slotId = mode === 'ads' ? (env.ADSENSE_GUIDE_SLOT_ID ?? advertisingDefaults.slotId).trim() : '';
   if (mode === 'ads' && !/^\d{1,20}$/.test(slotId)) {
     throw new Error('ADSENSE_GUIDE_SLOT_ID is required for ads mode.');
   }

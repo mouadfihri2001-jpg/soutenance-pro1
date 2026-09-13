@@ -1,12 +1,22 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { advertisingConfiguration, guideAdvertising } from '../scripts/advertising.mjs';
+import { advertisingConfiguration, advertisingVerification, adsTxt, guideAdvertising } from '../scripts/advertising.mjs';
 
 // Nonfunctional fixture for offline rendering, never a production account.
 const configured={VERCEL_ENV:'production',ADSENSE_MODE:'ads',ADSENSE_CLIENT_ID:'ca-pub-0000000000000000',ADSENSE_GUIDE_SLOT_ID:'0000000000'};
 
+test('the supplied publisher is verified by default without enabling ads; explicit off takes precedence',()=>{
+  const config=advertisingConfiguration({VERCEL_ENV:'production'});
+  assert.deepEqual(config,{mode:'verify',clientId:'ca-pub-6206473587564742',slotId:''});
+  assert.equal(advertisingVerification(config),'<meta name="google-adsense-account" content="ca-pub-6206473587564742">');
+  assert.equal(adsTxt(config),'google.com, pub-6206473587564742, DIRECT, f08c47fec0942fa0\n');
+  assert.deepEqual(guideAdvertising({kind:'guide',slug:'guides/fiche-lecture'},{production:true,advertising:config}),{head:'',body:''});
+  assert.equal(advertisingConfiguration({VERCEL_ENV:'production',ADSENSE_MODE:'off'}).mode,'off');
+  assert.equal(advertisingConfiguration({VERCEL_ENV:'preview'}).mode,'off');
+  assert.throws(()=>advertisingConfiguration({VERCEL_ENV:'production',ADSENSE_MODE:'ads'}),/ADSENSE_GUIDE_SLOT_ID/);
+});
+
 test('ads require an explicit valid production configuration; inherited preview settings are inactive',()=>{
-  assert.equal(advertisingConfiguration({VERCEL_ENV:'production'}).mode,'off');
   assert.equal(advertisingConfiguration({...configured,VERCEL_ENV:'preview'}).mode,'off');
   for(const overrides of [
     {ADSENSE_MODE:'true'}, {ADSENSE_CLIENT_ID:''},
