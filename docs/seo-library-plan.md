@@ -53,6 +53,8 @@ Les impressions Google ne sont pas des pages vues et ne sont pas des personnes u
 
 ## Conditions de qualité et AdSense
 
+Préparation du 13 septembre 2026 : voir [le parcours de configuration AdSense](adsense-setup.md). La page de confidentialité et les modes de vérification/diffusion sont préparés ; le mode par défaut reste désactivé en l’absence de compte éditeur fourni. Le sitemap passe de 88 à 89 URL avec cette page ; cela ne décrit pas un nombre de pages indexées.
+
 Google recommande un contenu original, complet, utile, attribué honnêtement et appuyé par des sources. Il ne fixe pas de longueur ou de nombre d’articles garantissant un classement. Éviter les pages presque identiques par ville, le remplissage de mots-clés et la reproduction de documents sans apport original.
 
 Les règles Google pour les éditeurs interdisent notamment les services de rédaction de travaux qui aident à tromper autrui. Le site comprend des outils de génération académique : l’ajout d’une bibliothèque pédagogique ne prouve donc pas son admissibilité globale à AdSense. Une présentation reformulée ne remplace pas la conformité réelle du service. Aucun script d’annonce n’est activé ni aucune approbation revendiquée.

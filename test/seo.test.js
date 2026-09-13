@@ -18,7 +18,7 @@ const read = path => readFileSync(root + 'dist/' + path, 'utf8');
 // Nonfunctional fixtures for offline builds. These are not service credentials.
 const fixtures={SUPABASE_URL:'https://example.supabase.co',SUPABASE_ANON_KEY:'sb_publishable_offline-test',SUPABASE_SERVICE_ROLE_KEY:'sb_secret_offline-test',ANTHROPIC_API_KEY:'offline-provider-test'};
 const build = (environment, overrides={}) => execFileSync(process.execPath, ['scripts/build.mjs'], {
-  cwd:root, env:{...process.env,...fixtures,VERCEL_ENV:environment,SITE_URL:'https://soutenancepro.com',...overrides}, stdio:'pipe'
+  cwd:root, env:{...process.env,...fixtures,ADSENSE_MODE:'off',VERCEL_ENV:environment,SITE_URL:'https://soutenancepro.com',...overrides}, stdio:'pipe'
 });
 
 test('production builds stop on missing configuration or a misplaced secret without logging its value',()=>{
@@ -33,13 +33,38 @@ test('production builds stop on missing configuration or a misplaced secret with
   }
 });
 
+test('AdSense verification never requests ads, and active ads stay confined to original guides',()=>{
+  const advertising={ADSENSE_MODE:'verify',ADSENSE_CLIENT_ID:'ca-pub-0000000000000000',ADSENSE_GUIDE_SLOT_ID:'0000000000'};
+  build('production',advertising);
+  assert.match(read('index.html'),/<meta name="google-adsense-account" content="ca-pub-0000000000000000">/);
+  assert.equal(read('ads.txt'),'google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0\n');
+  for(const path of expected)assert.doesNotMatch(readFileSync(file(path),'utf8'),/adsbygoogle|fundingchoicesmessages/,'no ad requests during verification: '+path);
+
+  build('production',{...advertising,ADSENSE_MODE:'ads'});
+  const eligible=pages.filter(page=>page.kind==='guide'&&page.slug.startsWith('guides/')).map(page=>'/'+page.slug);
+  assert.equal(eligible.length,35,'review newly added guides before changing the ad perimeter');
+  for(const path of [...expected,'/404']){
+    const html=readFileSync(file(path),'utf8');
+    if(eligible.includes(path)){
+      assert.equal([...html.matchAll(/<ins class="adsbygoogle"/g)].length,1,path);
+      assert.ok(html.indexOf('class="guide-ad"')>html.indexOf('class="article-end"'),'ads follow the full article: '+path);
+      assert.match(html,/href="\/confidentialite"/);
+    }else{
+      assert.doesNotMatch(html,/adsbygoogle|fundingchoicesmessages/,'no ad scripts in account, policy, directory or tool pages: '+path);
+    }
+  }
+});
+
 test('preview builds stay out of search; production exposes the library and all public pages with working links', () => {
-  build('preview');
+  build('preview',{ADSENSE_MODE:'ads',ADSENSE_CLIENT_ID:'ca-pub-0000000000000000',ADSENSE_GUIDE_SLOT_ID:'0000000000'});
+  assert.ok(!existsSync(root+'dist/ads.txt'),'Preview never contains ads.txt');
+  for(const path of expected)assert.doesNotMatch(readFileSync(file(path),'utf8'),/adsbygoogle|name="google-adsense-account"/,'no ads in Preview: '+path);
   for (const path of expected) assert.match(readFileSync(file(path),'utf8'), /name="robots" content="noindex,follow"/, path);
   assert.doesNotMatch(read('sitemap.xml'), /<loc>/);
   assert.doesNotMatch(read('robots.txt'), /Disallow:\s*\/$/m);
 
   build('production');
+  assert.ok(!existsSync(root+'dist/ads.txt'),'unconfigured Production never publishes a fictitious publisher');
   const locations = [...read('sitemap.xml').matchAll(/<loc>(.*?)<\/loc>/g)].map(x=>x[1]);
   assert.deepEqual(locations,indexable.map(path=>'https://soutenancepro.com'+path));
   assert.match(read('robots.txt'), /Sitemap: https:\/\/soutenancepro\.com\/sitemap.xml/);

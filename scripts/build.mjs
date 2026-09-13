@@ -13,6 +13,8 @@ import { renderServices, renderService, renderResearch, renderTools, renderTool,
 import { renderHomeDiscovery } from './discovery.mjs';
 import { renderProductDemo, renderStartHub } from './start-hub.mjs';
 import { assertProductionConfiguration } from '../server/runtime-config.js';
+import { advertisingConfiguration, advertisingVerification, adsTxt } from './advertising.mjs';
+import { renderPrivacy } from './privacy.mjs';
 assertProductionConfiguration();
 const production = process.env.VERCEL_ENV === 'production';
 const site = new URL(process.env.SITE_URL?.trim() || 'https://soutenancepro.com');
@@ -20,12 +22,13 @@ if (site.protocol !== 'https:' || site.username || site.password || site.pathnam
   throw new Error('SITE_URL must be the public HTTPS origin, without credentials, path, query or fragment.');
 }
 const canonical = site.origin + '/';
-const context={origin:site.origin,production};
+const advertising=advertisingConfiguration();
+const context={origin:site.origin,production,advertising};
 const html = await readFile('index.html','utf8');
 const title=html.match(/<title>([^<]+)<\/title>/)?.[1];
 const description=html.match(/<meta name="description" content="([^"]+)"/)?.[1];
 if (!title || !description) throw new Error('The public homepage must define its title and description.');
-const seo=metadata({...context,title,description});
+const seo=metadata({...context,title,description})+advertisingVerification(advertising);
 if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadata insertion point is missing.');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
@@ -34,6 +37,7 @@ for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname
 await writeFile('dist/guides.html',renderGuides(context));
 await writeFile('dist/bibliotheque.html',renderLibrary(context));
 await writeFile('dist/methode-editoriale.html',renderEditorialMethod(context));
+await writeFile('dist/confidentialite.html',renderPrivacy(context));
 await writeFile('dist/etablissements.html',renderInstitutions(context));
 await writeFile('dist/404.html',renderNotFound(context));
 async function page(path,html){const target='dist'+path+'.html';await mkdir(dirname(target),{recursive:true});await writeFile(target,html);}
@@ -48,6 +52,7 @@ await writeFile('dist/assets/catalogue-index.json',JSON.stringify(searchEntries(
 await buildTemplates('dist/modeles');
 // Allow crawlers to read the noindex meta tag on previews. Disallow would hide it.
 await writeFile('dist/robots.txt',`User-agent: *\nAllow: /\n${production ? `Sitemap: ${canonical}sitemap.xml\n` : ''}`);
+if(advertising.mode!=='off')await writeFile('dist/ads.txt',adsTxt(advertising));
 const indexPaths=[...publicPaths,...documentIndexPaths,...toolsPublicPaths];
 await writeFile('dist/sitemap.xml',`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${production ? indexPaths.map(path=>`\n  <url><loc>${escapeHtml(site.origin+path)}</loc></url>`).join('')+'\n' : ''}</urlset>\n`);
 await copyFile('src/app.css', 'dist/assets/app.css');
@@ -59,6 +64,7 @@ await copyFile('src/public-polish.css','dist/assets/public-polish.css');
 await copyFile('src/library-polish.css','dist/assets/library-polish.css');
 await copyFile('src/home-polish.css','dist/assets/home-polish.css');
 await copyFile('src/start-hub.css','dist/assets/start-hub.css');
+await copyFile('src/advertising.css','dist/assets/advertising.css');
 await copyFile('public/brand-logo.jpg','dist/assets/brand-logo.jpg');
 await copyFile('public/library-reading-room.webp','dist/assets/library-reading-room.webp');
 await copyFile('public/favicon.svg','dist/assets/favicon.svg');
