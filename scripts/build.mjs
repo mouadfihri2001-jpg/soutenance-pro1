@@ -34,7 +34,9 @@ if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadat
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
 // Standalone campaign page; keep its media separate from the main application.
-await copyFile('public/accompagnement/index.html', 'dist/accompagnement.html');
+const campaignHtml = await readFile('public/accompagnement/index.html', 'utf8');
+// Keep the supplied source unchanged; adapt only asset URLs for the clean route.
+await writeFile('dist/accompagnement.html', campaignHtml.replaceAll('assets/', '/accompagnement/assets/'));
 await cp('public/accompagnement/assets', 'dist/accompagnement/assets', { recursive: true });
 await buildCampaignMedia();
 await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- PRODUCT_DEMO -->',renderProductDemo()).replace('<!-- START_HUB -->',renderStartHub()));
@@ -80,3 +82,4 @@ await build({
   target: ['es2022'], entryNames: '[name]', chunkNames: 'chunk-[hash]',
   legalComments: 'eof'
 });
+

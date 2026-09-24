@@ -15,14 +15,14 @@
 <meta name="description" content="Accompagnement académique personnalisé pour PFE, mémoires, thèses et rapports de stage. Expliquez votre projet sur WhatsApp.">
 <style>
 /* Polices auto-hébergées (sous-ensembles latin et arabe) */
-@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(/accompagnement/assets/fonts/bricolage-grotesque-latin-wght.woff2) format("woff2")}
-@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-400.woff2) format("woff2")}
-@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:500;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-500.woff2) format("woff2")}
-@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:600;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-600.woff2) format("woff2")}
-@font-face{font-family:"Cinzel";font-style:normal;font-weight:700;font-display:swap;src:url(/accompagnement/assets/fonts/cinzel-latin-700.woff2) format("woff2")}
-@font-face{font-family:"Almarai";font-style:normal;font-weight:400;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-400.woff2) format("woff2")}
-@font-face{font-family:"Almarai";font-style:normal;font-weight:700;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-700.woff2) format("woff2")}
-@font-face{font-family:"Almarai";font-style:normal;font-weight:800;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-800.woff2) format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(assets/fonts/bricolage-grotesque-latin-wght.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/instrument-sans-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/instrument-sans-latin-500.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:600;font-display:swap;src:url(assets/fonts/instrument-sans-latin-600.woff2) format("woff2")}
+@font-face{font-family:"Cinzel";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/cinzel-latin-700.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/almarai-arabic-400.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:700;font-display:swap;src:url(assets/fonts/almarai-arabic-700.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:800;font-display:swap;src:url(assets/fonts/almarai-arabic-800.woff2) format("woff2")}
 
 /* ==========================================================
    Soutenance Pro — landing /accompagnement — tokens
@@ -722,7 +722,7 @@ section{padding-block:46px}
    CONFIGURATION — tout ce qui doit être modifié est ici
    ========================================================== */
 const CONFIG = {
-  brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },   // logoSrc : ex. "/accompagnement/assets/logo.svg"
+  brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },   // logoSrc : ex. "assets/logo.svg"
   defaultLang: "fr",          // "fr" ou "ar". ?lang=ar dans l’URL (ou #ar) force l’arabe ; le choix du visiteur est mémorisé
   whatsapp: {
     number: "212680241471",   // +212 6 80 24 14 71 — format international sans + ni espaces
@@ -736,36 +736,36 @@ const CONFIG = {
   },
   media: {
     ugc: [
-      { id: "ugc1", src: "/accompagnement/assets/video/ugc1.mp4", poster: "/accompagnement/assets/video/ugc1.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:54" },
-      { id: "ugc2", src: "/accompagnement/assets/video/ugc2.mp4", poster: "/accompagnement/assets/video/ugc2.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:55" },
-      { id: "ugc3", src: "/accompagnement/assets/video/ugc3.mp4", poster: "/accompagnement/assets/video/ugc3.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "1:12" }
+      { id: "ugc1", src: "assets/video/ugc1.mp4", poster: "assets/video/ugc1.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:54" },
+      { id: "ugc2", src: "assets/video/ugc2.mp4", poster: "assets/video/ugc2.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:55" },
+      { id: "ugc3", src: "assets/video/ugc3.mp4", poster: "assets/video/ugc3.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "1:12" }
     ],
     avisAudio: [
-      { id:"imane", name:{fr:"Imane",ar:"إيمان"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"/accompagnement/assets/avis-imane.mp3", duration:"0:17", transcript:"", wave:[7,7,5,3,1,4,5,5,6,5,8,7,6,6,5,4,5,9,8,5,8,8,5,8,7,5,9,7,7,8,8,5,6,5,7,5] },
-      { id:"hiba", name:{fr:"Hiba",ar:"هبة"}, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis"}, src:"/accompagnement/assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
-      { id:"manal", name:{fr:"Manal",ar:"منال"}, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة"}, src:"/accompagnement/assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
-      { id:"ikram", name:{fr:"Ikram",ar:"إكرام"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"/accompagnement/assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
-      { id:"amin", name:{fr:"Amin",ar:"أمين"}, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه"}, src:"/accompagnement/assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
+      { id:"imane", name:{fr:"Imane",ar:"إيمان"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"assets/avis-imane.mp3", duration:"0:17", transcript:"", wave:[7,7,5,3,1,4,5,5,6,5,8,7,6,6,5,4,5,9,8,5,8,8,5,8,7,5,9,7,7,8,8,5,6,5,7,5] },
+      { id:"hiba", name:{fr:"Hiba",ar:"هبة"}, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis"}, src:"assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
+      { id:"manal", name:{fr:"Manal",ar:"منال"}, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة"}, src:"assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
+      { id:"ikram", name:{fr:"Ikram",ar:"إكرام"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
+      { id:"amin", name:{fr:"Amin",ar:"أمين"}, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه"}, src:"assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
     ],
     vocaux: [
-      { available: false, src: "/accompagnement/assets/avis-video.mp4", poster: "/accompagnement/assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" }, sub: "1:17", ratio: "r916", fit: "cover" },
-      { available: false, src: "/accompagnement/assets/video/vocal-01.mp4", poster: "/accompagnement/assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:31", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-02.mp4", poster: "/accompagnement/assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:15", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-03.mp4", poster: "/accompagnement/assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:20", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-04.mp4", poster: "/accompagnement/assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:13", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-05.mp4", poster: "/accompagnement/assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:36", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-06.mp4", poster: "/accompagnement/assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:26", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-07.mp4", poster: "/accompagnement/assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:19", ratio: "r45", fit: "contain" },
-      { available: false, src: "/accompagnement/assets/video/vocal-08.mp4", poster: "/accompagnement/assets/video/vocal-08.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:11", ratio: "r45", fit: "contain" }
+      { src: "assets/avis-video.mp4", poster: "assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" }, sub: "1:17", ratio: "r916", fit: "cover" },
+      { src: "assets/video/vocal-01.mp4", poster: "assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:31", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-02.mp4", poster: "assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:15", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-03.mp4", poster: "assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:20", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-04.mp4", poster: "assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:13", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-05.mp4", poster: "assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:36", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-06.mp4", poster: "assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:26", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-07.mp4", poster: "assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:19", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-08.mp4", poster: "assets/video/vocal-08.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:11", ratio: "r45", fit: "contain" }
     ],
-    avisCaptures: Array.from({length:14}, (_, i) => ({ src: `/accompagnement/assets/avis/av-${String(i+1).padStart(2,"0")}.jpg` })),
+    avisCaptures: Array.from({length:14}, (_, i) => ({ src: `assets/avis/av-${String(i+1).padStart(2,"0")}.jpg` })),
     works: [
-      { available: false, src: "/accompagnement/assets/video/real-01.mp4", poster: "/accompagnement/assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { available: false, src: "/accompagnement/assets/video/real-02.mp4", poster: "/accompagnement/assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { available: false, src: "/accompagnement/assets/video/real-03.mp4", poster: "/accompagnement/assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { available: false, src: "/accompagnement/assets/video/real-04.mp4", poster: "/accompagnement/assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { available: false, src: "/accompagnement/assets/video/real-05.mp4", poster: "/accompagnement/assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { available: false, src: "/accompagnement/assets/video/real-06.mp4", poster: "/accompagnement/assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" }, sub: { fr: "extrait", ar: "مقتطف" }, ratio: "rdoc", muted: true }
+      { src: "assets/video/real-01.mp4", poster: "assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-02.mp4", poster: "assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-03.mp4", poster: "assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-04.mp4", poster: "assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-05.mp4", poster: "assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-06.mp4", poster: "assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" }, sub: { fr: "extrait", ar: "مقتطف" }, ratio: "rdoc", muted: true }
     ]
   }
 };
@@ -1159,15 +1159,13 @@ function renderAll(){
     const b = document.createElement("button"); b.type = "button"; b.className = "btn btn-secondary more-btn"; b.textContent = t.proof.more(audios.length - 3);
     b.addEventListener("click", () => list.classList.add("all")); list.insertAdjacentElement("afterend", b);
   }
-  const vr = $("#vocauxRail"); vr.innerHTML = ""; CONFIG.media.vocaux.filter(v => v.available !== false && v.src).forEach((v,i) => vr.appendChild(videoCard(v, i < 2)));
+  const vr = $("#vocauxRail"); vr.innerHTML = ""; CONFIG.media.vocaux.filter(v => v.src).forEach((v,i) => vr.appendChild(videoCard(v, i < 2)));
   const sr = $("#shotsRail"); sr.innerHTML = ""; SHOTS.forEach((c,i) => sr.appendChild(shot(c,i)));
   $("#shotsCount").textContent = t.proof.shotsCount(SHOTS.length);
-  const wr = $("#worksRail"); wr.innerHTML = ""; CONFIG.media.works.filter(w => w.available !== false && w.src).forEach((w,i) => wr.appendChild(videoCard(w, i < 2)));
-  vr.parentElement.hidden = !vr.children.length;
-  $("#realisations").hidden = !wr.children.length;
-  [vr, sr, wr].filter(r => r.children.length).forEach(r => railNav(r.parentElement, r));
-  const nv = CONFIG.media.vocaux.filter(v => v.available !== false && v.src).length;
-  $("#proofCounts").innerHTML = t.proof.counts(audios.length, nv, SHOTS.length).filter((_, i) => i !== 1 || nv > 0).map(c => `<span>${esc(c)}</span>`).join("");
+  const wr = $("#worksRail"); wr.innerHTML = ""; CONFIG.media.works.filter(w => w.src).forEach((w,i) => wr.appendChild(videoCard(w, i < 2)));
+  [vr, sr, wr].forEach(r => railNav(r.parentElement, r));
+  const nv = CONFIG.media.vocaux.filter(v => v.src).length;
+  $("#proofCounts").innerHTML = t.proof.counts(audios.length, nv, SHOTS.length).map(c => `<span>${esc(c)}</span>`).join("");
   /* situations, services, étapes, pourquoi, FAQ */
   $("#needList").innerHTML = t.sit.list.map(x => `<li>${esc(x)}</li>`).join("");
   $("#svcGroups").innerHTML = t.svc.groups.map(g => `<div class="svc"><h3><span class="tag">${esc(g.tag)}</span> ${esc(g.title)}</h3><ul>${g.items.map(([a,b]) => `<li>${esc(a)}${b ? ` <small>${esc(b)}</small>` : ""}</li>`).join("")}</ul></div>`).join("");
