@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0B4A33">
+<link rel="canonical" href="https://soutenancepro.com/accompagnement">
+<meta property="og:title" content="Soutenance Pro — Accompagnement académique personnalisé">
+<meta property="og:description" content="PFE, mémoire, thèse, rapport de stage : un accompagnement adapté à votre niveau, à votre spécialité et aux consignes de votre encadrant. Contact direct sur WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://soutenancepro.com/accompagnement">
+<style>html{color-scheme:light}[hidden]{display:none!important}</style>
+<title>Soutenance Pro</title>
+<meta name="description" content="Accompagnement académique personnalisé pour PFE, mémoires, thèses et rapports de stage. Expliquez votre projet sur WhatsApp.">
+<style>
+/* Polices auto-hébergées (sous-ensembles latin et arabe) */
+@font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(/accompagnement/assets/fonts/bricolage-grotesque-latin-wght.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:400;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-400.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:500;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-500.woff2) format("woff2")}
+@font-face{font-family:"Instrument Sans";font-style:normal;font-weight:600;font-display:swap;src:url(/accompagnement/assets/fonts/instrument-sans-latin-600.woff2) format("woff2")}
+@font-face{font-family:"Cinzel";font-style:normal;font-weight:700;font-display:swap;src:url(/accompagnement/assets/fonts/cinzel-latin-700.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:400;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-400.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:700;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-700.woff2) format("woff2")}
+@font-face{font-family:"Almarai";font-style:normal;font-weight:800;font-display:swap;src:url(/accompagnement/assets/fonts/almarai-arabic-800.woff2) format("woff2")}
+
+/* ==========================================================
+   Soutenance Pro — landing /accompagnement — tokens
+   ========================================================== */
+:root{
+  color-scheme: light;
+  --brand:#137A55;        /* boutons, liens */
+  --brand-hover:#0F6A49;
+  --brand-deep:#173B2D;   /* vert du logo : bloc sombre, titres forts */
+  --brand-bright:#25B47E; /* accents sur fond sombre, waveform active */
+  --brand-soft:#E6F3EC;   /* fonds teintés */
+  --brand-soft-2:#CDE6D8;
+  --ink:#13211B;
+  --muted:#5A6A62;
+  --line:#D8E4DD;
+  --ground:#F4F8F5;
+  --white:#FFFFFF;
+  --dark:#0E1A14;         /* fond des cartes vidéo */
+  --display:"Bricolage Grotesque","Avenir Next","Segoe UI",Arial,sans-serif;
+  --body:"Instrument Sans","Helvetica Neue",Arial,sans-serif;
+  --logo:"Cinzel","Times New Roman",serif;
+  --radius:18px;
+  --radius-s:12px;
+  --gutter:20px;
+  --bar-h:84px;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+:root[dir="rtl"]{
+  --display:"Almarai","Segoe UI",Tahoma,Arial,sans-serif;
+  --body:"Almarai","Segoe UI",Tahoma,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.55;
+  padding-bottom:calc(var(--bar-h) + env(safe-area-inset-bottom,0px));
+  overflow-x:hidden;
+}
+img,video{max-width:100%;display:block}
+button{font:inherit;color:inherit}
+a{color:var(--brand)}
+h1,h2,h3{font-family:var(--display);line-height:1.06;letter-spacing:-.012em;margin:0;text-wrap:balance}
+h1{font-size:clamp(31px,8.6vw,42px);font-weight:800}
+h2{font-size:clamp(25px,6.6vw,33px);font-weight:800}
+h3{font-size:18px;font-weight:700}
+:root[dir="rtl"] h1,:root[dir="rtl"] h2,:root[dir="rtl"] h3{line-height:1.32;letter-spacing:0}
+:root[dir="rtl"] h1{font-size:clamp(28px,7.8vw,38px)}
+:root[dir="rtl"] .eyebrow,:root[dir="rtl"] .proof-label,:root[dir="rtl"] .tag,:root[dir="rtl"] .rail-head span{letter-spacing:0}
+p{margin:0}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding-inline:var(--gutter)}
+.narrow{max-width:640px}
+section{padding-block:46px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:12px}
+.lead{color:var(--muted);font-size:17px}
+.stack{display:flex;flex-direction:column;gap:14px}
+:focus-visible{outline:3px solid var(--brand-bright);outline-offset:3px;border-radius:8px}
+
+/* ---------- boutons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 20px;border-radius:14px;border:0;cursor:pointer;
+  font-family:var(--body);font-weight:600;font-size:16px;text-decoration:none;line-height:1.2;
+  transition:transform .15s var(--ease),background .15s ease,box-shadow .2s ease;
+}
+:root[dir="rtl"] .btn{font-weight:700}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 8px 22px -12px rgba(19,122,85,.9)}
+.btn-primary:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 12px 26px -12px rgba(19,122,85,.95)}
+.btn-secondary{background:var(--brand-soft);color:var(--brand-deep)}
+.btn-secondary:hover{background:var(--brand-soft-2)}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4)}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn svg{width:20px;height:20px;flex:0 0 auto}
+.btn-block{width:100%}
+
+/* ---------- header ---------- */
+.header{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:rgba(244,248,245,.88);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.header .wrap{display:flex;align-items:center;justify-content:space-between;min-height:62px;gap:8px}
+.header .actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.logo{display:inline-flex;align-items:center;gap:10px;color:var(--brand-deep);text-decoration:none;min-width:0;direction:ltr}
+.logo img{height:36px;width:auto}
+.logo-mark{width:38px;height:34px;flex:0 0 auto}
+.logo-word{font-family:var(--logo);font-weight:700;font-size:15px;letter-spacing:.07em;line-height:1;white-space:nowrap;text-transform:uppercase}
+.header .btn{min-height:44px;padding:0 14px;font-size:14px;border-radius:12px}
+.header .btn .lbl-long{display:none}
+.lang-btn{min-height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;color:var(--brand-deep);font-family:var(--body)}
+.lang-btn:hover{background:var(--brand-soft)}
+@media (max-width:419px){.header .btn .lbl-short{display:none}.header .btn{padding:0 12px}}
+@media (max-width:360px){.logo-word{font-size:12.5px;letter-spacing:.05em}.logo{gap:7px}}
+.logo{flex:0 0 auto}
+@media (min-width:480px){.header .btn .lbl-long{display:inline}.header .btn .lbl-short{display:none}}
+
+/* ---------- hero ---------- */
+.hero{padding-block:28px 40px;position:relative;overflow:hidden;background:var(--white)}
+.hero .ribbon{position:absolute;inset:auto -12% -48px auto;width:124%;height:auto;pointer-events:none}
+.hero .wrap{position:relative;display:grid;gap:26px}
+.hero-copy{display:flex;flex-direction:column;gap:16px}
+.hero .lead{max-width:38ch}
+.hero-cta{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.hero-note{font-size:14px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.hero-note svg{width:18px;height:18px;flex:0 0 auto;margin-top:2px;color:var(--brand)}
+
+/* rangée média du premier écran */
+.hero-media{display:grid;grid-template-columns:minmax(0,48%) minmax(0,1fr);gap:12px;align-items:start}
+.hero-media .video-card{box-shadow:0 20px 40px -24px rgba(23,59,45,.55)}
+.proof-mini{display:flex;flex-direction:column;gap:10px;min-width:0}
+.proof-label{font-size:11.5px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.ugc-alt{display:flex;flex-direction:column;gap:6px}
+.ugc-alt .thumbs{display:flex;gap:8px}
+.ugc-alt button{
+  width:46px;aspect-ratio:9/16;border-radius:9px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--dark);cursor:pointer;
+  transition:transform .15s var(--ease),border-color .15s;
+}
+.ugc-alt button img{width:100%;height:100%;object-fit:cover}
+.ugc-alt button:hover{transform:translateY(-2px)}
+.ugc-alt button.is-active{border-color:var(--brand);pointer-events:none}
+.link-more{font-size:14px;font-weight:600;color:var(--brand);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.link-more svg{width:14px;height:14px}
+:root[dir="rtl"] .link-more svg,:root[dir="rtl"] .lb-nav svg,:root[dir="rtl"] .rail-nav svg{transform:scaleX(-1)}
+
+/* ---------- carte vidéo ---------- */
+.video-card{
+  position:relative;border-radius:var(--radius);overflow:hidden;background:var(--dark);
+  aspect-ratio:9/16;width:100%;max-width:100%;isolation:isolate;
+}
+.video-card video,.video-card img.poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.video-card.fit-contain video,.video-card.fit-contain img.poster{object-fit:contain}
+.video-card img.poster{transition:transform .5s var(--ease)}
+.video-card:hover img.poster{transform:scale(1.03)}
+.video-card .play{
+  position:absolute;inset:0;width:100%;height:100%;border:0;background:linear-gradient(to top,rgba(14,26,20,.78),rgba(14,26,20,0) 58%);
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;gap:8px;padding:12px;cursor:pointer;color:#fff;text-align:start;
+}
+.video-card .play .ring{
+  width:46px;height:46px;border-radius:50%;background:#fff;color:var(--brand-deep);display:grid;place-items:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.28);position:relative;
+}
+.video-card .play .ring::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(255,255,255,.55);animation:pulse 2.2s ease-out infinite}
+.video-card .play .ring svg{width:18px;height:18px;margin-inline-start:2px}
+.video-card .play .cap{font-size:12.5px;font-weight:600;line-height:1.3;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.video-card .play .cap small{display:block;font-weight:500;opacity:.85;font-size:11.5px;margin-top:2px}
+.video-card.is-playing .play{display:none}
+.video-card.is-playing{box-shadow:0 0 0 3px var(--brand-soft-2)}
+@keyframes pulse{0%{transform:scale(.9);opacity:.9}70%{transform:scale(1.35);opacity:0}100%{transform:scale(1.35);opacity:0}}
+
+/* ---------- lecteur audio ---------- */
+.audio{
+  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:12px 12px 10px;
+  display:grid;grid-template-columns:44px 1fr;gap:10px 12px;align-items:center;min-width:0;
+  transition:box-shadow .2s ease,border-color .2s ease;
+}
+.audio.is-playing{border-color:var(--brand-soft-2);box-shadow:0 10px 26px -18px rgba(23,59,45,.6)}
+.audio.compact{padding:10px}
+.audio.compact .bars{gap:2px}
+.audio .pp{
+  width:44px;height:44px;border-radius:50%;border:0;background:var(--brand);color:#fff;display:grid;place-items:center;cursor:pointer;
+  transition:background .15s,transform .15s var(--ease);
+}
+.audio .pp:hover{background:var(--brand-hover);transform:scale(1.04)}
+.audio .pp svg{width:16px;height:16px}
+.audio .pp .ico-pause{display:none}
+.audio.is-playing .pp .ico-play{display:none}
+.audio.is-playing .pp .ico-pause{display:block}
+.audio .who{min-width:0;display:flex;flex-direction:column;gap:2px}
+.audio .who b{font-weight:600;font-size:15px;line-height:1.2;display:flex;align-items:center;gap:6px}
+.audio .who b .chk{width:14px;height:14px;color:var(--brand)}
+.audio .who span{font-size:13px;color:var(--muted);line-height:1.3}
+.audio .wave{grid-column:1 / -1;display:flex;align-items:center;gap:8px;direction:ltr}
+.audio .bars{flex:1;display:flex;align-items:center;gap:2px;height:30px;cursor:pointer;min-width:0}
+.audio .bars i{flex:1;min-width:2px;border-radius:2px;background:var(--brand-soft-2);height:calc(var(--h) * 3px + 4px);transition:background .12s,transform .3s var(--ease)}
+.audio .bars i.on{background:var(--brand-bright)}
+.audio .time{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:38px;text-align:end}
+.audio .tr{grid-column:1 / -1;display:flex;flex-direction:column;gap:6px}
+.audio .tr button{align-self:flex-start;background:none;border:0;padding:8px 0;min-height:36px;font-size:13px;font-weight:600;color:var(--brand);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.audio .tr button svg{width:12px;height:12px;transition:transform .15s}
+.audio .tr.open button svg{transform:rotate(180deg)}
+.audio .tr p{display:none;font-size:14px;line-height:1.5;border-inline-start:3px solid var(--brand-soft-2);padding-inline-start:10px}
+.audio .tr.open p{display:block}
+
+/* ---------- rails horizontaux ---------- */
+.rail-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+.rail-head h3{font-size:17px}
+.rail-head span{font-size:13px;color:var(--muted);white-space:nowrap}
+.rail{
+  min-width:0;max-width:calc(100% + var(--gutter) * 2);
+  display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);overscroll-behavior-x:contain;
+  padding:4px var(--gutter) 10px;margin-inline:calc(var(--gutter) * -1);scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.rail::-webkit-scrollbar{display:none}
+.rail > *{flex:0 0 auto;scroll-snap-align:start}
+.rail .video-card{height:var(--rail-h,320px);width:auto}
+.rail .video-card.r45{aspect-ratio:4/5}
+.rail .video-card.r916{aspect-ratio:9/16}
+.rail .video-card.rdoc{aspect-ratio:384/690}
+.rail-wrap{position:relative;min-width:0;max-width:100%}
+.proof-grid > *,.stack > *{min-width:0}
+.rail-nav{display:none}
+
+/* captures */
+.shot{
+  position:relative;width:196px;aspect-ratio:3/4;border-radius:var(--radius-s);overflow:hidden;border:1px solid var(--line);background:#fff;
+  transition:transform .2s var(--ease),box-shadow .2s ease;
+}
+.shot:hover{transform:translateY(-2px);box-shadow:0 14px 30px -18px rgba(23,59,45,.5)}
+.shot img{width:100%;height:100%;object-fit:cover;object-position:top}
+.shot button{position:absolute;inset:0;width:100%;height:100%;border:0;background:transparent;cursor:zoom-in}
+.shot .zoom{position:absolute;inset-inline-end:8px;bottom:8px;width:30px;height:30px;border-radius:50%;background:#fff;color:var(--brand-deep);display:grid;place-items:center;box-shadow:0 2px 8px rgba(0,0,0,.2);pointer-events:none}
+.shot .zoom svg{width:14px;height:14px}
+.shot .num{position:absolute;inset-inline-start:8px;top:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.92);color:var(--brand-deep);padding:3px 7px;border-radius:999px;pointer-events:none;direction:ltr}
+
+/* ---------- preuves ---------- */
+.proof{background:var(--ground)}
+.proof-grid{display:grid;gap:22px}
+.audio-list{display:grid;gap:10px}
+.audio-list .audio.extra{display:none}
+.audio-list.all .audio.extra{display:grid}
+.more-btn{min-height:44px;width:100%;margin-top:10px}
+.audio-list.all + .more-btn{display:none}
+.proof-counts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.proof-counts span{font-size:13px;font-weight:600;color:var(--brand-deep);background:var(--brand-soft);padding:6px 11px;border-radius:999px}
+
+/* ---------- situations ---------- */
+.situations{background:var(--white)}
+.need-list{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line)}
+.need-list li{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.need-list li::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--brand);flex:0 0 auto;margin-top:8px}
+.split{display:grid;gap:8px;margin-top:22px;padding:16px 18px;border-radius:var(--radius);background:var(--brand-soft)}
+.split b{font-family:var(--display);font-weight:700;font-size:17px;color:var(--brand-deep)}
+.split p{font-size:15px}
+
+/* ---------- services ---------- */
+.services{background:var(--ground)}
+.svc-groups{display:grid;gap:14px}
+.svc{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+.svc h3{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.svc h3 .tag{font-family:var(--body);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);background:var(--brand-soft);padding:4px 8px;border-radius:999px}
+.svc ul{list-style:none;margin:0;padding:0;display:grid}
+.svc li{padding:10px 0;border-top:1px solid var(--line);font-size:15px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.svc li small{color:var(--muted);font-size:13px;text-align:end}
+.svc-note{font-size:14px;color:var(--muted);margin-top:14px}
+
+/* ---------- étapes ---------- */
+.steps{background:var(--white)}
+.timeline{list-style:none;margin:0;padding:0;display:grid;counter-reset:step}
+.timeline li{position:relative;padding-block:0 26px;padding-inline:52px 0;counter-increment:step}
+.timeline li::before{
+  content:counter(step);position:absolute;inset-inline-start:0;top:0;width:36px;height:36px;border-radius:12px;background:var(--brand-deep);color:#fff;
+  font-family:var(--display);font-weight:800;font-size:16px;display:grid;place-items:center;
+}
+.timeline li::after{content:"";position:absolute;inset-inline-start:17px;top:40px;bottom:6px;width:2px;background:var(--line)}
+.timeline li:last-child::after{display:none}
+.timeline li:last-child{padding-bottom:0}
+.timeline h3{margin-bottom:5px}
+.timeline p{font-size:15px;color:var(--muted)}
+.prep{margin-top:26px;border:1px solid var(--line);border-radius:var(--radius);padding:16px;background:var(--ground)}
+.prep h3{font-size:16px;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.chips li{font-size:13px;font-weight:500;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+
+/* ---------- réalisations ---------- */
+.works{background:var(--ground)}
+
+/* ---------- pourquoi ---------- */
+.why{background:var(--brand-deep);color:#fff;padding-block:50px;position:relative;overflow:hidden}
+.why .eyebrow{color:#9FE3C3}
+.why .lead{color:rgba(255,255,255,.8)}
+.why-list{list-style:none;margin:22px 0 0;padding:0;display:grid}
+.why-list li{padding:16px 0;border-top:1px solid rgba(255,255,255,.14);display:grid;gap:4px}
+.why-list b{font-family:var(--display);font-size:19px;font-weight:700;color:#fff}
+.why-list p{font-size:15px;color:rgba(255,255,255,.82)}
+.why .btn{margin-top:22px}
+
+/* ---------- FAQ ---------- */
+.faq{background:var(--white)}
+.faq-item{border-top:1px solid var(--line)}
+.faq-item:last-child{border-bottom:1px solid var(--line)}
+.faq-q{
+  width:100%;background:none;border:0;padding:16px 0;text-align:start;cursor:pointer;
+  font-family:var(--display);font-weight:700;font-size:17px;line-height:1.25;display:flex;justify-content:space-between;gap:14px;align-items:center;
+}
+:root[dir="rtl"] .faq-q{line-height:1.4}
+.faq-q .pm{width:26px;height:26px;border-radius:50%;background:var(--brand-soft);color:var(--brand-deep);display:grid;place-items:center;flex:0 0 auto;transition:transform .25s var(--ease),background .2s}
+.faq-q .pm svg{width:12px;height:12px}
+.faq-item.open .faq-q .pm{transform:rotate(45deg);background:var(--brand-soft-2)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease)}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a > div{overflow:hidden}
+.faq-a p{padding:0 0 18px;font-size:15px;line-height:1.6;max-width:62ch}
+
+/* ---------- CTA final ---------- */
+.final{background:var(--ground)}
+.final-card{display:grid;gap:16px}
+.msg-preview{background:var(--brand-soft);border-radius:14px;border-end-start-radius:4px;padding:12px 14px;font-size:15px;line-height:1.5;color:var(--brand-deep);white-space:pre-line}
+.msg-preview small{display:block;font-size:12px;color:var(--brand);font-weight:600;margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+
+/* ---------- footer ---------- */
+.footer{padding-block:28px;font-size:13px;color:var(--muted)}
+.footer .wrap{display:flex;flex-direction:column;gap:10px}
+.footer a{color:var(--muted)}
+
+/* ---------- barre fixe mobile ---------- */
+.sticky-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:30;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));
+  transition:transform .35s var(--ease),opacity .3s ease;
+}
+.sticky-bar.is-hidden{transform:translateY(110%);opacity:0;pointer-events:none}
+.sticky-bar .btn{width:100%}
+
+/* ---------- overlays : lightbox, feuille de qualification ---------- */
+.overlay{position:fixed;inset:0;z-index:50;background:rgba(9,25,18,.8);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade .2s ease}
+.overlay[hidden]{display:none}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.lb-fig{position:relative;max-width:min(100%,520px);max-height:86vh;display:flex;flex-direction:column;align-items:center;gap:10px;animation:zoom .25s var(--ease)}
+@keyframes zoom{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.lb-fig img{max-width:100%;max-height:78vh;border-radius:12px;background:#fff;object-fit:contain}
+.lb-count{color:#fff;font-size:13px;font-variant-numeric:tabular-nums;opacity:.85;direction:ltr}
+.overlay .close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));inset-inline-end:12px;width:44px;height:44px;border-radius:50%;border:0;background:#fff;color:var(--brand-deep);display:grid;place-items:center;cursor:pointer;z-index:2}
+.overlay .close svg{width:16px;height:16px}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:var(--brand-deep);display:grid;place-items:center;cursor:pointer}
+.lb-nav svg{width:18px;height:18px}
+.lb-prev{inset-inline-start:8px}.lb-next{inset-inline-end:8px}
+
+.sheet-wrap{align-items:flex-end;padding:0}
+.sheet{
+  position:relative;background:#fff;width:100%;max-width:560px;border-radius:22px 22px 0 0;
+  padding:18px var(--gutter) 0;display:flex;flex-direction:column;gap:14px;max-height:calc(100vh - 24px - env(safe-area-inset-top,0px));
+  animation:sheetIn .3s var(--ease);
+}
+@keyframes sheetIn{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+.sheet .close{top:12px;inset-inline-end:12px;background:var(--brand-soft);width:40px;height:40px}
+.sheet-body{overflow:auto;flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:16px;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.sheet h3{font-size:20px;padding-inline-end:44px}
+.sheet .sub{font-size:14px;color:var(--muted);margin-top:4px;padding-inline-end:44px}
+.qgroup{display:grid;gap:7px}
+.qgroup .ql{font-size:13px;font-weight:600;color:var(--brand-deep);display:flex;justify-content:space-between;align-items:baseline}
+.qgroup .ql small{font-weight:500;color:var(--muted);font-size:12px}
+.qchips{display:flex;flex-wrap:wrap;gap:8px}
+.qchip{
+  min-height:38px;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:13.5px;font-weight:500;cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s,transform .1s;
+}
+.qchip:active{transform:scale(.97)}
+.qchip[aria-pressed="true"]{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff;font-weight:600}
+.sheet-foot{position:sticky;bottom:0;background:#fff;padding:10px 0 calc(14px + env(safe-area-inset-bottom,0px));display:grid;gap:8px;border-top:1px solid var(--line)}
+.sheet-foot .skip{text-align:center;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;min-height:40px;display:inline-flex;align-items:center;justify-content:center}
+.sheet-foot .skip:hover{color:var(--brand-deep)}
+
+/* ---------- panneau de test (#debug) ---------- */
+.debug{
+  position:fixed;left:12px;right:12px;bottom:calc(var(--bar-h) + 12px + env(safe-area-inset-bottom,0px));z-index:40;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px;display:grid;gap:8px;box-shadow:0 20px 40px -20px rgba(0,0,0,.35);max-width:520px;margin:0 auto;
+}
+.debug[hidden]{display:none}
+.debug b{font-size:13px}
+.debug .kv div{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding:6px 0;word-break:break-all}
+.debug .kv div span:last-child{text-align:end;color:var(--brand-deep);font-weight:600;white-space:pre-line}
+.debug label{display:flex;flex-direction:column;gap:4px;color:var(--muted)}
+.debug select{font:inherit;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.debug .x{position:absolute;top:8px;inset-inline-end:8px;width:32px;height:32px;border:0;border-radius:50%;background:var(--brand-soft);cursor:pointer}
+
+/* ---------- animations discrètes ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .reveal{opacity:.75;transform:translateY(14px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .stagger > *{opacity:.6;transform:translateY(10px);transition:opacity .5s var(--ease),transform .5s var(--ease);transition-delay:calc(var(--i,0) * 70ms)}
+  .in .stagger > *{opacity:1;transform:none}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .hero-copy > *{animation:rise .7s var(--ease) both}
+  .hero-copy > *:nth-child(1){animation-delay:.05s}
+  .hero-copy > *:nth-child(2){animation-delay:.12s}
+  .hero-copy > *:nth-child(3){animation-delay:.2s}
+  .hero-copy > *:nth-child(4){animation-delay:.28s}
+  .hero-copy > *:nth-child(5){animation-delay:.36s}
+  .hero-media{animation:rise .8s var(--ease) .3s both}
+}
+@media (prefers-reduced-motion:reduce){
+  .video-card .play .ring::after{animation:none}
+  html{scroll-behavior:auto}
+  .sheet,.overlay,.lb-fig{animation:none}
+}
+
+/* ---------- tablette et desktop ---------- */
+@media (min-width:768px){
+  :root{--gutter:32px}
+  section{padding-block:66px}
+  .hero{padding-block:48px 64px}
+  .hero-media{grid-template-columns:minmax(0,210px) minmax(0,1fr);max-width:520px}
+  .hero-cta{flex-direction:row;flex-wrap:wrap}
+  .hero-cta .btn{width:auto}
+  .need-list{grid-template-columns:1fr 1fr;column-gap:32px;border-top:0}
+  .need-list li{border-top:1px solid var(--line)}
+  .svc-groups{grid-template-columns:1fr 1fr}
+  .proof-grid{grid-template-columns:1fr 1fr;column-gap:32px;align-items:start}
+  .proof .btn-block{width:auto;min-width:360px;display:flex;margin-inline:auto}
+  .rail{--rail-h:340px}
+  .shot{width:230px}
+  .timeline{grid-template-columns:1fr 1fr;column-gap:32px}
+  .timeline li{padding-bottom:30px}
+  .timeline li:nth-last-child(2)::after{display:none}
+  .why-list{grid-template-columns:1fr 1fr;column-gap:40px}
+  .final-card{grid-template-columns:1fr 1fr;align-items:center;padding:28px;background:var(--white);border:1px solid var(--line);border-radius:22px}
+  .footer .wrap{flex-direction:row;justify-content:space-between;align-items:center}
+  .sheet-wrap{align-items:center;padding:16px}
+  .sheet{border-radius:22px;max-height:calc(100vh - 48px);padding-inline:24px}
+  .sheet-foot{padding-bottom:18px}
+}
+@media (min-width:1024px){
+  body{padding-bottom:0}
+  .sticky-bar{display:none}
+  h1{font-size:56px}
+  :root[dir="rtl"] h1{font-size:50px}
+  h2{font-size:38px}
+  .hero .wrap{grid-template-columns:1.1fr .9fr;align-items:center;gap:64px}
+  .hero h1{max-width:20ch}
+  .hero .ribbon{width:70%;inset:auto -6% -60px auto}
+  .hero-media{grid-template-columns:minmax(0,240px) minmax(0,1fr);max-width:none}
+  .rail{--rail-h:380px}
+  .rail-nav{display:grid;position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--brand-deep);place-items:center;cursor:pointer;z-index:2;box-shadow:0 8px 20px -10px rgba(0,0,0,.3);opacity:0;transition:opacity .2s}
+  .rail-wrap:hover .rail-nav{opacity:1}
+  .rail-nav svg{width:18px;height:18px}
+  .rail-nav.prev{inset-inline-start:-18px}.rail-nav.next{inset-inline-end:-18px}
+  .debug{left:auto;right:24px;bottom:24px;width:420px}
+}
+</style>
+</head>
+<body>
+
+<!-- ==========================================================
+     HEADER
+     ========================================================== -->
+<header class="header">
+  <div class="wrap">
+    <a class="logo" href="#top" id="logoLink" aria-label="Soutenance Pro">
+      <svg class="logo-mark" viewBox="0 0 100 92" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M22 36 50 16 84 38"/>
+        <path d="M34 38c12-3 24-3 34 1M34 47c11-3 22-3 30 1M34 56c10-3 19-3 26 1M34 38v18"/>
+        <path d="M27 38v14M23.5 52 27 61l3.5-9"/>
+      </svg>
+      <span class="logo-word">Soutenance Pro</span>
+    </a>
+    <div class="actions">
+      <button class="lang-btn" id="langBtn" type="button" aria-label="Changer de langue"></button>
+      <a class="btn btn-secondary js-wa" data-cta="header" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+        <span class="lbl-long" data-i18n="ctaSecondary">Discuter sur WhatsApp</span><span class="lbl-short">WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ==========================================================
+     1. PREMIER ÉCRAN
+     ========================================================== -->
+<section class="hero">
+  <svg class="ribbon" viewBox="0 0 800 260" preserveAspectRatio="none" aria-hidden="true"><path d="M-20 200C140 120 300 250 480 150S760 90 820 60" fill="none" stroke="#E6F3EC" stroke-width="54" stroke-linecap="round"/></svg>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Accompagnement académique personnalisé</p>
+      <h1 data-i18n="hero.title">Votre PFE, mémoire ou thèse, accompagné étape par étape.</h1>
+      <p class="lead" data-i18n="hero.subtitle">Un accompagnement adapté à votre niveau, à votre spécialité et aux consignes de votre encadrant.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary js-wa" data-cta="hero" href="#" id="heroCta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+          <span data-i18n="ctaPrimary">Parler à un conseiller sur WhatsApp</span>
+        </a>
+      </div>
+      <p class="hero-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        <span data-i18n="hero.note">Sans inscription ni formulaire. Vous décrivez votre projet, un conseiller vous répond sur WhatsApp.</span>
+      </p>
+    </div>
+
+    <div class="hero-media">
+      <div id="ugcMain"></div>
+      <div class="proof-mini">
+        <p class="proof-label" data-i18n="hero.proofLabel">Avis d’une étudiante accompagnée</p>
+        <div id="heroAudio"></div>
+        <a class="link-more" href="#preuves"><span data-i18n="hero.moreAvis">Écouter d’autres avis</span> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></a>
+        <div class="ugc-alt" id="ugcAlt"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     2. PREUVES
+     ========================================================== -->
+<section class="proof" id="preuves">
+  <div class="wrap reveal">
+    <p class="eyebrow" data-i18n="proof.eyebrow">Preuves</p>
+    <h2 data-i18n="proof.title">Ce que disent les étudiants accompagnés.</h2>
+    <p class="lead" style="margin-top:12px" data-i18n="proof.lead">Avis audio, vocaux et messages reçus sur WhatsApp. Prénoms et niveaux uniquement, informations personnelles masquées.</p>
+    <div class="proof-counts" id="proofCounts"></div>
+
+    <div class="proof-grid" style="margin-top:24px">
+      <div>
+        <div class="rail-head"><h3 data-i18n="proof.audioTitle">Avis audio</h3><span data-i18n="proof.audioHint">Prénom et niveau</span></div>
+        <div class="audio-list" id="audioList"></div>
+      </div>
+      <div class="stack" style="gap:22px">
+        <div class="rail-wrap">
+          <div class="rail-head"><h3 data-i18n="proof.vocauxTitle">Vocaux reçus sur WhatsApp</h3><span data-i18n="proof.vocauxHint">Appuyez pour écouter</span></div>
+          <div class="rail" id="vocauxRail"></div>
+        </div>
+        <div class="rail-wrap">
+          <div class="rail-head"><h3 data-i18n="proof.shotsTitle">Messages reçus</h3><span id="shotsCount"></span></div>
+          <div class="rail" id="shotsRail"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:26px">
+      <a class="btn btn-primary btn-block js-wa" data-cta="preuves" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+        <span data-i18n="ctaSecondary">Discuter sur WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     3. SITUATIONS
+     ========================================================== -->
+<section class="situations">
+  <div class="wrap narrow reveal">
+    <p class="eyebrow" data-i18n="sit.eyebrow">Est-ce que ça correspond à mon projet ?</p>
+    <h2 data-i18n="sit.title">Une étape précise, ou l’ensemble du projet.</h2>
+    <p class="lead" style="margin-top:12px" data-i18n="sit.lead">Chaque demande est différente. Voici les situations sur lesquelles les étudiants nous écrivent le plus souvent.</p>
+    <ul class="need-list stagger" style="margin-top:22px" id="needList"></ul>
+    <div class="split">
+      <b data-i18n="sit.splitTitle">Vous ne savez pas par où commencer ?</b>
+      <p data-i18n="sit.splitText">Décrivez simplement où vous en êtes. C’est à nous d’identifier l’étape sur laquelle vous avez besoin d’aide.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     4. TYPES D’ACCOMPAGNEMENT
+     ========================================================== -->
+<section class="services">
+  <div class="wrap reveal">
+    <p class="eyebrow" data-i18n="svc.eyebrow">Ce que nous accompagnons</p>
+    <h2 data-i18n="svc.title">Votre document, ou une étape de votre travail.</h2>
+    <div class="svc-groups stagger" style="margin-top:22px" id="svcGroups"></div>
+    <p class="svc-note" data-i18n="svc.note">L’accompagnement est défini avec vous après lecture de vos consignes. Rien n’est standard : niveau, spécialité et avancement changent la proposition.</p>
+  </div>
+</section>
+
+<!-- ==========================================================
+     5. FONCTIONNEMENT
+     ========================================================== -->
+<section class="steps" id="fonctionnement">
+  <div class="wrap reveal">
+    <p class="eyebrow" data-i18n="steps.eyebrow">Comment ça se passe</p>
+    <h2 data-i18n="steps.title">Quatre étapes, du premier message au suivi.</h2>
+    <ol class="timeline stagger" style="margin-top:26px" id="timeline"></ol>
+    <div class="prep">
+      <h3 data-i18n="steps.prepTitle">Pour une réponse précise, indiquez dès le premier message :</h3>
+      <ul class="chips" id="prepChips"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     6. RÉALISATIONS
+     ========================================================== -->
+<section class="works" id="realisations">
+  <div class="wrap reveal">
+    <p class="eyebrow" data-i18n="works.eyebrow">Réalisations</p>
+    <h2 data-i18n="works.title">Extraits de travaux accompagnés.</h2>
+    <p class="lead" style="margin-top:12px" data-i18n="works.lead">Défilement d’extraits de documents finalisés, anonymisés. Appuyez pour lancer.</p>
+    <div class="rail-wrap" style="margin-top:20px">
+      <div class="rail" id="worksRail"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     7. POURQUOI SOUTENANCE PRO
+     ========================================================== -->
+<section class="why">
+  <div class="wrap reveal">
+    <p class="eyebrow" data-i18n="why.eyebrow">Pourquoi Soutenance Pro</p>
+    <h2 data-i18n="why.title">Un accompagnement qui part de votre projet.</h2>
+    <ul class="why-list stagger" id="whyList"></ul>
+    <a class="btn btn-ghost js-wa" data-cta="pourquoi" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+      <span data-i18n="ctaSecondary">Discuter sur WhatsApp</span>
+    </a>
+  </div>
+</section>
+
+<!-- ==========================================================
+     8. FAQ
+     ========================================================== -->
+<section class="faq" id="faq">
+  <div class="wrap narrow reveal">
+    <p class="eyebrow" data-i18n="faq.eyebrow">Questions fréquentes</p>
+    <h2 data-i18n="faq.title">Avant d’écrire.</h2>
+    <div id="faqList" style="margin-top:22px"></div>
+  </div>
+</section>
+
+<!-- ==========================================================
+     9. CTA FINAL
+     ========================================================== -->
+<section class="final" id="contact">
+  <div class="wrap">
+    <div class="final-card reveal">
+      <div class="stack">
+        <h2 data-i18n="final.title">Parlez-nous de votre projet.</h2>
+        <p class="lead" data-i18n="final.lead">Le message ci-dessous est prêt. Vous pourrez le compléter avec votre situation avant de l’envoyer.</p>
+      </div>
+      <div class="stack">
+        <div class="msg-preview"><small data-i18n="final.msgLabel">Message prérempli</small><span id="finalMsg"></span></div>
+        <a class="btn btn-primary btn-block js-wa" data-cta="final" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+          <span data-i18n="ctaPrimary">Parler à un conseiller sur WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span><b style="color:var(--ink)">Soutenance Pro</b> · <span data-i18n="footer.tag">Accompagnement académique personnalisé</span></span>
+    <span data-i18n="footer.legal">Aucune note, validation ou diplôme n’est garanti. Nous nous engageons sur la qualité de l’accompagnement.</span>
+    <span><a href="https://soutenancepro.com" id="siteLink">soutenancepro.com</a></span>
+  </div>
+</footer>
+
+<!-- Barre fixe mobile -->
+<div class="sticky-bar" id="stickyBar">
+  <a class="btn btn-primary js-wa" data-cta="sticky" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+    <span data-i18n="ctaPrimary">Parler à un conseiller sur WhatsApp</span>
+  </a>
+</div>
+
+<!-- Lightbox captures -->
+<div class="overlay" id="lightbox" hidden role="dialog" aria-modal="true">
+  <button class="close" id="lbClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <button class="lb-nav lb-prev" id="lbPrev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+  <figure class="lb-fig" style="margin:0"><img id="lbImg" alt=""><figcaption class="lb-count" id="lbCount"></figcaption></figure>
+  <button class="lb-nav lb-next" id="lbNext"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+</div>
+
+<!-- Feuille de qualification avant WhatsApp -->
+<div class="overlay sheet-wrap" id="qualSheet" hidden role="dialog" aria-modal="true" aria-labelledby="qTitle">
+  <div class="sheet">
+    <button class="close" id="qClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="sheet-body" id="qBody">
+      <div><h3 id="qTitle"></h3><p class="sub" id="qSub"></p></div>
+      <div id="qGroups"></div>
+      <div class="msg-preview"><small id="qPrevLabel"></small><span id="qPreview"></span></div>
+    </div>
+    <div class="sheet-foot">
+      <a class="btn btn-primary" id="qSend" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
+        <span id="qSendLbl"></span>
+      </a>
+      <a class="skip" id="qSkip" href="#" target="_blank" rel="noopener"></a>
+    </div>
+  </div>
+</div>
+
+<!-- Panneau de test : visible uniquement avec #debug dans l’URL -->
+<div class="debug" id="debug" hidden>
+  <button class="x" id="debugClose" aria-label="Fermer">×</button>
+  <b>Test du parcours WhatsApp</b>
+  <div class="kv">
+    <div><span>Numéro</span><span id="dbgNum"></span></div>
+    <div><span>Langue</span><span id="dbgLang"></span></div>
+    <div><span>Référence pub (utm_content)</span><span id="dbgRef"></span></div>
+    <div><span>Message de base</span><span id="dbgMsg"></span></div>
+    <div><span>Pixel</span><span id="dbgPix"></span></div>
+  </div>
+  <label>Simuler une arrivée depuis une publicité
+    <select id="simRef"><option value="">Sans UTM</option><option value="ugc1">ugc1</option><option value="ugc2">ugc2</option><option value="ugc3">ugc3</option></select>
+  </label>
+</div>
+
+<script>
+/* ==========================================================
+   CONFIGURATION — tout ce qui doit être modifié est ici
+   ========================================================== */
+const CONFIG = {
+  brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },   // logoSrc : ex. "/accompagnement/assets/logo.svg"
+  defaultLang: "fr",          // "fr" ou "ar". ?lang=ar dans l’URL (ou #ar) force l’arabe ; le choix du visiteur est mémorisé
+  whatsapp: {
+    number: "212680241471",   // +212 6 80 24 14 71 — format international sans + ni espaces
+    includeAdRef: true,       // ajoute « Réf : ugc1 » au message quand utm_content est présent
+    qualify: true             // true = feuille de qualification (niveau, projet, besoin, échéance) avant WhatsApp ; false = WhatsApp direct
+  },
+  tracking: {
+    metaPixelId: "",          // ex. "123456789012345". Vide = aucun envoi, événements affichés en console
+    requireConsent: false,    // true = le Pixel attend window.spConsent.grant()
+    contentName: "accompagnement"
+  },
+  media: {
+    ugc: [
+      { id: "ugc1", src: "/accompagnement/assets/video/ugc1.mp4", poster: "/accompagnement/assets/video/ugc1.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:54" },
+      { id: "ugc2", src: "/accompagnement/assets/video/ugc2.mp4", poster: "/accompagnement/assets/video/ugc2.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:55" },
+      { id: "ugc3", src: "/accompagnement/assets/video/ugc3.mp4", poster: "/accompagnement/assets/video/ugc3.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "1:12" }
+    ],
+    avisAudio: [
+      { id:"imane", name:{fr:"Imane",ar:"إيمان"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"/accompagnement/assets/avis-imane.mp3", duration:"0:17", transcript:"", wave:[7,7,5,3,1,4,5,5,6,5,8,7,6,6,5,4,5,9,8,5,8,8,5,8,7,5,9,7,7,8,8,5,6,5,7,5] },
+      { id:"hiba", name:{fr:"Hiba",ar:"هبة"}, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis"}, src:"/accompagnement/assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
+      { id:"manal", name:{fr:"Manal",ar:"منال"}, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة"}, src:"/accompagnement/assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
+      { id:"ikram", name:{fr:"Ikram",ar:"إكرام"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"/accompagnement/assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
+      { id:"amin", name:{fr:"Amin",ar:"أمين"}, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه"}, src:"/accompagnement/assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
+    ],
+    vocaux: [
+      { available: false, src: "/accompagnement/assets/avis-video.mp4", poster: "/accompagnement/assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" }, sub: "1:17", ratio: "r916", fit: "cover" },
+      { available: false, src: "/accompagnement/assets/video/vocal-01.mp4", poster: "/accompagnement/assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:31", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-02.mp4", poster: "/accompagnement/assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:15", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-03.mp4", poster: "/accompagnement/assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:20", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-04.mp4", poster: "/accompagnement/assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:13", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-05.mp4", poster: "/accompagnement/assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:36", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-06.mp4", poster: "/accompagnement/assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:26", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-07.mp4", poster: "/accompagnement/assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:19", ratio: "r45", fit: "contain" },
+      { available: false, src: "/accompagnement/assets/video/vocal-08.mp4", poster: "/accompagnement/assets/video/vocal-08.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:11", ratio: "r45", fit: "contain" }
+    ],
+    avisCaptures: Array.from({length:14}, (_, i) => ({ src: `/accompagnement/assets/avis/av-${String(i+1).padStart(2,"0")}.jpg` })),
+    works: [
+      { available: false, src: "/accompagnement/assets/video/real-01.mp4", poster: "/accompagnement/assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { available: false, src: "/accompagnement/assets/video/real-02.mp4", poster: "/accompagnement/assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { available: false, src: "/accompagnement/assets/video/real-03.mp4", poster: "/accompagnement/assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { available: false, src: "/accompagnement/assets/video/real-04.mp4", poster: "/accompagnement/assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { available: false, src: "/accompagnement/assets/video/real-05.mp4", poster: "/accompagnement/assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
+      { available: false, src: "/accompagnement/assets/video/real-06.mp4", poster: "/accompagnement/assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" }, sub: { fr: "extrait", ar: "مقتطف" }, ratio: "rdoc", muted: true }
+    ]
+  }
+};
+
+/* ==========================================================
+   TEXTES — français et arabe standard
+   ========================================================== */
+const I18N = {
+  fr: {
+    langBtn: "عربي", dir: "ltr",
+    ctaPrimary: "Parler à un conseiller sur WhatsApp",
+    ctaSecondary: "Discuter sur WhatsApp",
+    hero: { eyebrow: "Accompagnement académique personnalisé", title: "Votre PFE, mémoire ou thèse, accompagné étape par étape.", subtitle: "Un accompagnement adapté à votre niveau, à votre spécialité et aux consignes de votre encadrant.", note: "Sans inscription ni formulaire. Vous décrivez votre projet, un conseiller vous répond sur WhatsApp.", proofLabel: "Avis d’une étudiante accompagnée", moreAvis: "Écouter d’autres avis", otherVideos: "Autres vidéos" },
+    proof: { eyebrow: "Preuves", title: "Ce que disent les étudiants accompagnés.", lead: "Avis audio, vocaux et messages reçus sur WhatsApp. Prénoms et niveaux uniquement, informations personnelles masquées.", audioTitle: "Avis audio", audioHint: "Prénom et niveau", vocauxTitle: "Vocaux reçus sur WhatsApp", vocauxHint: "Appuyez pour écouter", shotsTitle: "Messages reçus", shotsCount: n => `${n} captures · appuyez pour agrandir`, counts: (a,v,m) => [`${a} avis audio`, `${v} vocaux`, `${m} messages`], more: n => n === 1 ? "Écouter 1 autre avis" : `Écouter les ${n} autres avis`, transcript: "Transcription", shotAlt: i => `Message d’étudiant reçu sur WhatsApp (${i})`, listen: n => `Écouter l’avis de ${n}`, play: t => `Lire : ${t}`, zoom: "Agrandir", close: "Fermer", prev: "Précédent", next: "Suivant" },
+    sit: { eyebrow: "Est-ce que ça correspond à mon projet ?", title: "Une étape précise, ou l’ensemble du projet.", lead: "Chaque demande est différente. Voici les situations sur lesquelles les étudiants nous écrivent le plus souvent.", list: ["Organiser ses idées et structurer le plan","Comprendre et appliquer les corrections de l’encadrant","Construire la méthodologie de recherche","Préparer un questionnaire ou un guide d’entretien","Analyser les données et comprendre les résultats","Préparer la soutenance et le support PowerPoint"], splitTitle: "Vous ne savez pas par où commencer ?", splitText: "Décrivez simplement où vous en êtes. C’est à nous d’identifier l’étape sur laquelle vous avez besoin d’aide." },
+    svc: { eyebrow: "Ce que nous accompagnons", title: "Votre document, ou une étape de votre travail.", groups: [
+      { tag: "Document", title: "Le projet dans son ensemble", items: [["Projet de fin d’études","PFE"],["Mémoire","licence, master"],["Thèse","doctorat"],["Rapport de stage",""]] },
+      { tag: "Étape", title: "Un point précis de votre travail", items: [["Méthodologie et structuration","plan, problématique"],["Questionnaire, guide d’entretien",""],["Analyse des données","et lecture des résultats"],["Soutenance et PowerPoint",""]] } ],
+      note: "L’accompagnement est défini avec vous après lecture de vos consignes. Rien n’est standard : niveau, spécialité et avancement changent la proposition." },
+    steps: { eyebrow: "Comment ça se passe", title: "Quatre étapes, du premier message au suivi.", list: [
+      ["Vous présentez votre projet","Sur WhatsApp, en quelques lignes ou en vocal : votre niveau, votre spécialité, le type de projet et où vous en êtes."],
+      ["Nous analysons les consignes et l’avancement","Nous lisons ce que demande votre encadrant, regardons ce qui est déjà fait et identifions ce qui bloque."],
+      ["Nous vous proposons un accompagnement adapté","Une proposition claire, limitée à ce dont vous avez besoin : une étape précise ou un suivi sur plusieurs étapes."],
+      ["Le suivi continue sur WhatsApp","Les échanges restent sur le même fil de discussion pendant tout l’accompagnement."] ],
+      prepTitle: "Pour une réponse précise, indiquez dès le premier message :", prep: ["Niveau d’études","Spécialité","Type de projet","Sujet","Avancement","Consignes de l’encadrant","Échéance","Difficultés rencontrées"] },
+    works: { eyebrow: "Réalisations", title: "Extraits de travaux accompagnés.", lead: "Défilement d’extraits de documents finalisés, anonymisés. Appuyez pour lancer." },
+    why: { eyebrow: "Pourquoi Soutenance Pro", title: "Un accompagnement qui part de votre projet.", list: [
+      ["Personnalisation","Chaque accompagnement est construit à partir de votre niveau, de votre spécialité et de votre sujet."],
+      ["Méthodologie","Une démarche structurée, de la problématique à la soutenance, pour un travail cohérent."],
+      ["Suivi","Les échanges continuent sur WhatsApp, étape après étape, jusqu’à la fin de l’accompagnement."],
+      ["Votre encadrant compte","Nous travaillons à partir de ses consignes et de ses corrections, pas contre elles."],
+      ["Échange direct","Vous parlez à une personne qui lit votre situation avant de vous proposer quoi que ce soit."] ] },
+    faq: { eyebrow: "Questions fréquentes", title: "Avant d’écrire.", list: [
+      ["Quels projets sont concernés ?","Les projets de fin d’études (PFE), les mémoires, les thèses et les rapports de stage, à tous les niveaux universitaires. Vous pouvez aussi nous écrire pour une seule étape : méthodologie, questionnaire ou guide d’entretien, analyse de données, préparation de la soutenance."],
+      ["Comment se passe l’accompagnement ?","Vous nous présentez votre projet sur WhatsApp. Nous analysons vos consignes et votre avancement, puis nous vous proposons un accompagnement adapté. Si vous êtes d’accord, le suivi continue sur le même fil WhatsApp."],
+      ["Quels sont les délais ?","Ils dépendent de l’étape concernée, de l’avancement de votre travail et de votre échéance. Indiquez votre date limite dès le premier message : nous vous dirons ce qui est réalisable dans ce cadre."],
+      ["Et si mon encadrant demande des corrections ?","Les remarques de l’encadrant font partie du travail. Envoyez-les nous : nous les examinons avec vous et adaptons la suite de l’accompagnement en conséquence."],
+      ["Pouvez-vous m’aider sur l’analyse de données ?","Oui. Nous vous aidons à analyser vos données et à comprendre vos résultats, en cohérence avec votre méthodologie et les consignes de votre encadrant."],
+      ["Garantissez-vous une note ou la validation ?","Non. Aucune note, validation ou diplôme ne peut être garanti. Nous nous engageons sur la qualité de l’accompagnement et sur son adaptation à votre situation."],
+      ["Que dois-je envoyer pour le premier contact ?","Votre niveau d’études, votre spécialité, le type de projet, le sujet, où vous en êtes, les consignes de votre encadrant, votre échéance et ce qui vous bloque. Un message imparfait suffit pour commencer : nous posons les questions qui manquent."] ] },
+    final: { title: "Parlez-nous de votre projet.", lead: "Le message ci-dessous est prêt. Vous pourrez le compléter avec votre situation avant de l’envoyer.", msgLabel: "Message prérempli" },
+    footer: { tag: "Accompagnement académique personnalisé", legal: "Aucune note, validation ou diplôme n’est garanti. Nous nous engageons sur la qualité de l’accompagnement." },
+    wa: { message: "Bonjour, je souhaite avoir des informations concernant l’accompagnement de mon projet.", refLabel: "Réf", sep: " : " },
+    qual: { title: "Parlez-nous de votre projet", sub: "Trois choix rapides, tous facultatifs. Le message est prêt ensuite.", optional: "", previewLabel: "Message qui sera envoyé", send: "Envoyer sur WhatsApp", skip: "Passer et écrire directement",
+      groups: [
+        { key: "level", label: "Votre niveau", options: ["Licence","Master","Doctorat","École / autre"] },
+        { key: "project", label: "Votre projet", options: ["PFE","Mémoire","Thèse","Rapport de stage","Autre"] },
+        { key: "need", label: "Votre besoin", options: ["Tout le projet","Méthodologie et plan","Questionnaire / entretien","Analyse de données","Soutenance / PowerPoint","Corrections de l’encadrant"] } ],
+      lines: { level: "Niveau", project: "Projet", need: "Besoin" } }
+  },
+  ar: {
+    langBtn: "FR", dir: "rtl",
+    ctaPrimary: "تحدّث مع مستشار على واتساب",
+    ctaSecondary: "راسلنا على واتساب",
+    hero: { eyebrow: "مواكبة أكاديمية مخصّصة", title: "مشروع نهاية الدراسة، المذكرة أو الأطروحة، بمواكبة خطوة بخطوة.", subtitle: "مواكبة تُكيَّف مع مستواك وتخصصك وتوجيهات أستاذك المؤطر.", note: "بدون تسجيل ولا استمارة. تصف لنا مشروعك، ويجيبك مستشار على واتساب.", proofLabel: "رأي طالبة تمت مواكبتها", moreAvis: "استمع إلى آراء أخرى", otherVideos: "فيديوهات أخرى" },
+    proof: { eyebrow: "إثباتات", title: "ماذا يقول الطلبة الذين واكبناهم.", lead: "آراء صوتية ورسائل صوتية ونصية وصلتنا على واتساب. الأسماء الأولى والمستوى فقط، والمعلومات الشخصية مخفية.", audioTitle: "آراء صوتية", audioHint: "الاسم والمستوى", vocauxTitle: "رسائل صوتية على واتساب", vocauxHint: "اضغط للاستماع", shotsTitle: "رسائل وصلتنا", shotsCount: n => `${n} صورة · اضغط للتكبير`, counts: (a,v,m) => [`${a} آراء صوتية`, `${v} رسائل صوتية`, `${m} رسالة`], more: n => n === 1 ? "استمع إلى رأي آخر" : n === 2 ? "استمع إلى الرأيين الآخرين" : `استمع إلى ${n} آراء أخرى`, transcript: "النص", shotAlt: i => `رسالة من طالب وصلتنا على واتساب (${i})`, listen: n => `الاستماع إلى رأي ${n}`, play: t => `تشغيل: ${t}`, zoom: "تكبير", close: "إغلاق", prev: "السابق", next: "التالي" },
+    sit: { eyebrow: "هل يناسب هذا مشروعي؟", title: "مرحلة محددة، أو المشروع كاملاً.", lead: "كل طلب مختلف. هذه أكثر الحالات التي يراسلنا بشأنها الطلبة.", list: ["تنظيم الأفكار وبناء الخطة","فهم ملاحظات المؤطر وتطبيقها","بناء منهجية البحث","إعداد استبيان أو دليل مقابلة","تحليل البيانات وفهم النتائج","التحضير للمناقشة وعرض PowerPoint"], splitTitle: "لا تعرف من أين تبدأ؟", splitText: "صف لنا ببساطة أين وصلت. مهمتنا أن نحدد المرحلة التي تحتاج فيها إلى مساعدة." },
+    svc: { eyebrow: "ما الذي نواكبه", title: "وثيقتك كاملة، أو مرحلة من عملك.", groups: [
+      { tag: "وثيقة", title: "المشروع كاملاً", items: [["مشروع نهاية الدراسة","PFE"],["مذكرة","إجازة، ماستر"],["أطروحة","دكتوراه"],["تقرير التدريب",""]] },
+      { tag: "مرحلة", title: "نقطة محددة في عملك", items: [["المنهجية وبناء الخطة","الخطة، الإشكالية"],["الاستبيان ودليل المقابلة",""],["تحليل البيانات","وقراءة النتائج"],["المناقشة وعرض PowerPoint",""]] } ],
+      note: "تُحدَّد المواكبة معك بعد قراءة توجيهاتك. لا شيء موحّد: المستوى والتخصص والتقدم في العمل تغيّر الاقتراح." },
+    steps: { eyebrow: "كيف يتم ذلك", title: "أربع خطوات، من أول رسالة إلى المتابعة.", list: [
+      ["تعرض علينا مشروعك","على واتساب، في بضعة أسطر أو برسالة صوتية: مستواك، تخصصك، نوع المشروع وأين وصلت."],
+      ["نحلل التوجيهات والتقدم في العمل","نقرأ ما يطلبه أستاذك المؤطر، ننظر إلى ما أُنجز ونحدد ما يعيقك."],
+      ["نقترح عليك مواكبة مناسبة","اقتراح واضح، يقتصر على ما تحتاجه: مرحلة محددة أو متابعة على عدة مراحل."],
+      ["تستمر المتابعة على واتساب","تبقى المراسلات في نفس المحادثة طوال فترة المواكبة."] ],
+      prepTitle: "للحصول على جواب دقيق، اذكر منذ أول رسالة:", prep: ["المستوى الدراسي","التخصص","نوع المشروع","الموضوع","التقدم في العمل","توجيهات المؤطر","الموعد النهائي","الصعوبات"] },
+    works: { eyebrow: "إنجازات", title: "مقتطفات من أعمال تمت مواكبتها.", lead: "تصفح مقتطفات من وثائق منجزة، مع إخفاء الهوية. اضغط للتشغيل." },
+    why: { eyebrow: "لماذا Soutenance Pro", title: "مواكبة تنطلق من مشروعك.", list: [
+      ["التخصيص","كل مواكبة تُبنى انطلاقاً من مستواك وتخصصك وموضوعك."],
+      ["المنهجية","مسار منظم، من الإشكالية إلى المناقشة، لعمل متماسك."],
+      ["المتابعة","تستمر المراسلات على واتساب، مرحلة بعد مرحلة، حتى نهاية المواكبة."],
+      ["أستاذك المؤطر له الأولوية","نشتغل انطلاقاً من توجيهاته وملاحظاته، لا ضدها."],
+      ["تواصل مباشر","تتحدث مع شخص يقرأ وضعيتك قبل أن يقترح عليك أي شيء."] ] },
+    faq: { eyebrow: "أسئلة شائعة", title: "قبل أن تراسلنا.", list: [
+      ["ما هي المشاريع المعنية؟","مشاريع نهاية الدراسة، المذكرات، الأطروحات وتقارير التدريب، في جميع المستويات الجامعية. يمكنك أيضاً مراسلتنا من أجل مرحلة واحدة: المنهجية، الاستبيان أو دليل المقابلة، تحليل البيانات، التحضير للمناقشة."],
+      ["كيف تتم المواكبة؟","تعرض علينا مشروعك على واتساب. نحلل توجيهاتك وتقدمك في العمل، ثم نقترح عليك مواكبة مناسبة. إذا وافقت، تستمر المتابعة في نفس محادثة واتساب."],
+      ["ما هي الآجال؟","تتعلق بالمرحلة المعنية، وبتقدم عملك، وبموعدك النهائي. اذكر تاريخ التسليم منذ أول رسالة: سنخبرك بما يمكن إنجازه في هذا الإطار."],
+      ["وإذا طلب أستاذي المؤطر تعديلات؟","ملاحظات المؤطر جزء من العمل. أرسلها لنا: ندرسها معك ونكيّف باقي المواكبة وفقاً لها."],
+      ["هل يمكنكم مساعدتي في تحليل البيانات؟","نعم. نساعدك على تحليل بياناتك وفهم نتائجك، بما ينسجم مع منهجيتك وتوجيهات أستاذك المؤطر."],
+      ["هل تضمنون نقطة أو النجاح؟","لا. لا يمكن ضمان أي نقطة أو نجاح أو شهادة. نلتزم بجودة المواكبة وبملاءمتها لوضعيتك."],
+      ["ماذا أرسل في أول تواصل؟","مستواك الدراسي، تخصصك، نوع المشروع، الموضوع، أين وصلت، توجيهات أستاذك المؤطر، موعدك النهائي وما يعيقك. رسالة غير مكتملة تكفي للبدء: نطرح نحن الأسئلة الناقصة."] ] },
+    final: { title: "حدّثنا عن مشروعك.", lead: "الرسالة أدناه جاهزة. يمكنك إكمالها بوضعيتك قبل إرسالها.", msgLabel: "رسالة جاهزة" },
+    footer: { tag: "مواكبة أكاديمية مخصّصة", legal: "لا نضمن أي نقطة أو نجاح أو شهادة. نلتزم بجودة المواكبة." },
+    wa: { message: "مرحباً، أريد معلومات حول مواكبة مشروعي.", refLabel: "المرجع", sep: ": " },
+    qual: { title: "حدّثنا عن مشروعك", sub: "ثلاثة اختيارات سريعة، كلها اختيارية. الرسالة تكون جاهزة بعدها.", optional: "", previewLabel: "الرسالة التي سترسل", send: "إرسال على واتساب", skip: "تخطي والكتابة مباشرة",
+      groups: [
+        { key: "level", label: "مستواك", options: ["إجازة","ماستر","دكتوراه","مدرسة / آخر"] },
+        { key: "project", label: "مشروعك", options: ["مشروع نهاية الدراسة","مذكرة","أطروحة","تقرير تدريب","آخر"] },
+        { key: "need", label: "حاجتك", options: ["المشروع كاملاً","المنهجية والخطة","الاستبيان / المقابلة","تحليل البيانات","المناقشة / PowerPoint","تعديلات المؤطر"] } ],
+      lines: { level: "المستوى", project: "المشروع", need: "الحاجة" } }
+  }
+};
+
+/* ==========================================================
+   Utilitaires
+   ========================================================== */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5Z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+const ICON_CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+const ICON_ZOOM = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg>';
+const ICON_CHECK = '<svg class="chk" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-1.2 14.4-4-4 1.6-1.6 2.4 2.4 5.2-5.2 1.6 1.6-6.8 6.8Z"/></svg>';
+const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- langue ---------- */
+let LANG = "fr";
+function detectLang(){
+  try{
+    const p = new URLSearchParams(location.search).get("lang");
+    if(p && I18N[p]) return p;
+    const h = location.hash.replace("#","");
+    if(I18N[h]) return h;
+    const s = localStorage.getItem("sp_lang"); if(s && I18N[s]) return s;
+  }catch(e){}
+  return I18N[CONFIG.defaultLang] ? CONFIG.defaultLang : "fr";
+}
+const T = () => I18N[LANG];
+const tr = x => (x && typeof x === "object") ? (x[LANG] ?? x.fr ?? "") : (x ?? "");
+function get(obj, path){ return path.split(".").reduce((o,k) => (o && o[k] !== undefined) ? o[k] : undefined, obj); }
+
+/* ==========================================================
+   UTM : lecture, conservation, référence publicitaire
+   ========================================================== */
+const UTM_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term"];
+function readUtm(){
+  const out = {};
+  try{ const p = new URLSearchParams(location.search); UTM_KEYS.forEach(k => { const v = p.get(k); if(v) out[k] = v.slice(0,80); }); }catch(e){}
+  if(Object.keys(out).length){ try{ sessionStorage.setItem("sp_utm", JSON.stringify(out)); }catch(e){} return out; }
+  try{ const s = sessionStorage.getItem("sp_utm"); if(s) return JSON.parse(s); }catch(e){}
+  return {};
+}
+let UTM = readUtm();
+function adRef(){ return (UTM.utm_content || "").replace(/[^\w-]/g,"").slice(0,40); }
+function keepUtmOnLinks(){
+  if(!Object.keys(UTM).length) return;
+  $$('a[href]').forEach(a => {
+    const h = a.getAttribute("href");
+    if(!h || h.startsWith("#") || /^(https?:)?\/\//.test(h) || a.classList.contains("js-wa")) return;
+    try{ const u = new URL(h, location.href); Object.entries(UTM).forEach(([k,v]) => { if(!u.searchParams.has(k)) u.searchParams.set(k,v); }); a.setAttribute("href", u.pathname + u.search + u.hash); }catch(e){}
+  });
+}
+
+/* ==========================================================
+   WhatsApp : message, lien, qualification
+   ========================================================== */
+const WA_NUMBER = (CONFIG.whatsapp.number || "").replace(/[^\d]/g,"");
+let QUAL = {};
+try{ QUAL = JSON.parse(sessionStorage.getItem("sp_qual") || "{}") || {}; }catch(e){}
+function waMessage(withQual){
+  const t = T();
+  const lines = [t.wa.message];
+  if(withQual){
+    t.qual.groups.forEach(g => { const i = QUAL[g.key]; if(Number.isInteger(i) && g.options[i] !== undefined) lines.push(`${t.qual.lines[g.key]}${t.wa.sep}${g.options[i]}`); });
+  }
+  const r = adRef();
+  if(CONFIG.whatsapp.includeAdRef && r) lines.push(`${t.wa.refLabel}${t.wa.sep}${r}`);
+  return lines.join("\n");
+}
+function waUrl(withQual){ return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMessage(withQual))}`; }
+function refreshWaLinks(){
+  $$(".js-wa").forEach(a => a.setAttribute("href", waUrl(false)));
+  $("#finalMsg").textContent = waMessage(false);
+}
+function bindCtas(){
+  $$(".js-wa").forEach(a => {
+    a.setAttribute("target","_blank"); a.setAttribute("rel","noopener");
+    a.addEventListener("click", ev => {
+      const cta = a.dataset.cta || "cta";
+      if(!WA_NUMBER){ ev.preventDefault(); console.warn("Numéro WhatsApp non configuré (CONFIG.whatsapp.number)."); return; }
+      if(CONFIG.whatsapp.qualify){ ev.preventDefault(); openQual(cta); return; }
+      trackContact(cta, { qualified: false });
+    });
+  });
+}
+
+/* ---------- feuille de qualification ---------- */
+const qual = $("#qualSheet");
+let qualCta = "cta";
+function renderQual(){
+  const t = T();
+  $("#qTitle").textContent = t.qual.title; $("#qSub").textContent = t.qual.sub;
+  $("#qPrevLabel").textContent = t.qual.previewLabel; $("#qSendLbl").textContent = t.qual.send; $("#qSkip").textContent = t.qual.skip;
+  $("#qClose").setAttribute("aria-label", t.proof.close);
+  const groups = $("#qGroups"); groups.innerHTML = ""; groups.style.display = "grid"; groups.style.gap = "16px";
+  t.qual.groups.forEach(g => {
+    const d = document.createElement("div"); d.className = "qgroup";
+    d.innerHTML = `<div class="ql"><span>${esc(g.label)}</span>${t.qual.optional ? `<small>${esc(t.qual.optional)}</small>` : ""}</div><div class="qchips" role="group" aria-label="${esc(g.label)}">${g.options.map((o,i) => `<button type="button" class="qchip" data-key="${esc(g.key)}" data-idx="${i}" data-val="${esc(o)}" aria-pressed="${QUAL[g.key] === i}">${esc(o)}</button>`).join("")}</div>`;
+    groups.appendChild(d);
+  });
+  $$(".qchip", groups).forEach(b => b.addEventListener("click", () => {
+    const k = b.dataset.key, i = Number(b.dataset.idx);
+    QUAL[k] = (QUAL[k] === i) ? null : i;
+    $$(`.qchip[data-key="${k}"]`, groups).forEach(x => x.setAttribute("aria-pressed", Number(x.dataset.idx) === QUAL[k]));
+    try{ sessionStorage.setItem("sp_qual", JSON.stringify(QUAL)); }catch(e){}
+    updateQual();
+  }));
+  updateQual();
+}
+function updateQual(){
+  $("#qPreview").textContent = waMessage(true);
+  $("#qSend").setAttribute("href", waUrl(true));
+  $("#qSkip").setAttribute("href", waUrl(false));
+}
+function openQual(cta){
+  qualCta = cta; renderQual();
+  qual.hidden = false; document.body.style.overflow = "hidden";
+  $("#qBody").scrollTop = 0;
+  setTimeout(() => $("#qClose").focus(), 50);
+}
+function closeQual(){ qual.hidden = true; document.body.style.overflow = ""; }
+$("#qClose").addEventListener("click", closeQual);
+qual.addEventListener("click", ev => { if(ev.target === qual) closeQual(); });
+$("#qSend").addEventListener("click", () => { const t = T(); const ans = {}; t.qual.groups.forEach(g => { if(Number.isInteger(QUAL[g.key])) ans[g.key] = g.options[QUAL[g.key]]; }); trackContact(qualCta, { qualified: Object.keys(ans).length > 0, ...ans }); setTimeout(closeQual, 300); });
+$("#qSkip").addEventListener("click", () => { trackContact(qualCta, { qualified: false }); setTimeout(closeQual, 300); });
+
+/* ==========================================================
+   Meta Pixel : préparé, inactif tant que l’ID est vide
+   ========================================================== */
+const Pixel = {
+  loaded:false, consent:!CONFIG.tracking.requireConsent, queue:[],
+  ready(){ return !!CONFIG.tracking.metaPixelId && this.consent; },
+  load(){
+    if(this.loaded || !this.ready()) return;
+    this.loaded = true;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', CONFIG.tracking.metaPixelId);
+    const q = this.queue; this.queue = []; q.forEach(c => fbq.apply(null,c));
+  },
+  track(name, params){
+    const call = ['track', name, params];
+    if(!CONFIG.tracking.metaPixelId){ console.info("[Pixel démo] " + name, params); return; }
+    if(!this.consent){ this.queue.push(call); return; }
+    this.load(); fbq.apply(null, call);
+  }
+};
+window.spConsent = { grant(){ Pixel.consent = true; Pixel.load(); } };
+function trackPage(){
+  Pixel.track('PageView', {});
+  Pixel.track('ViewContent', { content_name: CONFIG.tracking.contentName, content_category: 'landing', lang: LANG, utm_content: adRef() || undefined });
+}
+function trackContact(cta, extra){ Pixel.track('Contact', { content_name: CONFIG.tracking.contentName, cta, lang: LANG, utm_content: adRef() || undefined, ...(extra||{}) }); }
+
+/* ==========================================================
+   Lecture : une seule source sonore à la fois
+   ========================================================== */
+const players = [];
+function stopAll(exceptEl){
+  players.forEach(p => { if(p.audio !== exceptEl && !p.audio.paused) p.audio.pause(); });
+  $$("video").forEach(v => { if(v !== exceptEl && !v.paused) v.pause(); });
+}
+function videoCard(v, eager=false){
+  const t = T();
+  const el = document.createElement("div");
+  el.className = "video-card" + (v.ratio ? " " + v.ratio : "") + (v.fit === "contain" ? " fit-contain" : "");
+  el.innerHTML = `
+    <img class="poster" src="${esc(v.poster)}" alt="" loading="${eager ? "eager" : "lazy"}" decoding="async">
+    <video playsinline preload="none" controls poster="${esc(v.poster)}" hidden aria-label="${esc(tr(v.title))}"${v.muted ? " muted" : ""}></video>
+    <button class="play" type="button" aria-label="${esc(t.proof.play(tr(v.title)))}"><span class="ring">${ICON_PLAY}</span><span class="cap">${esc(tr(v.title))}<small>${esc(tr(v.sub))}</small></span></button>`;
+  const btn = $(".play", el), vid = $("video", el), img = $(".poster", el);
+  btn.addEventListener("click", () => {
+    stopAll(vid);
+    if(!vid.getAttribute("src")) vid.src = v.src;
+    vid.hidden = false; img.hidden = true; el.classList.add("is-playing");
+    vid.play().catch(()=>{});
+  });
+  vid.addEventListener("play", () => { stopAll(vid); el.classList.add("is-playing"); });
+  vid.addEventListener("ended", () => { el.classList.remove("is-playing"); });
+  return el;
+}
+function fmt(s){ s = Math.max(0, Math.floor(s||0)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; }
+function audioPlayer(a, compact=false){
+  const t = T();
+  const el = document.createElement("article");
+  el.className = "audio" + (compact ? " compact" : "");
+  const wave = a.wave || Array(36).fill(4);
+  const bars = (compact ? wave.filter((_,i) => i % 2 === 0) : wave).map(h => `<i style="--h:${h}"></i>`).join("");
+  const trText = tr(a.transcript); const hasTr = !!(trText && trText.trim());
+  el.innerHTML = `
+    <button class="pp" type="button" aria-label="${esc(t.proof.listen(tr(a.name)))}"><span class="ico-play">${ICON_PLAY}</span><span class="ico-pause">${ICON_PAUSE}</span></button>
+    <div class="who"><b>${esc(tr(a.name))} ${ICON_CHECK}</b><span>${esc(tr(a.level))}</span></div>
+    <div class="wave"><div class="bars" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">${bars}</div><span class="time">${esc(a.duration||"")}</span></div>
+    ${(!compact && hasTr) ? `<div class="tr"><button type="button">${esc(t.proof.transcript)} ${ICON_CHEV}</button><p>${esc(trText)}</p></div>` : ""}
+    <audio preload="none" src="${esc(a.src)}"></audio>`;
+  const audio = $("audio", el), pp = $(".pp", el), barsEl = $(".bars", el), time = $(".time", el), trEl = $(".tr", el);
+  players.push({ el, audio });
+  pp.addEventListener("click", () => { if(audio.paused){ stopAll(audio); audio.play().catch(()=>{}); } else audio.pause(); });
+  audio.addEventListener("play", () => el.classList.add("is-playing"));
+  audio.addEventListener("pause", () => el.classList.remove("is-playing"));
+  audio.addEventListener("ended", () => { el.classList.remove("is-playing"); paint(0); time.textContent = a.duration || fmt(audio.duration); });
+  const bs = $$("i", barsEl);
+  function paint(ratio){ const n = Math.round(ratio * bs.length); bs.forEach((b,i) => b.classList.toggle("on", i < n)); barsEl.setAttribute("aria-valuenow", Math.round(ratio*100)); }
+  audio.addEventListener("timeupdate", () => { if(!audio.duration) return; paint(audio.currentTime / audio.duration); time.textContent = fmt(audio.currentTime); });
+  barsEl.addEventListener("click", ev => {
+    const r = barsEl.getBoundingClientRect(); const ratio = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+    const go = () => { audio.currentTime = ratio * audio.duration; paint(ratio); };
+    if(audio.duration) go(); else { audio.addEventListener("loadedmetadata", go, {once:true}); audio.load(); }
+    if(audio.paused){ stopAll(audio); audio.play().catch(()=>{}); }
+  });
+  barsEl.addEventListener("keydown", ev => {
+    if(!audio.duration) return;
+    if(ev.key === "ArrowRight") audio.currentTime = Math.min(audio.duration, audio.currentTime + 3);
+    if(ev.key === "ArrowLeft") audio.currentTime = Math.max(0, audio.currentTime - 3);
+  });
+  if(trEl) $("button", trEl).addEventListener("click", () => trEl.classList.toggle("open"));
+  return el;
+}
+
+/* ---------- captures + lightbox ---------- */
+const SHOTS = CONFIG.media.avisCaptures.filter(c => c.src);
+let lbIndex = 0;
+function shot(item, i){
+  const t = T();
+  const el = document.createElement("div");
+  el.className = "shot";
+  el.innerHTML = `<img src="${esc(item.src)}" alt="${esc(t.proof.shotAlt(i+1))}" width="720" height="960" loading="${i < 2 ? "eager" : "lazy"}" decoding="async"><button type="button" aria-label="${esc(t.proof.zoom)}"></button><span class="num">${i+1}/${SHOTS.length}</span><span class="zoom">${ICON_ZOOM}</span>`;
+  $("button", el).addEventListener("click", () => openLightbox(i));
+  return el;
+}
+const lb = $("#lightbox"), lbImg = $("#lbImg"), lbCount = $("#lbCount");
+function showLb(i){ lbIndex = (i + SHOTS.length) % SHOTS.length; lbImg.src = SHOTS[lbIndex].src; lbImg.alt = T().proof.shotAlt(lbIndex+1); lbCount.textContent = `${lbIndex+1} / ${SHOTS.length}`; }
+function openLightbox(i){ showLb(i); lb.hidden = false; document.body.style.overflow = "hidden"; $("#lbClose").focus(); }
+function closeLightbox(){ lb.hidden = true; lbImg.src = ""; document.body.style.overflow = ""; }
+$("#lbClose").addEventListener("click", closeLightbox);
+$("#lbPrev").addEventListener("click", () => showLb(lbIndex - 1));
+$("#lbNext").addEventListener("click", () => showLb(lbIndex + 1));
+lb.addEventListener("click", ev => { if(ev.target === lb) closeLightbox(); });
+let tx = null;
+lb.addEventListener("touchstart", ev => { tx = ev.touches[0].clientX; }, {passive:true});
+lb.addEventListener("touchend", ev => { if(tx === null) return; const dx = ev.changedTouches[0].clientX - tx; tx = null; if(Math.abs(dx) > 40) showLb(lbIndex + (dx < 0 ? 1 : -1)); }, {passive:true});
+document.addEventListener("keydown", ev => {
+  if(ev.key === "Escape"){ closeLightbox(); closeQual(); }
+  if(lb.hidden) return;
+  if(ev.key === "ArrowLeft") showLb(lbIndex - 1);
+  if(ev.key === "ArrowRight") showLb(lbIndex + 1);
+});
+
+/* ---------- rails : flèches desktop ---------- */
+function railNav(wrap, rail){
+  $$(".rail-nav", wrap).forEach(b => b.remove());
+  [-1, 1].forEach(dir => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "rail-nav " + (dir < 0 ? "prev" : "next");
+    b.setAttribute("aria-label", dir < 0 ? T().proof.prev : T().proof.next);
+    b.innerHTML = dir < 0 ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>';
+    const rtl = LANG === "ar" ? -1 : 1;
+    b.addEventListener("click", () => rail.scrollBy({ left: dir * rtl * rail.clientWidth * 0.8, behavior: REDUCED ? "auto" : "smooth" }));
+    wrap.appendChild(b);
+  });
+}
+
+/* ==========================================================
+   Rendu (réexécuté au changement de langue)
+   ========================================================== */
+let ugcCurrent = null;
+function renderUgc(){
+  const list = CONFIG.media.ugc.filter(u => u.src);
+  if(!list.length){ $("#ugcMain")?.remove(); $("#ugcAlt")?.remove(); return; }
+  const wanted = (ugcCurrent && list.find(u => u.id === ugcCurrent.id)) || list.find(u => u.id === adRef()) || list[0];
+  const alt = $("#ugcAlt");
+  const mount = (u) => {
+    ugcCurrent = u;
+    const card = videoCard(u, true); card.id = "ugcMain";
+    $("#ugcMain").replaceWith(card);
+    $$("#ugcAlt button").forEach(b => b.classList.toggle("is-active", b.dataset.id === u.id));
+  };
+  if(list.length > 1){
+    alt.innerHTML = `<p class="proof-label">${esc(T().hero.otherVideos)}</p><div class="thumbs">${list.map(u => `<button type="button" data-id="${esc(u.id)}" aria-label="${esc(T().proof.play(tr(u.title)))} ${esc(u.id)}"><img src="${esc(u.poster)}" alt="" loading="lazy"></button>`).join("")}</div>`;
+    $$("button", alt).forEach(b => b.addEventListener("click", () => mount(list.find(u => u.id === b.dataset.id))));
+  }
+  mount(wanted);
+}
+function renderAll(){
+  const t = T();
+  players.length = 0;
+  /* textes statiques */
+  $$("[data-i18n]").forEach(el => { const v = get(t, el.dataset.i18n); if(typeof v === "string") el.textContent = v; });
+  $("#langBtn").textContent = t.langBtn;
+  $("#lbClose").setAttribute("aria-label", t.proof.close); $("#lbPrev").setAttribute("aria-label", t.proof.prev); $("#lbNext").setAttribute("aria-label", t.proof.next); lb.setAttribute("aria-label", t.proof.zoom);
+  /* hero */
+  renderUgc();
+  const audios = CONFIG.media.avisAudio.filter(a => a.src);
+  const heroSlot = $("#heroAudio") || $(".proof-mini .audio");
+  if(audios[0]){ const p = audioPlayer(audios[0], true); p.id = "heroAudio"; heroSlot.replaceWith(p); }
+  /* preuves */
+  const list = $("#audioList"); list.innerHTML = ""; list.classList.remove("all");
+  audios.forEach((a,i) => { const p = audioPlayer(a); if(i >= 3) p.classList.add("extra"); list.appendChild(p); });
+  $$(".more-btn").forEach(b => b.remove());
+  if(audios.length > 3){
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn btn-secondary more-btn"; b.textContent = t.proof.more(audios.length - 3);
+    b.addEventListener("click", () => list.classList.add("all")); list.insertAdjacentElement("afterend", b);
+  }
+  const vr = $("#vocauxRail"); vr.innerHTML = ""; CONFIG.media.vocaux.filter(v => v.available !== false && v.src).forEach((v,i) => vr.appendChild(videoCard(v, i < 2)));
+  const sr = $("#shotsRail"); sr.innerHTML = ""; SHOTS.forEach((c,i) => sr.appendChild(shot(c,i)));
+  $("#shotsCount").textContent = t.proof.shotsCount(SHOTS.length);
+  const wr = $("#worksRail"); wr.innerHTML = ""; CONFIG.media.works.filter(w => w.available !== false && w.src).forEach((w,i) => wr.appendChild(videoCard(w, i < 2)));
+  vr.parentElement.hidden = !vr.children.length;
+  $("#realisations").hidden = !wr.children.length;
+  [vr, sr, wr].filter(r => r.children.length).forEach(r => railNav(r.parentElement, r));
+  const nv = CONFIG.media.vocaux.filter(v => v.available !== false && v.src).length;
+  $("#proofCounts").innerHTML = t.proof.counts(audios.length, nv, SHOTS.length).filter((_, i) => i !== 1 || nv > 0).map(c => `<span>${esc(c)}</span>`).join("");
+  /* situations, services, étapes, pourquoi, FAQ */
+  $("#needList").innerHTML = t.sit.list.map(x => `<li>${esc(x)}</li>`).join("");
+  $("#svcGroups").innerHTML = t.svc.groups.map(g => `<div class="svc"><h3><span class="tag">${esc(g.tag)}</span> ${esc(g.title)}</h3><ul>${g.items.map(([a,b]) => `<li>${esc(a)}${b ? ` <small>${esc(b)}</small>` : ""}</li>`).join("")}</ul></div>`).join("");
+  $("#timeline").innerHTML = t.steps.list.map(([h,p]) => `<li><h3>${esc(h)}</h3><p>${esc(p)}</p></li>`).join("");
+  $("#prepChips").innerHTML = t.steps.prep.map(x => `<li>${esc(x)}</li>`).join("");
+  $("#whyList").innerHTML = t.why.list.map(([h,p]) => `<li><b>${esc(h)}</b><p>${esc(p)}</p></li>`).join("");
+  const faq = $("#faqList"); faq.innerHTML = "";
+  t.faq.list.forEach(([q,a],i) => {
+    const d = document.createElement("div"); d.className = "faq-item" + (i === 0 ? " open" : "");
+    d.innerHTML = `<button class="faq-q" type="button" aria-expanded="${i===0}" id="faqq${i}" aria-controls="faqa${i}">${esc(q)}<span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span></button><div class="faq-a" id="faqa${i}" role="region" aria-labelledby="faqq${i}"><div><p>${esc(a)}</p></div></div>`;
+    $(".faq-q", d).addEventListener("click", () => { const open = d.classList.toggle("open"); $(".faq-q", d).setAttribute("aria-expanded", open); });
+    faq.appendChild(d);
+  });
+  $$(".stagger").forEach(s => Array.from(s.children).forEach((c,i) => c.style.setProperty("--i", i)));
+  $("#siteLink").href = CONFIG.brand.site; $("#siteLink").textContent = CONFIG.brand.site.replace(/^https?:\/\//,"");
+  if(CONFIG.brand.logoSrc){ $("#logoLink").innerHTML = `<img src="${esc(CONFIG.brand.logoSrc)}" alt="${esc(CONFIG.brand.name)}" height="36">`; }
+  refreshWaLinks();
+  if(!qual.hidden) renderQual();
+}
+function setLang(l, remember=true, initial=false){
+  LANG = I18N[l] ? l : "fr";
+  document.documentElement.lang = LANG; document.documentElement.dir = T().dir;
+  if(remember){ try{ localStorage.setItem("sp_lang", LANG); }catch(e){} }
+  renderAll();
+  if(!initial) $$(".reveal").forEach(e => e.classList.add("in"));
+}
+$("#langBtn").addEventListener("click", () => setLang(LANG === "fr" ? "ar" : "fr"));
+
+function reveal(){
+  const els = $$(".reveal");
+  if(!("IntersectionObserver" in window) || REDUCED){ els.forEach(e => e.classList.add("in")); return; }
+  const io = new IntersectionObserver(entries => entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } }), { rootMargin: "0px 0px -8% 0px" });
+  els.forEach(e => io.observe(e));
+  setTimeout(() => els.forEach(e => e.classList.add("in")), 1000);
+}
+function stickyBar(){
+  const bar = $("#stickyBar"), cta = $("#heroCta");
+  if(!("IntersectionObserver" in window)) return;
+  new IntersectionObserver(entries => entries.forEach(en => bar.classList.toggle("is-hidden", en.isIntersecting)), { threshold: 0.6 }).observe(cta);
+}
+function debugPanel(){
+  const p = $("#debug");
+  const fill = () => {
+    $("#dbgNum").textContent = WA_NUMBER ? "+" + WA_NUMBER : "non configuré";
+    $("#dbgLang").textContent = LANG;
+    $("#dbgRef").textContent = adRef() || "aucune";
+    $("#dbgMsg").textContent = waMessage(false);
+    $("#dbgPix").textContent = CONFIG.tracking.metaPixelId ? "actif" : "démo (console)";
+    $("#simRef").value = adRef();
+  };
+  const sync = () => { if(location.hash === "#debug"){ fill(); p.hidden = false; } if(I18N[location.hash.replace("#","")]) setLang(location.hash.replace("#",""), false); };
+  sync(); addEventListener("hashchange", sync);
+  $("#debugClose").addEventListener("click", () => { p.hidden = true; });
+  $("#langBtn").addEventListener("click", () => { if(!p.hidden) fill(); });
+  $("#simRef").addEventListener("change", ev => {
+    const v = ev.target.value;
+    UTM = v ? { utm_source:"meta", utm_medium:"paid", utm_campaign:"accompagnement", utm_content:v } : {};
+    try{ v ? sessionStorage.setItem("sp_utm", JSON.stringify(UTM)) : sessionStorage.removeItem("sp_utm"); }catch(e){}
+    refreshWaLinks();
+    const b = $$("#ugcAlt button").find(x => x.dataset.id === v); if(b && !b.classList.contains("is-active")) b.click();
+    fill();
+  });
+}
+setLang(detectLang(), false, true);
+bindCtas();
+keepUtmOnLinks();
+trackPage();
+reveal();
+stickyBar();
+debugPanel();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+[
+  {
+    "file": "ugc1.mp4",
+    "size": 5558212,
+    "sha256": "92a44a22d0626ac4abc4f73522244b5345ceb86b9515485695b838e1fc5390ea",
+    "parts": [
+      "ugc1/000.mp4.part",
+      "ugc1/001.mp4.part",
+      "ugc1/002.mp4.part",
+      "ugc1/003.mp4.part",
+      "ugc1/004.mp4.part",
+      "ugc1/005.mp4.part",
+      "ugc1/006.mp4.part",
+      "ugc1/007.mp4.part",
+      "ugc1/008.mp4.part",
+      "ugc1/009.mp4.part",
+      "ugc1/010.mp4.part",
+      "ugc1/011.mp4.part"
+    ]
+  },
+  {
+    "file": "ugc2.mp4",
+    "size": 3778785,
+    "sha256": "b3c1a5948d5b78266614593f351ba1435648557e766f753cbcd8a0f5b63a7572",
+    "parts": [
+      "ugc2/000.mp4.part",
+      "ugc2/001.mp4.part",
+      "ugc2/002.mp4.part",
+      "ugc2/003.mp4.part",
+      "ugc2/004.mp4.part",
+      "ugc2/005.mp4.part",
+      "ugc2/006.mp4.part",
+      "ugc2/007.mp4.part"
+    ]
+  },
+  {
+    "file": "ugc3.mp4",
+    "size": 5834056,
+    "sha256": "3a5f8ac554ad986cf6495ff3cfc95c18ca9bfedab74bf12957114154490d1513",
+    "parts": [
+      "ugc3/000.mp4.part",
+      "ugc3/001.mp4.part",
+      "ugc3/002.mp4.part",
+      "ugc3/003.mp4.part",
+      "ugc3/004.mp4.part",
+      "ugc3/005.mp4.part",
+      "ugc3/006.mp4.part",
+      "ugc3/007.mp4.part",
+      "ugc3/008.mp4.part",
+      "ugc3/009.mp4.part",
+      "ugc3/010.mp4.part",
+      "ugc3/011.mp4.part"
+    ]
+  }
+]

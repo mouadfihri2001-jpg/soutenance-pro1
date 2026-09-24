@@ -1,5 +1,6 @@
 import { build } from 'esbuild';
-import { mkdir, copyFile, rm, readFile, writeFile } from 'node:fs/promises';
+import { buildCampaignMedia } from './campaign-media.mjs';
+import { mkdir, copyFile, cp, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { pages } from '../content/catalog.mjs';
 import { metadata, renderPage, renderGuides, renderNotFound, publicPaths, escapeHtml } from './seo.mjs';
@@ -32,6 +33,10 @@ const seo=metadata({...context,title,description})+advertisingVerification(adver
 if (!html.includes('<!-- SEO_DEPLOYMENT_META -->')) throw new Error('SEO metadata insertion point is missing.');
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist/assets', { recursive: true });
+// Standalone campaign page; keep its media separate from the main application.
+await copyFile('public/accompagnement/index.html', 'dist/accompagnement.html');
+await cp('public/accompagnement/assets', 'dist/accompagnement/assets', { recursive: true });
+await buildCampaignMedia();
 await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- PRODUCT_DEMO -->',renderProductDemo()).replace('<!-- START_HUB -->',renderStartHub()));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
