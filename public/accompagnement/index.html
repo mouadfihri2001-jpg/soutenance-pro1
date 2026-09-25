@@ -13,6 +13,9 @@
 <style>html{color-scheme:light}[hidden]{display:none!important}</style>
 <title>Soutenance Pro</title>
 <meta name="description" content="Accompagnement académique personnalisé pour PFE, mémoires, thèses et rapports de stage. Expliquez votre projet sur WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap">
 <style>
 /* Polices auto-hébergées (sous-ensembles latin et arabe) */
 @font-face{font-family:"Bricolage Grotesque";font-style:normal;font-weight:200 800;font-display:swap;src:url(assets/fonts/bricolage-grotesque-latin-wght.woff2) format("woff2")}
@@ -102,21 +105,31 @@ section{padding-block:46px}
 /* ---------- header ---------- */
 .header{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
-  background:rgba(244,248,245,.88);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
+  background:rgba(255,255,255,.96);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);
   border-bottom:1px solid var(--line);
 }
 .header .wrap{display:flex;align-items:center;justify-content:space-between;min-height:62px;gap:8px}
 .header .actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
-.logo{display:inline-flex;align-items:center;gap:10px;color:var(--brand-deep);text-decoration:none;min-width:0;direction:ltr}
-.logo img{height:36px;width:auto}
-.logo-mark{width:38px;height:34px;flex:0 0 auto}
-.logo-word{font-family:var(--logo);font-weight:700;font-size:15px;letter-spacing:.07em;line-height:1;white-space:nowrap;text-transform:uppercase}
+.logo{display:inline-flex;align-items:center;gap:9px;color:var(--brand-deep);text-decoration:none;min-width:0;direction:ltr;font-family:Inter,Arial,sans-serif}
+.logo img{height:59px;width:59px;object-fit:contain;border-radius:10px;flex:0 0 auto}
+.logo-copy{display:flex;flex-direction:column;align-items:flex-start}
+.logo-name{display:flex;align-items:center;gap:7px}
+.logo-word{font-weight:600;font-size:21px;letter-spacing:-.8px;line-height:1.25;white-space:nowrap}
+.logo-word strong{font-weight:700;color:#00513e}
+.logo-tagline{font-family:Inter,Almarai,Arial,sans-serif;font-size:10px;font-weight:400;letter-spacing:.8px;line-height:1.25;margin-top:4px;text-transform:uppercase;color:#536b5e}
+.official-badge{display:inline-flex;width:21px;height:21px;flex:0 0 auto;color:#079ff5}
+.official-badge svg{display:block;width:100%;height:100%}
 .header .btn{min-height:44px;padding:0 14px;font-size:14px;border-radius:12px}
 .header .btn .lbl-long{display:none}
 .lang-btn{min-height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;color:var(--brand-deep);font-family:var(--body)}
 .lang-btn:hover{background:var(--brand-soft)}
+.language-switcher{display:flex;align-items:center;gap:4px;direction:ltr}
+.language-switcher .lang-btn{min-width:40px;padding-inline:8px}
+.lang-btn[aria-pressed="true"]{background:var(--brand-deep);border-color:var(--brand-deep);color:#fff}
+@media (max-width:850px){.header .wrap{flex-wrap:wrap;padding-block:8px}.header .actions{width:100%;justify-content:space-between}}
+@media (max-width:720px){.logo-word{font-size:18px}.logo img{width:51px;height:51px}.logo-tagline{font-size:9px;letter-spacing:.3px}}
+@media (max-width:480px){.logo{gap:6px}.logo-word{font-size:16px}.logo img{width:47px;height:47px}.logo-tagline{font-size:8px}}
 @media (max-width:419px){.header .btn .lbl-short{display:none}.header .btn{padding:0 12px}}
-@media (max-width:360px){.logo-word{font-size:12.5px;letter-spacing:.05em}.logo{gap:7px}}
 .logo{flex:0 0 auto}
 @media (min-width:480px){.header .btn .lbl-long{display:inline}.header .btn .lbl-short{display:none}}
 
@@ -463,15 +476,18 @@ section{padding-block:46px}
 <header class="header">
   <div class="wrap">
     <a class="logo" href="#top" id="logoLink" aria-label="Soutenance Pro">
-      <svg class="logo-mark" viewBox="0 0 100 92" fill="none" stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M22 36 50 16 84 38"/>
-        <path d="M34 38c12-3 24-3 34 1M34 47c11-3 22-3 30 1M34 56c10-3 19-3 26 1M34 38v18"/>
-        <path d="M27 38v14M23.5 52 27 61l3.5-9"/>
-      </svg>
-      <span class="logo-word">Soutenance Pro</span>
+      <img src="assets/brand-logo.jpg" width="59" height="59" alt="" decoding="async">
+      <span class="logo-copy"><span class="logo-name">
+      <span class="logo-word">Soutenance <strong>Pro</strong></span>
+      <span class="official-badge" id="officialBadge" role="img" aria-label="Site officiel de Soutenance Pro" title="Site officiel de Soutenance Pro"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m12 1.8 2.7 1.5 3.1.2 1.6 2.6 2.5 1.8-.2 3.1 1 3-1.9 2.4-.8 3-3 1-2.3 2-3-1-3.1.1-1.8-2.5-2.6-1.6-.2-3.1L1.8 12l1.5-2.7.2-3.1 2.6-1.6 1.8-2.5 3.1.2Z"/><path d="m7.6 12 2.9 2.9 5.9-6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </span><span class="logo-tagline" data-i18n="brandTagline">Ton projet · Tes ressources</span></span>
     </a>
     <div class="actions">
-      <button class="lang-btn" id="langBtn" type="button" aria-label="Changer de langue"></button>
+      <div class="language-switcher" id="languageSwitch" role="group" aria-label="Langue">
+        <button class="lang-btn" type="button" data-lang="fr" lang="fr" aria-label="Français" aria-pressed="true">FR</button>
+        <button class="lang-btn" type="button" data-lang="ar" lang="ar" aria-label="العربية" aria-pressed="false">عربي</button>
+        <button class="lang-btn" type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+      </div>
       <a class="btn btn-secondary js-wa" data-cta="header" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
         <span class="lbl-long" data-i18n="ctaSecondary">Discuter sur WhatsApp</span><span class="lbl-short">WhatsApp</span>
@@ -525,6 +541,7 @@ section{padding-block:46px}
     <h2 data-i18n="proof.title">Ce que disent les étudiants accompagnés.</h2>
     <p class="lead" style="margin-top:12px" data-i18n="proof.lead">Avis audio, vocaux et messages reçus sur WhatsApp. Prénoms et niveaux uniquement, informations personnelles masquées.</p>
     <div class="proof-counts" id="proofCounts"></div>
+    <p style="font-size:13px;color:var(--muted);margin-top:8px" data-i18n="proof.statsHint">Chiffres globaux de Soutenance Pro · Une sélection de retours ci-dessous.</p>
 
     <div class="proof-grid" style="margin-top:24px">
       <div>
@@ -723,7 +740,9 @@ section{padding-block:46px}
    ========================================================== */
 const CONFIG = {
   brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },   // logoSrc : ex. "assets/logo.svg"
-  defaultLang: "fr",          // "fr" ou "ar". ?lang=ar dans l’URL (ou #ar) force l’arabe ; le choix du visiteur est mémorisé
+  defaultLang: "fr",          // "fr", "ar" ou "en". ?lang=en (ou #en) force la langue ; le choix du visiteur est mémorisé
+  // Totaux de l’activité communiqués par le propriétaire, distincts des extraits affichés.
+  proofTotals: { audioReviews: 300, voiceMessages: 500, messages: 135978, clients: 69453 },
   whatsapp: {
     number: "212680241471",   // +212 6 80 24 14 71 — format international sans + ni espaces
     includeAdRef: true,       // ajoute « Réf : ugc1 » au message quand utm_content est présent
@@ -736,50 +755,50 @@ const CONFIG = {
   },
   media: {
     ugc: [
-      { id: "ugc3", src: "assets/video/ugc3.mp4", poster: "assets/video/ugc3.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "1:12" },
-      { id: "ugc1", src: "assets/video/ugc1.mp4", poster: "assets/video/ugc1.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:54" },
-      { id: "ugc2", src: "assets/video/ugc2.mp4", poster: "assets/video/ugc2.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" }, sub: "0:55" }
+      { id: "ugc3", src: "assets/video/ugc3.mp4", poster: "assets/video/ugc3.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" , en: "Service introduction" }, sub: "1:12" },
+      { id: "ugc1", src: "assets/video/ugc1.mp4", poster: "assets/video/ugc1.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" , en: "Service introduction" }, sub: "0:54" },
+      { id: "ugc2", src: "assets/video/ugc2.mp4", poster: "assets/video/ugc2.jpg", title: { fr: "Présentation du service", ar: "تقديم الخدمة" , en: "Service introduction" }, sub: "0:55" }
     ],
     avisAudio: [
-      { id:"imane", name:{fr:"Imane",ar:"إيمان"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"assets/avis-imane.mp3", duration:"0:17", transcript:"", wave:[7,7,5,3,1,4,5,5,6,5,8,7,6,6,5,4,5,9,8,5,8,8,5,8,7,5,9,7,7,8,8,5,6,5,7,5] },
-      { id:"hiba", name:{fr:"Hiba",ar:"هبة"}, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis"}, src:"assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
-      { id:"manal", name:{fr:"Manal",ar:"منال"}, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة"}, src:"assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
-      { id:"ikram", name:{fr:"Ikram",ar:"إكرام"}, level:{fr:"Étudiante en Master",ar:"طالبة ماستر"}, src:"assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
-      { id:"amin", name:{fr:"Amin",ar:"أمين"}, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه"}, src:"assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
+      { id:"imane", name:{fr:"Imane",ar:"إيمان", en: "Imane" }, level:{fr:"Étudiante en Master",ar:"طالبة ماستر", en: "Master’s student" }, src:"assets/avis-imane.mp3", duration:"0:17", transcript:"", wave:[7,7,5,3,1,4,5,5,6,5,8,7,6,6,5,4,5,9,8,5,8,8,5,8,7,5,9,7,7,8,8,5,6,5,7,5] },
+      { id:"hiba", name:{fr:"Hiba",ar:"هبة", en: "Hiba" }, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis", en: "Final-year project · Master’s at Mundiapolis" }, src:"assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
+      { id:"manal", name:{fr:"Manal",ar:"منال", en: "Manal" }, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة", en: "Bachelor’s student" }, src:"assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
+      { id:"ikram", name:{fr:"Ikram",ar:"إكرام", en: "Ikram" }, level:{fr:"Étudiante en Master",ar:"طالبة ماستر", en: "Master’s student" }, src:"assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
+      { id:"amin", name:{fr:"Amin",ar:"أمين", en: "Amin" }, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه", en: "PhD student" }, src:"assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
     ],
     vocaux: [
-      { src: "assets/avis-video.mp4", poster: "assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" }, sub: "1:17", ratio: "r916", fit: "cover" },
-      { src: "assets/video/vocal-01.mp4", poster: "assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:31", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-02.mp4", poster: "assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:15", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-03.mp4", poster: "assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:20", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-04.mp4", poster: "assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:13", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-05.mp4", poster: "assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:36", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-06.mp4", poster: "assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:26", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-07.mp4", poster: "assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:19", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-08.mp4", poster: "assets/video/vocal-08.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" }, sub: "0:11", ratio: "r45", fit: "contain" }
+      { src: "assets/avis-video.mp4", poster: "assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" , en: "Feedback compilation" }, sub: "1:17", ratio: "r916", fit: "cover" },
+      { src: "assets/video/vocal-01.mp4", poster: "assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:31", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-02.mp4", poster: "assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:15", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-03.mp4", poster: "assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:20", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-04.mp4", poster: "assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:13", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-05.mp4", poster: "assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:36", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-06.mp4", poster: "assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:26", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-07.mp4", poster: "assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:19", ratio: "r45", fit: "contain" },
+      { src: "assets/video/vocal-08.mp4", poster: "assets/video/vocal-08.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:11", ratio: "r45", fit: "contain" }
     ],
-    avisCaptures: Array.from({length:14}, (_, i) => ({ src: `assets/avis/av-${String(i+1).padStart(2,"0")}.jpg` })),
+    avisCaptures: [11,1,2,3,4,5,6,7,8,9,10,12,13,14].map(n => ({ src: `assets/avis/av-${String(n).padStart(2,"0")}.jpg` })),
     works: [
-      { src: "assets/video/real-01.mp4", poster: "assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-02.mp4", poster: "assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-03.mp4", poster: "assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-04.mp4", poster: "assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-05.mp4", poster: "assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-06.mp4", poster: "assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" }, sub: { fr: "extrait", ar: "مقتطف" }, ratio: "rdoc", muted: true }
+      { src: "assets/video/real-01.mp4", poster: "assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" , en: "Results analysis" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" , en: "43 pages · excerpt" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-02.mp4", poster: "assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" , en: "Final-year project report" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" , en: "54 pages · excerpt" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-03.mp4", poster: "assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" , en: "Dissertation" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" , en: "161 pages · excerpt" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-04.mp4", poster: "assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" , en: "Tables and figures" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" , en: "94 pages · excerpt" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-05.mp4", poster: "assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" , en: "Practical section" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" , en: "56 pages · excerpt" }, ratio: "rdoc", muted: true },
+      { src: "assets/video/real-06.mp4", poster: "assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" , en: "Abbreviations and tables" }, sub: { fr: "extrait", ar: "مقتطف" , en: "excerpt" }, ratio: "rdoc", muted: true }
     ]
   }
 };
 
 /* ==========================================================
-   TEXTES — français et arabe standard
+   TEXTES — français, arabe standard et anglais
    ========================================================== */
 const I18N = {
   fr: {
-    langBtn: "عربي", dir: "ltr",
+    langBtn: "عربي", dir: "ltr", languageLabel: "Langue", brandTagline: "Ton projet · Tes ressources", officialSite: "Site officiel de Soutenance Pro",
     ctaPrimary: "Parler à un conseiller sur WhatsApp",
     ctaSecondary: "Discuter sur WhatsApp",
     hero: { eyebrow: "Accompagnement académique personnalisé", title: "Votre PFE, mémoire ou thèse, accompagné étape par étape.", subtitle: "Un accompagnement adapté à votre niveau, à votre spécialité et aux consignes de votre encadrant.", note: "Sans inscription ni formulaire. Vous décrivez votre projet, un conseiller vous répond sur WhatsApp.", proofLabel: "Avis d’une étudiante accompagnée", moreAvis: "Écouter d’autres avis", otherVideos: "Autres vidéos" },
-    proof: { eyebrow: "Preuves", title: "Ce que disent les étudiants accompagnés.", lead: "Avis audio, vocaux et messages reçus sur WhatsApp. Prénoms et niveaux uniquement, informations personnelles masquées.", audioTitle: "Avis audio", audioHint: "Prénom et niveau", vocauxTitle: "Vocaux reçus sur WhatsApp", vocauxHint: "Appuyez pour écouter", shotsTitle: "Messages reçus", shotsCount: n => `${n} captures · appuyez pour agrandir`, counts: (a,v,m) => [`${a} avis audio`, `${v} vocaux`, `${m} messages`], more: n => n === 1 ? "Écouter 1 autre avis" : `Écouter les ${n} autres avis`, transcript: "Transcription", shotAlt: i => `Message d’étudiant reçu sur WhatsApp (${i})`, listen: n => `Écouter l’avis de ${n}`, play: t => `Lire : ${t}`, zoom: "Agrandir", close: "Fermer", prev: "Précédent", next: "Suivant" },
+    proof: { eyebrow: "Preuves", title: "Ce que disent les étudiants accompagnés.", lead: "Avis audio, vocaux et messages reçus sur WhatsApp. Prénoms et niveaux uniquement, informations personnelles masquées.", audioTitle: "Avis audio", audioHint: "Prénom et niveau", vocauxTitle: "Vocaux reçus sur WhatsApp", vocauxHint: "Appuyez pour écouter", shotsTitle: "Messages reçus", shotsCount: n => `${n} captures · appuyez pour agrandir`, statsHint: "Chiffres globaux de Soutenance Pro · Une sélection de retours ci-dessous.", counts: s => [`${s.audioReviews.toLocaleString("fr-FR")} avis audio`, `${s.voiceMessages.toLocaleString("fr-FR")}+ vocaux`, `${s.messages.toLocaleString("fr-FR")} messages`, `${s.clients.toLocaleString("fr-FR")}+ clients`], more: n => n === 1 ? "Écouter 1 autre avis" : `Écouter les ${n} autres avis`, transcript: "Transcription", shotAlt: i => `Message d’étudiant reçu sur WhatsApp (${i})`, listen: n => `Écouter l’avis de ${n}`, play: t => `Lire : ${t}`, zoom: "Agrandir", close: "Fermer", prev: "Précédent", next: "Suivant" },
     sit: { eyebrow: "Est-ce que ça correspond à mon projet ?", title: "Une étape précise, ou l’ensemble du projet.", lead: "Chaque demande est différente. Voici les situations sur lesquelles les étudiants nous écrivent le plus souvent.", list: ["Organiser ses idées et structurer le plan","Comprendre et appliquer les corrections de l’encadrant","Construire la méthodologie de recherche","Préparer un questionnaire ou un guide d’entretien","Analyser les données et comprendre les résultats","Préparer la soutenance et le support PowerPoint"], splitTitle: "Vous ne savez pas par où commencer ?", splitText: "Décrivez simplement où vous en êtes. C’est à nous d’identifier l’étape sur laquelle vous avez besoin d’aide." },
     svc: { eyebrow: "Ce que nous accompagnons", title: "Votre document, ou une étape de votre travail.", groups: [
       { tag: "Document", title: "Le projet dans son ensemble", items: [["Projet de fin d’études","PFE"],["Mémoire","licence, master"],["Thèse","doctorat"],["Rapport de stage",""]] },
@@ -817,11 +836,11 @@ const I18N = {
       lines: { level: "Niveau", project: "Projet", need: "Besoin" } }
   },
   ar: {
-    langBtn: "FR", dir: "rtl",
+    langBtn: "FR", dir: "rtl", languageLabel: "اللغة", brandTagline: "مشروعك · مواردك", officialSite: "الموقع الرسمي لـ Soutenance Pro",
     ctaPrimary: "تحدّث مع مستشار على واتساب",
     ctaSecondary: "راسلنا على واتساب",
     hero: { eyebrow: "مواكبة أكاديمية مخصّصة", title: "مشروع نهاية الدراسة، المذكرة أو الأطروحة، بمواكبة خطوة بخطوة.", subtitle: "مواكبة تُكيَّف مع مستواك وتخصصك وتوجيهات أستاذك المؤطر.", note: "بدون تسجيل ولا استمارة. تصف لنا مشروعك، ويجيبك مستشار على واتساب.", proofLabel: "رأي طالبة تمت مواكبتها", moreAvis: "استمع إلى آراء أخرى", otherVideos: "فيديوهات أخرى" },
-    proof: { eyebrow: "إثباتات", title: "ماذا يقول الطلبة الذين واكبناهم.", lead: "آراء صوتية ورسائل صوتية ونصية وصلتنا على واتساب. الأسماء الأولى والمستوى فقط، والمعلومات الشخصية مخفية.", audioTitle: "آراء صوتية", audioHint: "الاسم والمستوى", vocauxTitle: "رسائل صوتية على واتساب", vocauxHint: "اضغط للاستماع", shotsTitle: "رسائل وصلتنا", shotsCount: n => `${n} صورة · اضغط للتكبير`, counts: (a,v,m) => [`${a} آراء صوتية`, `${v} رسائل صوتية`, `${m} رسالة`], more: n => n === 1 ? "استمع إلى رأي آخر" : n === 2 ? "استمع إلى الرأيين الآخرين" : `استمع إلى ${n} آراء أخرى`, transcript: "النص", shotAlt: i => `رسالة من طالب وصلتنا على واتساب (${i})`, listen: n => `الاستماع إلى رأي ${n}`, play: t => `تشغيل: ${t}`, zoom: "تكبير", close: "إغلاق", prev: "السابق", next: "التالي" },
+    proof: { eyebrow: "إثباتات", title: "ماذا يقول الطلبة الذين واكبناهم.", lead: "آراء صوتية ورسائل صوتية ونصية وصلتنا على واتساب. الأسماء الأولى والمستوى فقط، والمعلومات الشخصية مخفية.", audioTitle: "آراء صوتية", audioHint: "الاسم والمستوى", vocauxTitle: "رسائل صوتية على واتساب", vocauxHint: "اضغط للاستماع", shotsTitle: "رسائل وصلتنا", shotsCount: n => `${n} صورة · اضغط للتكبير`, statsHint: "أرقام إجمالية لنشاط Soutenance Pro · نماذج من الآراء أدناه.", counts: s => [`${s.audioReviews.toLocaleString("fr-FR")} رأي صوتي`, `أكثر من ${s.voiceMessages.toLocaleString("fr-FR")} رسالة صوتية`, `${s.messages.toLocaleString("fr-FR")} رسالة`, `أكثر من ${s.clients.toLocaleString("fr-FR")} عميلًا`], more: n => n === 1 ? "استمع إلى رأي آخر" : n === 2 ? "استمع إلى الرأيين الآخرين" : `استمع إلى ${n} آراء أخرى`, transcript: "النص", shotAlt: i => `رسالة من طالب وصلتنا على واتساب (${i})`, listen: n => `الاستماع إلى رأي ${n}`, play: t => `تشغيل: ${t}`, zoom: "تكبير", close: "إغلاق", prev: "السابق", next: "التالي" },
     sit: { eyebrow: "هل يناسب هذا مشروعي؟", title: "مرحلة محددة، أو المشروع كاملاً.", lead: "كل طلب مختلف. هذه أكثر الحالات التي يراسلنا بشأنها الطلبة.", list: ["تنظيم الأفكار وبناء الخطة","فهم ملاحظات المؤطر وتطبيقها","بناء منهجية البحث","إعداد استبيان أو دليل مقابلة","تحليل البيانات وفهم النتائج","التحضير للمناقشة وعرض PowerPoint"], splitTitle: "لا تعرف من أين تبدأ؟", splitText: "صف لنا ببساطة أين وصلت. مهمتنا أن نحدد المرحلة التي تحتاج فيها إلى مساعدة." },
     svc: { eyebrow: "ما الذي نواكبه", title: "وثيقتك كاملة، أو مرحلة من عملك.", groups: [
       { tag: "وثيقة", title: "المشروع كاملاً", items: [["مشروع نهاية الدراسة","PFE"],["مذكرة","إجازة، ماستر"],["أطروحة","دكتوراه"],["تقرير التدريب",""]] },
@@ -857,7 +876,174 @@ const I18N = {
         { key: "project", label: "مشروعك", options: ["مشروع نهاية الدراسة","مذكرة","أطروحة","تقرير تدريب","آخر"] },
         { key: "need", label: "حاجتك", options: ["المشروع كاملاً","المنهجية والخطة","الاستبيان / المقابلة","تحليل البيانات","المناقشة / PowerPoint","تعديلات المؤطر"] } ],
       lines: { level: "المستوى", project: "المشروع", need: "الحاجة" } }
+  },
+  en: {
+  langBtn: "FR",
+  dir: "ltr",
+  officialSite: "Official Soutenance Pro website",
+  languageLabel: "Language", brandTagline: "Your project · Your resources",
+  ctaPrimary: "Talk to an adviser on WhatsApp",
+  ctaSecondary: "Chat on WhatsApp",
+  hero: {
+    eyebrow: "Personalised academic support",
+    title: "Your final-year project, dissertation or thesis, with support at every step.",
+    subtitle: "Support tailored to your study level, subject area and supervisor’s instructions.",
+    note: "No sign-up or forms. Tell us about your project and an adviser will reply on WhatsApp.",
+    proofLabel: "Feedback from a student we supported",
+    moreAvis: "Listen to more feedback",
+    otherVideos: "More videos"
+  },
+  proof: {
+    eyebrow: "Student feedback",
+    title: "What students we have supported say.",
+    lead: "Audio reviews, voice messages and texts received on WhatsApp. First names and study levels only; personal information is hidden.",
+    statsHint: "Soutenance Pro totals · Selected feedback below.",
+    audioTitle: "Audio reviews",
+    audioHint: "First name and study level",
+    vocauxTitle: "Voice messages received on WhatsApp",
+    vocauxHint: "Tap to listen",
+    shotsTitle: "Messages received",
+    shotsCount: n => `${n} screenshots · tap to enlarge`,
+    counts: s => {
+      const format = n => Number(n).toLocaleString("en-GB");
+      return [
+        `${format(s.audioReviews)} audio reviews`,
+        `${format(s.voiceMessages)}+ voice messages`,
+        `${format(s.messages)} messages`,
+        `${format(s.clients)}+ clients`
+      ];
+    },
+    more: n => n === 1 ? "Listen to 1 more review" : `Listen to ${n} more reviews`,
+    transcript: "Transcript",
+    shotAlt: i => `Student message received on WhatsApp (${i})`,
+    listen: n => `Listen to ${n}’s review`,
+    play: t => `Play: ${t}`,
+    zoom: "Enlarge",
+    close: "Close",
+    prev: "Previous",
+    next: "Next"
+  },
+  sit: {
+    eyebrow: "Is this right for my project?",
+    title: "One specific stage, or the whole project.",
+    lead: "Every request is different. These are the situations students most often contact us about.",
+    list: [
+      "Organise ideas and structure the outline",
+      "Understand and apply the supervisor’s feedback",
+      "Develop the research methodology",
+      "Prepare a questionnaire or interview guide",
+      "Analyse data and understand the results",
+      "Prepare for the oral defence and create the PowerPoint presentation"
+    ],
+    splitTitle: "Not sure where to start?",
+    splitText: "Simply tell us where you are with your project. We will help identify the stage where you need support."
+  },
+  svc: {
+    eyebrow: "What we support",
+    title: "Your document, or one stage of your work.",
+    groups: [
+      {
+        tag: "Document",
+        title: "The project as a whole",
+        items: [
+          ["Final-year project", "PFE"],
+          ["Dissertation", "bachelor’s, master’s"],
+          ["Thesis", "PhD"],
+          ["Internship report", ""]
+        ]
+      },
+      {
+        tag: "Stage",
+        title: "A specific part of your work",
+        items: [
+          ["Methodology and structure", "outline, research question"],
+          ["Questionnaire, interview guide", ""],
+          ["Data analysis", "and interpreting results"],
+          ["Oral defence and PowerPoint", ""]
+        ]
+      }
+    ],
+    note: "We agree on the support with you after reviewing your instructions. Your study level, subject area and progress shape the proposal."
+  },
+  steps: {
+    eyebrow: "How it works",
+    title: "Four steps, from your first message to ongoing support.",
+    list: [
+      ["Tell us about your project", "Send a few lines or a voice message on WhatsApp: your study level, subject area, project type and progress so far."],
+      ["We review the instructions and your progress", "We read your supervisor’s requirements, look at the work already done and identify what is holding you back."],
+      ["We suggest support tailored to your needs", "A clear proposal focused on what you need: help with one stage or support across several stages."],
+      ["Support continues on WhatsApp", "Your conversations stay in the same WhatsApp thread throughout the support period."]
+    ],
+    prepTitle: "For a helpful reply, include these details in your first message:",
+    prep: [
+      "Study level",
+      "Subject area",
+      "Project type",
+      "Topic",
+      "Progress so far",
+      "Supervisor’s instructions",
+      "Deadline",
+      "Current difficulties"
+    ]
+  },
+  works: {
+    eyebrow: "Work examples",
+    title: "Excerpts from projects we have supported.",
+    lead: "Browse anonymised excerpts from completed documents. Tap to play."
+  },
+  why: {
+    eyebrow: "Why Soutenance Pro",
+    title: "Support that starts with your project.",
+    list: [
+      ["Personalisation", "We tailor each support plan to your study level, subject area and topic."],
+      ["Methodology", "A structured approach, from the research question to the oral defence, to help you build coherent work."],
+      ["Ongoing support", "Conversations continue on WhatsApp, stage by stage, until the support period ends."],
+      ["Your supervisor’s guidance matters", "Their instructions and feedback guide our work with you."],
+      ["Direct contact", "You speak to a person who considers your situation before suggesting any support."]
+    ]
+  },
+  faq: {
+    eyebrow: "Frequently asked questions",
+    title: "Before you get in touch.",
+    list: [
+      ["Which projects do you support?", "Final-year projects (PFE), dissertations, theses and internship reports at all university levels. You can also contact us for help with one stage: methodology, a questionnaire or interview guide, data analysis, or preparation for the oral defence."],
+      ["How does the support work?", "Tell us about your project on WhatsApp. We review your instructions and progress, then suggest support tailored to your needs. If you agree, the support continues in the same WhatsApp conversation."],
+      ["What are the timescales?", "They depend on the stage involved, your progress and your deadline. Include your deadline in your first message so we can tell you what is feasible within that timeframe."],
+      ["What if my supervisor requests changes?", "Your supervisor’s feedback is part of the process. Send it to us: we will review it with you and adapt the next stages of support accordingly."],
+      ["Can you help me with data analysis?", "Yes. We help you analyse your data and understand your results in line with your methodology and your supervisor’s instructions."],
+      ["Do you guarantee a grade or approval?", "No. No grade, approval or degree can be guaranteed. We commit to providing quality support tailored to your circumstances."],
+      ["What should I send when I first get in touch?", "Your study level, subject area, project type, topic, progress so far, supervisor’s instructions, deadline and current difficulties. Your first message does not need to be perfect: we will ask for any missing details."]
+    ]
+  },
+  final: {
+    title: "Tell us about your project.",
+    lead: "The message below is ready. You can add details about your situation before sending it.",
+    msgLabel: "Prefilled message"
+  },
+  footer: {
+    tag: "Personalised academic support",
+    legal: "No grade, approval or degree is guaranteed. We commit to providing quality support."
+  },
+  wa: {
+    message: "Hello, I would like information about support for my project.",
+    refLabel: "Ref",
+    sep: ": "
+  },
+  qual: {
+    title: "Tell us about your project",
+    sub: "Three quick choices, all optional. Your message will then be ready.",
+    optional: "",
+    previewLabel: "Message to be sent",
+    send: "Send on WhatsApp",
+    skip: "Skip and write directly",
+    groups: [
+      { key: "level", label: "Your study level", options: ["Bachelor’s degree", "Master’s degree", "PhD", "Specialist school / other"] },
+      { key: "project", label: "Your project", options: ["Final-year project", "Dissertation", "Thesis", "Internship report", "Other"] },
+      { key: "need", label: "Your needs", options: ["The whole project", "Methodology and outline", "Questionnaire / interview", "Data analysis", "Oral defence / PowerPoint", "Supervisor’s feedback"] }
+    ],
+    lines: { level: "Study level", project: "Project", need: "Needs" }
   }
+}
 };
 
 /* ==========================================================
@@ -1144,7 +1330,10 @@ function renderAll(){
   players.length = 0;
   /* textes statiques */
   $$("[data-i18n]").forEach(el => { const v = get(t, el.dataset.i18n); if(typeof v === "string") el.textContent = v; });
-  $("#langBtn").textContent = t.langBtn;
+  $("#languageSwitch").setAttribute("aria-label", t.languageLabel);
+  $$("#languageSwitch [data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
+  $("#officialBadge").setAttribute("aria-label", t.officialSite);
+  $("#officialBadge").setAttribute("title", t.officialSite);
   $("#lbClose").setAttribute("aria-label", t.proof.close); $("#lbPrev").setAttribute("aria-label", t.proof.prev); $("#lbNext").setAttribute("aria-label", t.proof.next); lb.setAttribute("aria-label", t.proof.zoom);
   /* hero */
   renderUgc();
@@ -1164,8 +1353,7 @@ function renderAll(){
   $("#shotsCount").textContent = t.proof.shotsCount(SHOTS.length);
   const wr = $("#worksRail"); wr.innerHTML = ""; CONFIG.media.works.filter(w => w.src).forEach((w,i) => wr.appendChild(videoCard(w, i < 2)));
   [vr, sr, wr].forEach(r => railNav(r.parentElement, r));
-  const nv = CONFIG.media.vocaux.filter(v => v.src).length;
-  $("#proofCounts").innerHTML = t.proof.counts(audios.length, nv, SHOTS.length).map(c => `<span>${esc(c)}</span>`).join("");
+  $("#proofCounts").innerHTML = t.proof.counts(CONFIG.proofTotals).map(c => `<span>${esc(c)}</span>`).join("");
   /* situations, services, étapes, pourquoi, FAQ */
   $("#needList").innerHTML = t.sit.list.map(x => `<li>${esc(x)}</li>`).join("");
   $("#svcGroups").innerHTML = t.svc.groups.map(g => `<div class="svc"><h3><span class="tag">${esc(g.tag)}</span> ${esc(g.title)}</h3><ul>${g.items.map(([a,b]) => `<li>${esc(a)}${b ? ` <small>${esc(b)}</small>` : ""}</li>`).join("")}</ul></div>`).join("");
@@ -1181,7 +1369,7 @@ function renderAll(){
   });
   $$(".stagger").forEach(s => Array.from(s.children).forEach((c,i) => c.style.setProperty("--i", i)));
   $("#siteLink").href = CONFIG.brand.site; $("#siteLink").textContent = CONFIG.brand.site.replace(/^https?:\/\//,"");
-  if(CONFIG.brand.logoSrc){ $("#logoLink").innerHTML = `<img src="${esc(CONFIG.brand.logoSrc)}" alt="${esc(CONFIG.brand.name)}" height="36">`; }
+  if(CONFIG.brand.logoSrc){ $("#logoLink img").src = CONFIG.brand.logoSrc; }
   refreshWaLinks();
   if(!qual.hidden) renderQual();
 }
@@ -1192,7 +1380,7 @@ function setLang(l, remember=true, initial=false){
   renderAll();
   if(!initial) $$(".reveal").forEach(e => e.classList.add("in"));
 }
-$("#langBtn").addEventListener("click", () => setLang(LANG === "fr" ? "ar" : "fr"));
+$$("#languageSwitch [data-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
 
 function reveal(){
   const els = $$(".reveal");
@@ -1219,7 +1407,7 @@ function debugPanel(){
   const sync = () => { if(location.hash === "#debug"){ fill(); p.hidden = false; } if(I18N[location.hash.replace("#","")]) setLang(location.hash.replace("#",""), false); };
   sync(); addEventListener("hashchange", sync);
   $("#debugClose").addEventListener("click", () => { p.hidden = true; });
-  $("#langBtn").addEventListener("click", () => { if(!p.hidden) fill(); });
+  $$("#languageSwitch [data-lang]").forEach(b => b.addEventListener("click", () => { if(!p.hidden) fill(); }));
   $("#simRef").addEventListener("change", ev => {
     const v = ev.target.value;
     UTM = v ? { utm_source:"meta", utm_medium:"paid", utm_campaign:"accompagnement", utm_content:v } : {};

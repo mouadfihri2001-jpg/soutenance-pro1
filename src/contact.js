@@ -7,7 +7,7 @@ const instagramIcon = '<svg viewBox="0 0 24 24" width="22" height="22" fill="non
 const whatsappIcon = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.8a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.3-4.7A8.5 8.5 0 1 1 20.5 11.8Z"/><path d="m8.1 7.4 1.3-.1 1.1 2.5-1 1.1a7.2 7.2 0 0 0 3.5 3.4l1.1-1 2.5 1.1-.1 1.3c-.1 1-1.2 1.6-2.1 1.3a11.6 11.6 0 0 1-7.6-7.5c-.3-.9.3-2 1.3-2.1Z"/></svg>';
 
 export const contactStyles = `
-.sp-contact-floating{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:1100;display:flex;align-items:center;gap:8px}
+.sp-contact-floating{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom),var(--sp-contact-clearance,0px));z-index:1100;display:flex;align-items:center;gap:8px}
 .sp-contact-floating a,.sp-contact-inline a{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;font:600 14px/1.4 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;text-decoration:none}
 .sp-contact-floating a{padding:11px 16px;border:1px solid #c4d6cb;border-radius:28px;background:#fff;color:#004d35;box-shadow:0 4px 18px #00372618}
 .sp-contact-floating a:hover{background:#edf5ef;border-color:#004d35}
@@ -18,8 +18,10 @@ export const contactStyles = `
 .sp-contact-inline{display:flex;align-items:center;flex-wrap:wrap;gap:4px 22px;margin:16px 0 0;font-size:14px}
 .sp-contact-inline a{color:#005b3e;text-decoration:underline;text-underline-offset:4px}
 .sp-contact-inline .sp-contact-email{max-width:100%;text-align:left;overflow-wrap:anywhere}
-body.sp-open .sp-contact-floating,.sp-notice:not([hidden])~.sp-contact-floating{display:none}
-@media(max-width:550px){.sp-contact-floating{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.sp-contact-floating a{padding:11px 13px;font-size:13px}.sp-contact-floating .sp-contact-instagram span{display:none}.sp-contact-floating .sp-contact-instagram{width:48px;padding:11px}}
+body.sp-open .sp-contact-floating{z-index:2100}
+body.sp-open .sp-contact-floating .sp-contact-instagram{display:none}
+body.sp-open #workspace{padding-bottom:calc(80px + var(--sp-contact-clearance,0px) + env(safe-area-inset-bottom))}
+@media(max-width:550px){.sp-contact-floating{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom),var(--sp-contact-clearance,0px))}.sp-contact-floating a{padding:11px 13px;font-size:13px}.sp-contact-floating .sp-contact-instagram span{display:none}.sp-contact-floating .sp-contact-instagram{width:48px;padding:11px}}
 @media print{.sp-contact-floating,.sp-contact-inline{display:none}}
 `;
 
@@ -42,4 +44,25 @@ export function installPublicContact() {
   if (!document.querySelector('.sp-contact-floating')) {
     document.body.insertAdjacentHTML('beforeend', renderContactLinks({ floating: true }));
   }
+  const floating = document.querySelector('.sp-contact-floating');
+  if (floating.dataset.positioned) return;
+  floating.dataset.positioned = 'true';
+  const notice = document.getElementById('sp-notice');
+  const updatePosition = () => {
+    let clearance = 0;
+    if (notice && !notice.hidden) {
+      const bounds = notice.getBoundingClientRect();
+      const contact = floating.getBoundingClientRect();
+      if (bounds.width > 0 && bounds.height > 0 && bounds.right > contact.left && bounds.left < contact.right) {
+        clearance = Math.ceil(window.innerHeight - bounds.top + 12);
+      }
+    }
+    document.documentElement.style.setProperty('--sp-contact-clearance', `${clearance}px`);
+  };
+  if (notice) {
+    new MutationObserver(updatePosition).observe(notice, { attributes: true, attributeFilter: ['hidden', 'class'], childList: true, subtree: true, characterData: true });
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(updatePosition).observe(notice);
+  }
+  window.addEventListener('resize', updatePosition, { passive: true });
+  updatePosition();
 }
