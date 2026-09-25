@@ -18,6 +18,7 @@
 .sp-home .home-desktop-links a:hover { background: #edf5ef; color: #00523d; border: 0; }
 .sp-home .home-nav-actions { gap: 20px; }
 .sp-home .home-nav-actions .home-button.small { max-width: 220px; white-space: normal; line-height: 1.25; }
+.sp-home .home-mobile-accompaniment { display: none; }
 @media (max-width: 1000px) {
   .sp-home .home-desktop-links { display: none; }
   .sp-home .home-nav-actions { margin-left: auto; }
@@ -332,6 +333,8 @@
   .sp-home .home-final-inner > div:last-child { margin-top: 25px; max-width: none; display: flex; gap: 23px; align-items: center; }
 }
 @media (max-width: 720px) {
+  html { scroll-padding-top: 150px; }
+  .sp-home .home-mobile-accompaniment { display: flex; min-height: 44px; margin-block: 0 12px; padding: 10px 14px; font-size: 13px; line-height: 1.3; white-space: normal; }
   .sp-home .home-container { width: calc(100% - 40px); }
   .sp-home .home-nav { min-height: 77px; gap: 13px; }
   .sp-home .home-brand .brand-logo { width: 51px; height: 51px; }
