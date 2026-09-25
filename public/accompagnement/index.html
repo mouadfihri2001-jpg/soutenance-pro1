@@ -121,6 +121,8 @@ section{padding-block:46px}
 .official-badge svg{display:block;width:100%;height:100%}
 .header .btn{min-height:44px;padding:0 14px;font-size:14px;border-radius:12px}
 .header .btn .lbl-long{display:none}
+.header .platform-link{background:#fff;border:1px solid var(--line);padding-inline:10px;gap:6px}
+.header .platform-link svg{width:17px;height:17px}
 .lang-btn{min-height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;color:var(--brand-deep);font-family:var(--body)}
 .lang-btn:hover{background:var(--brand-soft)}
 .language-switcher{display:flex;align-items:center;gap:4px;direction:ltr}
@@ -132,6 +134,8 @@ section{padding-block:46px}
 @media (max-width:419px){.header .btn .lbl-short{display:none}.header .btn{padding:0 12px}}
 .logo{flex:0 0 auto}
 @media (min-width:480px){.header .btn .lbl-long{display:inline}.header .btn .lbl-short{display:none}}
+@media (max-width:850px){.header .btn .lbl-long{display:none}.header .btn .lbl-short{display:inline}}
+@media (max-width:399px){.header .js-wa .lbl-short{display:none}}
 
 /* ---------- hero ---------- */
 .hero{padding-block:28px 40px;position:relative;overflow:hidden;background:var(--white)}
@@ -184,6 +188,10 @@ section{padding-block:46px}
 .video-card .play .cap small{display:block;font-weight:500;opacity:.85;font-size:11.5px;margin-top:2px}
 .video-card.is-playing .play{display:none}
 .video-card.is-playing{box-shadow:0 0 0 3px var(--brand-soft-2)}
+.video-card.is-loading .play .ring{animation:pulse 1s ease-in-out infinite}
+.media-message{font-size:13px;line-height:1.5;padding:10px 12px;border-radius:10px;background:#fff;color:var(--brand-deep)}
+.video-card .media-message{position:absolute;top:10px;inset-inline:10px;z-index:4;pointer-events:none}
+.audio .media-message{grid-column:1/-1;background:var(--brand-soft)}
 @keyframes pulse{0%{transform:scale(.9);opacity:.9}70%{transform:scale(1.35);opacity:0}100%{transform:scale(1.35);opacity:0}}
 
 /* ---------- lecteur audio ---------- */
@@ -224,6 +232,9 @@ section{padding-block:46px}
 .rail-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
 .rail-head h3{font-size:17px}
 .rail-head span{font-size:13px;color:var(--muted);white-space:nowrap}
+.work-picker{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:20px;font-size:14px;color:var(--muted)}
+.work-picker label{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0}
+.work-picker select{max-width:100%;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--brand-deep);font:inherit}
 .rail{
   min-width:0;max-width:calc(100% + var(--gutter) * 2);
   display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);overscroll-behavior-x:contain;
@@ -488,6 +499,10 @@ section{padding-block:46px}
         <button class="lang-btn" type="button" data-lang="ar" lang="ar" aria-label="العربية" aria-pressed="false">عربي</button>
         <button class="lang-btn" type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
       </div>
+      <a class="btn platform-link" id="platformLink" href="https://soutenancepro.com/" aria-label="Découvrir la plateforme Soutenance Pro">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg>
+        <span class="lbl-long" data-i18n="platformLink">Découvrir la plateforme</span><span class="lbl-short" data-i18n="platformShort">Le site</span>
+      </a>
       <a class="btn btn-secondary js-wa" data-cta="header" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L4 21l1.7-4.2A8.5 8.5 0 1 1 21 12Z"/></svg>
         <span class="lbl-long" data-i18n="ctaSecondary">Discuter sur WhatsApp</span><span class="lbl-short">WhatsApp</span>
@@ -620,6 +635,7 @@ section{padding-block:46px}
     <p class="eyebrow" data-i18n="works.eyebrow">Réalisations</p>
     <h2 data-i18n="works.title">Extraits de travaux accompagnés.</h2>
     <p class="lead" style="margin-top:12px" data-i18n="works.lead">Défilement d’extraits de documents finalisés, anonymisés. Appuyez pour lancer.</p>
+    <div class="work-picker"><span id="worksCount"></span><label><span data-i18n="works.choose">Choisir un exemple</span><select id="workJump"></select></label></div>
     <div class="rail-wrap" style="margin-top:20px">
       <div class="rail" id="worksRail"></div>
     </div>
@@ -739,7 +755,7 @@ section{padding-block:46px}
    CONFIGURATION — tout ce qui doit être modifié est ici
    ========================================================== */
 const CONFIG = {
-  brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },   // logoSrc : ex. "assets/logo.svg"
+  brand: { name: "Soutenance Pro", site: "https://soutenancepro.com", logoSrc: "" },
   defaultLang: "fr",          // "fr", "ar" ou "en". ?lang=en (ou #en) force la langue ; le choix du visiteur est mémorisé
   // Totaux de l’activité communiqués par le propriétaire, distincts des extraits affichés.
   proofTotals: { audioReviews: 300, voiceMessages: 500, messages: 135978, clients: 69453 },
@@ -764,14 +780,15 @@ const CONFIG = {
       { id:"hiba", name:{fr:"Hiba",ar:"هبة", en: "Hiba" }, level:{fr:"PFE · Master Mundiapolis",ar:"مشروع نهاية الدراسة · ماستر Mundiapolis", en: "Final-year project · Master’s at Mundiapolis" }, src:"assets/avis-hiba.mp3", duration:"0:21", transcript:"", wave:[8,3,6,6,4,8,6,4,7,4,7,9,4,7,6,9,6,4,7,7,6,5,4,7,7,6,6,5,4,6,5,8,5,7,6,5] },
       { id:"manal", name:{fr:"Manal",ar:"منال", en: "Manal" }, level:{fr:"Étudiante en Licence",ar:"طالبة إجازة", en: "Bachelor’s student" }, src:"assets/avis-manal.mp3", duration:"0:09", transcript:"", wave:[0,2,2,5,3,9,6,4,5,1,6,8,7,4,7,4,7,8,4,6,4,2,6,3,1,4,5,2,3,4,4,7,6,7,5,2] },
       { id:"ikram", name:{fr:"Ikram",ar:"إكرام", en: "Ikram" }, level:{fr:"Étudiante en Master",ar:"طالبة ماستر", en: "Master’s student" }, src:"assets/avis-ikram.mp3", duration:"0:05", transcript:"", wave:[0,6,9,6,5,4,3,5,5,5,1,4,4,4,5,6,6,7,6,4,5,8,2,5,6,6,7,8,5,6,5,5,3,6,6,4] },
-      { id:"amin", name:{fr:"Amin",ar:"أمين", en: "Amin" }, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه", en: "PhD student" }, src:"assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] }
+      { id:"amin", name:{fr:"Amin",ar:"أمين", en: "Amin" }, level:{fr:"Étudiant en doctorat",ar:"طالب دكتوراه", en: "PhD student" }, src:"assets/avis-amin.mp3", duration:"0:26", transcript:"", wave:[9,6,6,8,8,6,9,8,7,8,7,7,6,5,8,9,8,7,7,6,9,6,6,7,6,8,6,8,7,7,6,7,7,7,7,5] },
+      {"id":"testimonial-02","name":{"fr":"Avis audio 1","ar":"رأي صوتي 1","en":"Audio feedback 1"},"level":{"fr":"Reçu sur WhatsApp","ar":"تم تلقيه عبر واتساب","en":"Received on WhatsApp"},"src":"assets/testimonial-02.mp3","duration":"0:22","transcript":"","wave":[1,1,1.2,3.6,2.6,1.7,2.8,2.4,2.6,4.1,2.4,1.5,6.1,4.0,1,8.8,9.0,5.7,5.7,1.3,7.4,9.0,6.0,4.6,1.6,3.1,3.4,2.9,2.5,2.4,2.6,7.9,3.6,1.5,2.1,1.4,2.7,1,3.0,1.4,2.5,2.3,3.0,1.7,6.2,5.0,9.0,7.1,1,4.1,2.3,2.9]},
+      {"id":"testimonial-10","name":{"fr":"Avis audio 2","ar":"رأي صوتي 2","en":"Audio feedback 2"},"level":{"fr":"Reçu sur WhatsApp","ar":"تم تلقيه عبر واتساب","en":"Received on WhatsApp"},"src":"assets/testimonial-10.mp3","duration":"0:26","transcript":"","wave":[1,1,1,3.0,9.0,6.3,5.3,3.7,4.9,6.9,7.0,6.6,5.5,5.9,6.0,2.4,3.9,6.0,6.2,7.1,5.0,1,9.0,8.5,7.0,3.7,5.7,6.7,4.9,5.5,4.4,7.8,1,2.3,5.4,4.4,6.1,7.3,1,5.7,7.0,6.6,4.8,5.3,5.4,5.0,4.9,4.0,7.7,9.0,4.6,1.1]},
+      {"id":"testimonial-12","name":{"fr":"Avis audio 3","ar":"رأي صوتي 3","en":"Audio feedback 3"},"level":{"fr":"Reçu sur WhatsApp","ar":"تم تلقيه عبر واتساب","en":"Received on WhatsApp"},"src":"assets/testimonial-12.mp3","duration":"2:22","transcript":"","wave":[2.0,6.0,8.2,7.2,6.0,7.0,6.7,7.5,7.7,6.7,8.1,7.2,7.6,7.9,7.7,7.5,6.6,7.4,7.4,7.1,7.7,8.9,8.1,7.9,7.4,7.4,6.4,6.5,9.0,8.1,7.9,7.4,7.0,6.4,7.3,7.4,9.0,7.4,9.0,9.0,6.8,8.4,7.2,8.5,7.1,7.0,5.9,7.8,8.9,8.8,8.0,6.9]}
     ],
     vocaux: [
-      { src: "assets/avis-video.mp4", poster: "assets/avis-video-poster.jpg", title: { fr: "Compilation d’avis", ar: "تجميع آراء" , en: "Feedback compilation" }, sub: "1:17", ratio: "r916", fit: "cover" },
       { src: "assets/video/vocal-01.mp4", poster: "assets/video/vocal-01.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:31", ratio: "r45", fit: "contain" },
       { src: "assets/video/vocal-02.mp4", poster: "assets/video/vocal-02.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:15", ratio: "r45", fit: "contain" },
       { src: "assets/video/vocal-03.mp4", poster: "assets/video/vocal-03.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:20", ratio: "r45", fit: "contain" },
-      { src: "assets/video/vocal-04.mp4", poster: "assets/video/vocal-04.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:13", ratio: "r45", fit: "contain" },
       { src: "assets/video/vocal-05.mp4", poster: "assets/video/vocal-05.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:36", ratio: "r45", fit: "contain" },
       { src: "assets/video/vocal-06.mp4", poster: "assets/video/vocal-06.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:26", ratio: "r45", fit: "contain" },
       { src: "assets/video/vocal-07.mp4", poster: "assets/video/vocal-07.jpg", title: { fr: "Vocal reçu", ar: "رسالة صوتية" , en: "Voice message received" }, sub: "0:19", ratio: "r45", fit: "contain" },
@@ -779,12 +796,30 @@ const CONFIG = {
     ],
     avisCaptures: [11,1,2,3,4,5,6,7,8,9,10,12,13,14].map(n => ({ src: `assets/avis/av-${String(n).padStart(2,"0")}.jpg` })),
     works: [
-      { src: "assets/video/real-01.mp4", poster: "assets/video/real-01.jpg", title: { fr: "Analyse des résultats", ar: "تحليل النتائج" , en: "Results analysis" }, sub: { fr: "43 pages · extrait", ar: "43 صفحة · مقتطف" , en: "43 pages · excerpt" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-02.mp4", poster: "assets/video/real-02.jpg", title: { fr: "Rapport PFE", ar: "تقرير مشروع نهاية الدراسة" , en: "Final-year project report" }, sub: { fr: "54 pages · extrait", ar: "54 صفحة · مقتطف" , en: "54 pages · excerpt" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-03.mp4", poster: "assets/video/real-03.jpg", title: { fr: "Mémoire", ar: "مذكرة" , en: "Dissertation" }, sub: { fr: "161 pages · extrait", ar: "161 صفحة · مقتطف" , en: "161 pages · excerpt" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-04.mp4", poster: "assets/video/real-04.jpg", title: { fr: "Tableaux et figures", ar: "جداول وأشكال" , en: "Tables and figures" }, sub: { fr: "94 pages · extrait", ar: "94 صفحة · مقتطف" , en: "94 pages · excerpt" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-05.mp4", poster: "assets/video/real-05.jpg", title: { fr: "Partie pratique", ar: "الجزء التطبيقي" , en: "Practical section" }, sub: { fr: "56 pages · extrait", ar: "56 صفحة · مقتطف" , en: "56 pages · excerpt" }, ratio: "rdoc", muted: true },
-      { src: "assets/video/real-06.mp4", poster: "assets/video/real-06.jpg", title: { fr: "Abréviations et tableaux", ar: "المختصرات والجداول" , en: "Abbreviations and tables" }, sub: { fr: "extrait", ar: "مقتطف" , en: "excerpt" }, ratio: "rdoc", muted: true }
+      {"src":"assets/video/project-42.mp4","poster":"assets/video/project-42.jpg","title":{"fr":"Optimisation des doses en scanner thoracique","ar":"تحسين جرعات التصوير المقطعي للصدر","en":"Dose optimization in thoracic CT"},"sub":{"fr":"Résultats statistiques, discussion et recommandations · 0:21","ar":"النتائج الإحصائية والمناقشة والتوصيات · 0:21","en":"Statistical results, discussion and recommendations · 0:21"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-17.mp4","poster":"assets/video/project-17.jpg","title":{"fr":"Analyse territoriale","ar":"التحليل المجالي","en":"Territorial analysis"},"sub":{"fr":"Salé Al Jadida · diagnostic et statistiques · 0:18","ar":"سلا الجديدة · تشخيص وإحصاءات · 0:18","en":"Salé Al Jadida · assessment and statistics · 0:18"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-25.mp4","poster":"assets/video/project-25.jpg","title":{"fr":"Gestion des dépenses publiques","ar":"تدبير النفقات العمومية","en":"Public expenditure management"},"sub":{"fr":"Rapport de stage · trésorerie et contrôle · 0:27","ar":"تقرير تدريب · الخزينة والمراقبة · 0:27","en":"Internship report · treasury and control · 0:27"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-26.mp4","poster":"assets/video/project-26.jpg","title":{"fr":"Tableaux de bord logistiques","ar":"لوحات قيادة لوجستية","en":"Logistics dashboards"},"sub":{"fr":"Rapport de recherche · productivité et aide à la décision · 0:35","ar":"تقرير بحث · الإنتاجية ودعم القرار · 0:35","en":"Research report · productivity and decision support · 0:35"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-19.mp4","poster":"assets/video/project-19.jpg","title":{"fr":"Indicateurs de performance HSE","ar":"مؤشرات أداء الصحة والسلامة والبيئة","en":"HSE performance indicators"},"sub":{"fr":"Mémoire · démarche DMAIC et tableaux de suivi · 0:24","ar":"مذكرة · منهجية DMAIC وجداول التتبع · 0:24","en":"Dissertation · DMAIC method and monitoring tables · 0:24"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-32.mp4","poster":"assets/video/project-32.jpg","title":{"fr":"Gestion des risques pharmaceutiques","ar":"إدارة المخاطر الدوائية","en":"Pharmaceutical risk management"},"sub":{"fr":"Mémoire · qualité, analyse des risques et résultats · 0:21","ar":"بحث أكاديمي · الجودة وتحليل المخاطر والنتائج · 0:21","en":"Dissertation · quality, risk analysis and results · 0:21"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-16.mp4","poster":"assets/video/project-16.jpg","title":{"fr":"Sécurité chirurgicale","ar":"السلامة الجراحية","en":"Surgical safety"},"sub":{"fr":"Mémoire · indicateurs, analyses et tableaux · 0:34","ar":"مذكرة · مؤشرات وتحليلات وجداول · 0:34","en":"Dissertation · indicators, analyses and tables · 0:34"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-18.mp4","poster":"assets/video/project-18.jpg","title":{"fr":"Soutien à la parentalité","ar":"دعم الوالدية","en":"Parenting support"},"sub":{"fr":"Développement de l’enfant · famille et crèche · 0:39","ar":"نمو الطفل · الأسرة والحضانة · 0:39","en":"Child development · family and nursery · 0:39"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-20.mp4","poster":"assets/video/project-20.jpg","title":{"fr":"Discours publicitaire","ar":"الخطاب الإعلاني","en":"Advertising discourse"},"sub":{"fr":"Mémoire · structure argumentative et multilinguisme · 0:28","ar":"مذكرة · البنية الحجاجية وتعدد اللغات · 0:28","en":"Dissertation · argumentation and multilingualism · 0:28"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-21.mp4","poster":"assets/video/project-21.jpg","title":{"fr":"Maintenance préventive","ar":"الصيانة الوقائية","en":"Preventive maintenance"},"sub":{"fr":"PFE · équipements électriques critiques · 0:36","ar":"مشروع تخرج · المعدات الكهربائية الحرجة · 0:36","en":"Final project · critical electrical equipment · 0:36"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-22.mp4","poster":"assets/video/project-22.jpg","title":{"fr":"Qualité et chaîne logistique","ar":"الجودة وسلسلة الإمداد","en":"Quality and supply chain"},"sub":{"fr":"Mémoire · performance opérationnelle des PME · 0:29","ar":"مذكرة · الأداء التشغيلي للمقاولات الصغرى والمتوسطة · 0:29","en":"Dissertation · operational performance of SMEs · 0:29"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-23.mp4","poster":"assets/video/project-23.jpg","title":{"fr":"Contrats et risques juridiques","ar":"العقود والمخاطر القانونية","en":"Contracts and legal risks"},"sub":{"fr":"Mémoire · commerce international · 0:36","ar":"مذكرة · التجارة الدولية · 0:36","en":"Dissertation · international trade · 0:36"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-24.mp4","poster":"assets/video/project-24.jpg","title":{"fr":"Endettement et performance","ar":"المديونية والأداء المالي","en":"Debt and financial performance"},"sub":{"fr":"Mémoire · entreprises cotées du secteur de la construction · 0:39","ar":"مذكرة · شركات البناء المدرجة في البورصة · 0:39","en":"Dissertation · listed construction companies · 0:39"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-27.mp4","poster":"assets/video/project-27.jpg","title":{"fr":"Contrôle de gestion","ar":"مراقبة التدبير","en":"Management control"},"sub":{"fr":"Mémoire · analyse de la performance financière · 0:28","ar":"مذكرة · تحليل الأداء المالي · 0:28","en":"Dissertation · financial performance analysis · 0:28"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-28.mp4","poster":"assets/video/project-28.jpg","title":{"fr":"Transformation numérique","ar":"التحول الرقمي","en":"Digital transformation"},"sub":{"fr":"Rapport de stage · cabinets comptables · 0:25","ar":"تقرير تدريب · مكاتب المحاسبة · 0:25","en":"Internship report · accounting firms · 0:25"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-29.mp4","poster":"assets/video/project-29.jpg","title":{"fr":"Tutorat intelligent","ar":"التدريس الذكي","en":"Intelligent tutoring"},"sub":{"fr":"Mémoire · personnalisation de l’apprentissage · 0:18","ar":"مذكرة · تخصيص التعلم · 0:18","en":"Dissertation · personalized learning · 0:18"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-30.mp4","poster":"assets/video/project-30.jpg","title":{"fr":"Sécurité des patients","ar":"سلامة المرضى","en":"Patient safety"},"sub":{"fr":"Protocole de recherche · cadre théorique, méthodologie et questionnaire · 0:17","ar":"بروتوكول بحث · الإطار النظري والمنهجية والاستبيان · 0:17","en":"Research protocol · theoretical framework, methods and questionnaire · 0:17"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-31.mp4","poster":"assets/video/project-31.jpg","title":{"fr":"Gestion des conflits en classe","ar":"إدارة النزاعات داخل الفصل","en":"Classroom conflict management"},"sub":{"fr":"Mémoire · cadre conceptuel et résultats d’enquête · 0:34","ar":"بحث أكاديمي · الإطار المفاهيمي ونتائج الاستبيان · 0:34","en":"Dissertation · conceptual framework and survey results · 0:34"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-33.mp4","poster":"assets/video/project-33.jpg","title":{"fr":"Pilotage financier et risque climatique","ar":"الإدارة المالية والمخاطر المناخية","en":"Financial management and climate risk"},"sub":{"fr":"Mémoire · cadre théorique, tableaux et graphiques · 0:26","ar":"بحث أكاديمي · الإطار النظري والجداول والرسوم البيانية · 0:26","en":"Dissertation · theoretical framework, tables and charts · 0:26"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-34.mp4","poster":"assets/video/project-34.jpg","title":{"fr":"Paiement mobile et performance financière","ar":"الدفع عبر الهاتف والأداء المالي","en":"Mobile payments and financial performance"},"sub":{"fr":"Projet de fin d’études · analyse comparative et résultats · 0:28","ar":"مشروع نهاية الدراسة · تحليل مقارن ونتائج · 0:28","en":"Final project · comparative analysis and results · 0:28"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-35.mp4","poster":"assets/video/project-35.jpg","title":{"fr":"Alimentation complémentaire du nourrisson","ar":"التغذية التكميلية للرضع","en":"Complementary feeding in infants"},"sub":{"fr":"Mémoire · pratiques alimentaires, analyses et questionnaire · 0:47","ar":"بحث أكاديمي · الممارسات الغذائية والتحليلات والاستبيان · 0:47","en":"Dissertation · feeding practices, analysis and questionnaire · 0:47"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-36.mp4","poster":"assets/video/project-36.jpg","title":{"fr":"Prévention des infections liées aux soins","ar":"الوقاية من العدوى المرتبطة بالرعاية الصحية","en":"Prevention of healthcare-associated infections"},"sub":{"fr":"Projet de fin d’études · urgences, méthodologie et résultats · 0:30","ar":"مشروع نهاية الدراسة · قسم الطوارئ والمنهجية والنتائج · 0:30","en":"Final project · emergency care, methods and results · 0:30"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-37.mp4","poster":"assets/video/project-37.jpg","title":{"fr":"Simulation et soins du nouveau-né","ar":"المحاكاة ورعاية حديثي الولادة","en":"Simulation and newborn care"},"sub":{"fr":"Mémoire · formation des sages-femmes et analyse des résultats · 0:39","ar":"بحث أكاديمي · تكوين القابلات وتحليل النتائج · 0:39","en":"Dissertation · midwifery training and analysis of results · 0:39"},"ratio":"rdoc","fit":"contain","muted":true},
+      {"src":"assets/video/project-38.mp4","poster":"assets/video/project-38.jpg","title":{"fr":"Capsules vidéo et enseignement de la grammaire","ar":"مقاطع الفيديو وتعليم القواعد","en":"Video lessons and grammar teaching"},"sub":{"fr":"Mémoire · pédagogie, résultats et supports d’apprentissage · 0:47","ar":"بحث أكاديمي · البيداغوجيا والنتائج والوسائل التعليمية · 0:47","en":"Dissertation · pedagogy, results and learning materials · 0:47"},"ratio":"rdoc","fit":"contain","muted":true}
     ]
   }
 };
@@ -794,7 +829,7 @@ const CONFIG = {
    ========================================================== */
 const I18N = {
   fr: {
-    langBtn: "عربي", dir: "ltr", languageLabel: "Langue", brandTagline: "Ton projet · Tes ressources", officialSite: "Site officiel de Soutenance Pro",
+    langBtn: "عربي", dir: "ltr", languageLabel: "Langue", brandTagline: "Ton projet · Tes ressources", platformLink: "Découvrir la plateforme", platformShort: "Le site", mediaError: "Lecture indisponible. Appuyez pour réessayer.", officialSite: "Site officiel de Soutenance Pro",
     ctaPrimary: "Parler à un conseiller sur WhatsApp",
     ctaSecondary: "Discuter sur WhatsApp",
     hero: { eyebrow: "Accompagnement académique personnalisé", title: "Votre PFE, mémoire ou thèse, accompagné étape par étape.", subtitle: "Un accompagnement adapté à votre niveau, à votre spécialité et aux consignes de votre encadrant.", note: "Sans inscription ni formulaire. Vous décrivez votre projet, un conseiller vous répond sur WhatsApp.", proofLabel: "Avis d’une étudiante accompagnée", moreAvis: "Écouter d’autres avis", otherVideos: "Autres vidéos" },
@@ -810,7 +845,7 @@ const I18N = {
       ["Nous vous proposons un accompagnement adapté","Une proposition claire, limitée à ce dont vous avez besoin : une étape précise ou un suivi sur plusieurs étapes."],
       ["Le suivi continue sur WhatsApp","Les échanges restent sur le même fil de discussion pendant tout l’accompagnement."] ],
       prepTitle: "Pour une réponse précise, indiquez dès le premier message :", prep: ["Niveau d’études","Spécialité","Type de projet","Sujet","Avancement","Consignes de l’encadrant","Échéance","Difficultés rencontrées"] },
-    works: { eyebrow: "Réalisations", title: "Extraits de travaux accompagnés.", lead: "Défilement d’extraits de documents finalisés, anonymisés. Appuyez pour lancer." },
+    works: { choose: "Choisir un exemple", count: n => `${n} exemples à explorer`, eyebrow: "Réalisations", title: "Extraits de travaux accompagnés.", lead: "Défilement d’extraits de documents finalisés, anonymisés. Appuyez pour lancer." },
     why: { eyebrow: "Pourquoi Soutenance Pro", title: "Un accompagnement qui part de votre projet.", list: [
       ["Personnalisation","Chaque accompagnement est construit à partir de votre niveau, de votre spécialité et de votre sujet."],
       ["Méthodologie","Une démarche structurée, de la problématique à la soutenance, pour un travail cohérent."],
@@ -836,7 +871,7 @@ const I18N = {
       lines: { level: "Niveau", project: "Projet", need: "Besoin" } }
   },
   ar: {
-    langBtn: "FR", dir: "rtl", languageLabel: "اللغة", brandTagline: "مشروعك · مواردك", officialSite: "الموقع الرسمي لـ Soutenance Pro",
+    langBtn: "FR", dir: "rtl", languageLabel: "اللغة", brandTagline: "مشروعك · مواردك", platformLink: "اكتشف المنصة", platformShort: "الموقع", mediaError: "تعذّر التشغيل. اضغط للمحاولة مجدداً.", officialSite: "الموقع الرسمي لـ Soutenance Pro",
     ctaPrimary: "تحدّث مع مستشار على واتساب",
     ctaSecondary: "راسلنا على واتساب",
     hero: { eyebrow: "مواكبة أكاديمية مخصّصة", title: "مشروع نهاية الدراسة، المذكرة أو الأطروحة، بمواكبة خطوة بخطوة.", subtitle: "مواكبة تُكيَّف مع مستواك وتخصصك وتوجيهات أستاذك المؤطر.", note: "بدون تسجيل ولا استمارة. تصف لنا مشروعك، ويجيبك مستشار على واتساب.", proofLabel: "رأي طالبة تمت مواكبتها", moreAvis: "استمع إلى آراء أخرى", otherVideos: "فيديوهات أخرى" },
@@ -852,7 +887,7 @@ const I18N = {
       ["نقترح عليك مواكبة مناسبة","اقتراح واضح، يقتصر على ما تحتاجه: مرحلة محددة أو متابعة على عدة مراحل."],
       ["تستمر المتابعة على واتساب","تبقى المراسلات في نفس المحادثة طوال فترة المواكبة."] ],
       prepTitle: "للحصول على جواب دقيق، اذكر منذ أول رسالة:", prep: ["المستوى الدراسي","التخصص","نوع المشروع","الموضوع","التقدم في العمل","توجيهات المؤطر","الموعد النهائي","الصعوبات"] },
-    works: { eyebrow: "إنجازات", title: "مقتطفات من أعمال تمت مواكبتها.", lead: "تصفح مقتطفات من وثائق منجزة، مع إخفاء الهوية. اضغط للتشغيل." },
+    works: { choose: "اختر نموذجاً", count: n => `${n} نماذج للاطلاع`, eyebrow: "إنجازات", title: "مقتطفات من أعمال تمت مواكبتها.", lead: "تصفح مقتطفات من وثائق منجزة، مع إخفاء الهوية. اضغط للتشغيل." },
     why: { eyebrow: "لماذا Soutenance Pro", title: "مواكبة تنطلق من مشروعك.", list: [
       ["التخصيص","كل مواكبة تُبنى انطلاقاً من مستواك وتخصصك وموضوعك."],
       ["المنهجية","مسار منظم، من الإشكالية إلى المناقشة، لعمل متماسك."],
@@ -881,7 +916,7 @@ const I18N = {
   langBtn: "FR",
   dir: "ltr",
   officialSite: "Official Soutenance Pro website",
-  languageLabel: "Language", brandTagline: "Your project · Your resources",
+  languageLabel: "Language", brandTagline: "Your project · Your resources", platformLink: "Explore the platform", platformShort: "The site", mediaError: "Playback unavailable. Tap to try again.",
   ctaPrimary: "Talk to an adviser on WhatsApp",
   ctaSecondary: "Chat on WhatsApp",
   hero: {
@@ -987,6 +1022,7 @@ const I18N = {
     ]
   },
   works: {
+    choose: "Choose an example", count: n => `${n} examples to explore`,
     eyebrow: "Work examples",
     title: "Excerpts from projects we have supported.",
     lead: "Browse anonymised excerpts from completed documents. Tap to play."
@@ -1212,16 +1248,28 @@ function videoCard(v, eager=false){
   el.innerHTML = `
     <img class="poster" src="${esc(v.poster)}" alt="" loading="${eager ? "eager" : "lazy"}" decoding="async">
     <video playsinline preload="none" controls poster="${esc(v.poster)}" hidden aria-label="${esc(tr(v.title))}"${v.muted ? " muted" : ""}></video>
-    <button class="play" type="button" aria-label="${esc(t.proof.play(tr(v.title)))}"><span class="ring">${ICON_PLAY}</span><span class="cap">${esc(tr(v.title))}<small>${esc(tr(v.sub))}</small></span></button>`;
-  const btn = $(".play", el), vid = $("video", el), img = $(".poster", el);
+    <button class="play" type="button" aria-label="${esc(t.proof.play(tr(v.title)))}"><span class="ring">${ICON_PLAY}</span><span class="cap">${esc(tr(v.title))}<small>${esc(tr(v.sub))}</small></span></button>
+    <p class="media-message" role="status" hidden>${esc(t.mediaError)}</p>`;
+  const btn = $(".play", el), vid = $("video", el), img = $(".poster", el), status = $(".media-message", el);
+  const reset = (failed=false) => {
+    vid.pause(); vid.hidden = true; img.hidden = false;
+    el.classList.remove("is-playing", "is-loading"); btn.disabled = false;
+    btn.removeAttribute("aria-busy"); status.hidden = !failed;
+  };
   btn.addEventListener("click", () => {
-    stopAll(vid);
+    stopAll(vid); status.hidden = true;
     if(!vid.getAttribute("src")) vid.src = v.src;
-    vid.hidden = false; img.hidden = true; el.classList.add("is-playing");
-    vid.play().catch(()=>{});
+    else if(vid.error) vid.load();
+    vid.hidden = false; img.hidden = true; el.classList.add("is-loading");
+    btn.disabled = true; btn.setAttribute("aria-busy", "true");
+    vid.play().catch(() => reset(true));
   });
-  vid.addEventListener("play", () => { stopAll(vid); el.classList.add("is-playing"); });
-  vid.addEventListener("ended", () => { el.classList.remove("is-playing"); });
+  vid.addEventListener("playing", () => {
+    stopAll(vid); el.classList.remove("is-loading"); el.classList.add("is-playing");
+    btn.disabled = false; btn.removeAttribute("aria-busy"); status.hidden = true;
+  });
+  vid.addEventListener("error", () => reset(true));
+  vid.addEventListener("ended", () => { reset(); vid.currentTime = 0; });
   return el;
 }
 function fmt(s){ s = Math.max(0, Math.floor(s||0)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; }
@@ -1237,11 +1285,16 @@ function audioPlayer(a, compact=false){
     <div class="who"><b>${esc(tr(a.name))} ${ICON_CHECK}</b><span>${esc(tr(a.level))}</span></div>
     <div class="wave"><div class="bars" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">${bars}</div><span class="time">${esc(a.duration||"")}</span></div>
     ${(!compact && hasTr) ? `<div class="tr"><button type="button">${esc(t.proof.transcript)} ${ICON_CHEV}</button><p>${esc(trText)}</p></div>` : ""}
+    <p class="media-message" role="status" hidden>${esc(t.mediaError)}</p>
     <audio preload="none" src="${esc(a.src)}"></audio>`;
   const audio = $("audio", el), pp = $(".pp", el), barsEl = $(".bars", el), time = $(".time", el), trEl = $(".tr", el);
   players.push({ el, audio });
-  pp.addEventListener("click", () => { if(audio.paused){ stopAll(audio); audio.play().catch(()=>{}); } else audio.pause(); });
-  audio.addEventListener("play", () => el.classList.add("is-playing"));
+  const status = $(".media-message", el);
+  const audioError = () => { audio.pause(); el.classList.remove("is-playing"); status.hidden = false; };
+  const playAudio = () => { status.hidden = true; if(audio.error) audio.load(); stopAll(audio); audio.play().catch(audioError); };
+  pp.addEventListener("click", () => { if(audio.paused) playAudio(); else audio.pause(); });
+  audio.addEventListener("error", audioError);
+  audio.addEventListener("play", () => { status.hidden = true; el.classList.add("is-playing"); });
   audio.addEventListener("pause", () => el.classList.remove("is-playing"));
   audio.addEventListener("ended", () => { el.classList.remove("is-playing"); paint(0); time.textContent = a.duration || fmt(audio.duration); });
   const bs = $$("i", barsEl);
@@ -1251,7 +1304,7 @@ function audioPlayer(a, compact=false){
     const r = barsEl.getBoundingClientRect(); const ratio = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
     const go = () => { audio.currentTime = ratio * audio.duration; paint(ratio); };
     if(audio.duration) go(); else { audio.addEventListener("loadedmetadata", go, {once:true}); audio.load(); }
-    if(audio.paused){ stopAll(audio); audio.play().catch(()=>{}); }
+    if(audio.paused) playAudio();
   });
   barsEl.addEventListener("keydown", ev => {
     if(!audio.duration) return;
@@ -1327,6 +1380,7 @@ function renderUgc(){
 }
 function renderAll(){
   const t = T();
+  stopAll();
   players.length = 0;
   /* textes statiques */
   $$("[data-i18n]").forEach(el => { const v = get(t, el.dataset.i18n); if(typeof v === "string") el.textContent = v; });
@@ -1334,6 +1388,7 @@ function renderAll(){
   $$("#languageSwitch [data-lang]").forEach(b => b.setAttribute("aria-pressed", b.dataset.lang === LANG));
   $("#officialBadge").setAttribute("aria-label", t.officialSite);
   $("#officialBadge").setAttribute("title", t.officialSite);
+  $("#platformLink").setAttribute("aria-label", t.platformLink + " Soutenance Pro");
   $("#lbClose").setAttribute("aria-label", t.proof.close); $("#lbPrev").setAttribute("aria-label", t.proof.prev); $("#lbNext").setAttribute("aria-label", t.proof.next); lb.setAttribute("aria-label", t.proof.zoom);
   /* hero */
   renderUgc();
@@ -1342,16 +1397,21 @@ function renderAll(){
   if(audios[0]){ const p = audioPlayer(audios[0], true); p.id = "heroAudio"; heroSlot.replaceWith(p); }
   /* preuves */
   const list = $("#audioList"); list.innerHTML = ""; list.classList.remove("all");
-  audios.forEach((a,i) => { const p = audioPlayer(a); if(i >= 3) p.classList.add("extra"); list.appendChild(p); });
+  const additionalAudios = audios.slice(1);
+  additionalAudios.forEach((a,i) => { const p = audioPlayer(a); if(i >= 3) p.classList.add("extra"); list.appendChild(p); });
   $$(".more-btn").forEach(b => b.remove());
-  if(audios.length > 3){
-    const b = document.createElement("button"); b.type = "button"; b.className = "btn btn-secondary more-btn"; b.textContent = t.proof.more(audios.length - 3);
+  if(additionalAudios.length > 3){
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn btn-secondary more-btn"; b.textContent = t.proof.more(additionalAudios.length - 3);
     b.addEventListener("click", () => list.classList.add("all")); list.insertAdjacentElement("afterend", b);
   }
   const vr = $("#vocauxRail"); vr.innerHTML = ""; CONFIG.media.vocaux.filter(v => v.src).forEach((v,i) => vr.appendChild(videoCard(v, i < 2)));
   const sr = $("#shotsRail"); sr.innerHTML = ""; SHOTS.forEach((c,i) => sr.appendChild(shot(c,i)));
   $("#shotsCount").textContent = t.proof.shotsCount(SHOTS.length);
   const wr = $("#worksRail"); wr.innerHTML = ""; CONFIG.media.works.filter(w => w.src).forEach((w,i) => wr.appendChild(videoCard(w, i < 2)));
+  const works = CONFIG.media.works.filter(w => w.src);
+  $("#worksCount").textContent = t.works.count(works.length);
+  $("#workJump").innerHTML = works.map((w,i) => `<option value="${i}">${i+1}. ${esc(tr(w.title))}</option>`).join("");
+  $("#workJump").onchange = ev => wr.children[Number(ev.target.value)]?.scrollIntoView({behavior:REDUCED?"auto":"smooth",block:"nearest",inline:"start"});
   [vr, sr, wr].forEach(r => railNav(r.parentElement, r));
   $("#proofCounts").innerHTML = t.proof.counts(CONFIG.proofTotals).map(c => `<span>${esc(c)}</span>`).join("");
   /* situations, services, étapes, pourquoi, FAQ */

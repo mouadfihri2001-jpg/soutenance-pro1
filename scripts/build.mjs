@@ -1,5 +1,6 @@
 import { build } from 'esbuild';
 import { buildCampaignMedia } from './campaign-media.mjs';
+import { checkCampaignAssets } from './check-campaign-assets.mjs';
 import { mkdir, copyFile, cp, rm, readFile, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { pages } from '../content/catalog.mjs';
@@ -39,6 +40,7 @@ const campaignHtml = await readFile('public/accompagnement/index.html', 'utf8');
 await writeFile('dist/accompagnement.html', campaignHtml.replaceAll('assets/', '/accompagnement/assets/'));
 await cp('public/accompagnement/assets', 'dist/accompagnement/assets', { recursive: true });
 await buildCampaignMedia();
+await checkCampaignAssets(campaignHtml);
 await writeFile('dist/index.html', html.replace('<!-- SEO_DEPLOYMENT_META -->',seo).replace('<!-- HOME_DISCOVERY -->',renderHomeDiscovery()).replace('<!-- PRODUCT_DEMO -->',renderProductDemo()).replace('<!-- START_HUB -->',renderStartHub()));
 for(const page of pages){const file=`dist/${page.slug}.html`;await mkdir(dirname(file),{recursive:true});await writeFile(file,renderPage(page,context));}
 await writeFile('dist/guides.html',renderGuides(context));
@@ -82,4 +84,3 @@ await build({
   target: ['es2022'], entryNames: '[name]', chunkNames: 'chunk-[hash]',
   legalComments: 'eof'
 });
-
